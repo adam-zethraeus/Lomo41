@@ -37,6 +37,11 @@
 	return YES;
 }
 
+- (BOOL)hasRunningSessionAndCameraPermission
+{
+	return self.session.isRunning && self.hasCameraPermission;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 }
 
