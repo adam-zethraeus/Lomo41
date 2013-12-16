@@ -12,6 +12,7 @@
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
+static void * CaptureArraySize = &CaptureArraySize;
 
 @interface LoViewController ()
 @property (weak, nonatomic) IBOutlet UIView *shootView;
@@ -20,6 +21,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) AVCaptureSession *session;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
+@property (nonatomic) NSMutableArray *captures;
 @property (nonatomic) id runtimeErrorHandlingObserver;
 @property (nonatomic, readonly, getter = isSessionRunningAndHasCameraPermission) BOOL sessionRunningAndHasCameraPermission;
 @property (nonatomic) BOOL hasCameraPermission;
@@ -52,6 +54,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.session = [[AVCaptureSession alloc] init];
+    self.captures = [NSMutableArray arrayWithCapacity:4];
 	[self checkCameraPermissions];
 	self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
@@ -79,6 +82,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningCameraPermissionContext];
 		[self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
+        [self addObserver:self forKeyPath:@"captures" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CaptureArraySize];
 		__weak LoViewController *weakSelf = self;
 		self.runtimeErrorHandlingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self session] queue:nil usingBlock:^(NSNotification *note) {
 			LoViewController *strongSelf = weakSelf;
@@ -98,6 +102,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		[[NSNotificationCenter defaultCenter] removeObserver:self.runtimeErrorHandlingObserver];
 		[self removeObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" context:SessionRunningCameraPermissionContext];
 		[self removeObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
+		[self removeObserver:self forKeyPath:@"captures" context:CaptureArraySize];
 	});
 }
 
@@ -117,19 +122,42 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                       ofObject:(id)object
                         change:(NSDictionary *)change
                        context:(void *)context {
+    if (context == CaptureArraySize) {
+        if (self.captures.count >=4) {
+            [self outputToLibrary];
+        }
+    }
 }
 
 - (IBAction)doShoot:(id)sender {
     [self runCaptureAnimation];
-	dispatch_async([self sessionQueue], ^{
+    [self shootOnce];
+}
+
+- (void)shootOnce {
+	dispatch_async(self.sessionQueue, ^{
 		[self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-			if (imageDataSampleBuffer) {
-				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-				UIImage *image = [[UIImage alloc] initWithData:imageData];
-				[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
-			}
+            [self willChangeValueForKey:@"captures"];
+            CFRetain(imageDataSampleBuffer);
+            [self.captures addObject: (__bridge_transfer id)imageDataSampleBuffer];
+            [self didChangeValueForKey:@"captures"];
 		}];
 	});
+}
+
+- (void)outputToLibrary {
+    dispatch_async(self.sessionQueue, ^{
+        for (id object in self.captures) {
+            CMSampleBufferRef imageDataSampleBuffer = (__bridge_retained CMSampleBufferRef) object;
+            if (imageDataSampleBuffer) {
+                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                UIImage *image = [[UIImage alloc] initWithData:imageData];
+                [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+            }
+            CFRelease(imageDataSampleBuffer);
+        }
+        [self.captures removeAllObjects];
+    });
 }
 
 - (void)runCaptureAnimation {
