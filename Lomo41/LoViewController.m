@@ -171,7 +171,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         self.timer = nil;
         final = true;
     }
-	dispatch_async(self.sessionQueue, ^{
+	//dispatch_async(self.sessionQueue, ^{
 		[self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
             CFRetain(imageDataSampleBuffer);
             [self.captures addObject: (__bridge_transfer id)imageDataSampleBuffer];
@@ -180,7 +180,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                 [self outputToLibrary];
             }
 		}];
-	});
+	//});
 }
 
 - (void)outputToLibrary {
