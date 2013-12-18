@@ -171,28 +171,26 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         self.timer = nil;
         final = true;
     }
-	//dispatch_async(self.sessionQueue, ^{
-		[self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-            CFRetain(imageDataSampleBuffer);
-            [self.captures addObject: (__bridge_transfer id)imageDataSampleBuffer];
+    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+        CFRetain(imageDataSampleBuffer);
+        dispatch_async(self.sessionQueue, ^{
+            if (imageDataSampleBuffer) {
+                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+                [self.captures addObject: [[UIImage alloc] initWithData:imageData]];
+            }
+            CFRelease(imageDataSampleBuffer);
             [self runCaptureAnimation];
             if (final) {
                 [self outputToLibrary];
             }
-		}];
-	//});
+        });
+    }];
 }
 
 - (void)outputToLibrary {
     dispatch_async(self.sessionQueue, ^{
-        for (id object in self.captures) {
-            CMSampleBufferRef imageDataSampleBuffer = (__bridge_retained CMSampleBufferRef) object;
-            if (imageDataSampleBuffer) {
-                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                UIImage *image = [[UIImage alloc] initWithData:imageData];
-                [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
-            }
-            CFRelease(imageDataSampleBuffer);
+        for (UIImage* image in self.captures) {
+            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
         }
         [self.captures removeAllObjects];
     });
