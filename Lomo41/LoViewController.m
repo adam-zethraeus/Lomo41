@@ -10,9 +10,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 
-static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
-static void * CaptureArraySize = &CaptureArraySize;
 
 @interface LoViewController ()
 @property (weak, nonatomic) IBOutlet UIView *shootView;
@@ -25,6 +23,8 @@ static void * CaptureArraySize = &CaptureArraySize;
 @property (nonatomic) id runtimeErrorHandlingObserver;
 @property (nonatomic, readonly, getter = isSessionRunningAndHasCameraPermission) BOOL sessionRunningAndHasCameraPermission;
 @property (nonatomic) BOOL hasCameraPermission;
+@property (nonatomic) NSTimer *timer;
+@property (nonatomic) int shotCount;
 - (IBAction)doShoot:(id)sender;
 @end
 
@@ -41,6 +41,20 @@ static void * CaptureArraySize = &CaptureArraySize;
 		}
 	}
 	return captureDevice;
+}
+
++ (void)setFlashMode:(AVCaptureFlashMode)flashMode forDevice:(AVCaptureDevice *)device
+{
+	if ([device hasFlash] && [device isFlashModeSupported:flashMode])
+	{
+		NSError *error = nil;
+		if ([device lockForConfiguration:&error]) {
+			[device setFlashMode:flashMode];
+			[device unlockForConfiguration];
+		} else {
+			NSLog(@"%@", error);
+		}
+	}
 }
 
 + (NSSet *)keyPathsForValuesAffectingSessionRunningAndDeviceAuthorized {
@@ -61,6 +75,27 @@ static void * CaptureArraySize = &CaptureArraySize;
 		//[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
 		NSError *error = nil;
 		AVCaptureDevice *videoDevice = [LoViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
+        //TODO: lock these for sequential pictures
+        if ([videoDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
+            if ([videoDevice lockForConfiguration:&error]) {
+                CGPoint autofocusPoint = CGPointMake(0.5f, 0.5f);
+                [videoDevice setFocusPointOfInterest:autofocusPoint];
+                [videoDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+                [videoDevice unlockForConfiguration];
+            } else {
+                NSLog(@"%@", error);
+            }
+        }
+        if ([videoDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
+            if ([videoDevice lockForConfiguration:&error]) {
+                CGPoint exposurePoint = CGPointMake(0.5f, 0.5f);
+                [videoDevice setExposurePointOfInterest:exposurePoint];
+                [videoDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+            } else {
+                NSLog(@"%@", error);
+            }
+        }
+        [LoViewController setFlashMode:AVCaptureFlashModeOff forDevice:videoDevice];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
 		if (error) {
 			NSLog(@"%@", error);
@@ -81,8 +116,6 @@ static void * CaptureArraySize = &CaptureArraySize;
 - (void)viewWillAppear:(BOOL)animated {
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningCameraPermissionContext];
-		[self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
-        [self addObserver:self forKeyPath:@"captures" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CaptureArraySize];
 		__weak LoViewController *weakSelf = self;
 		self.runtimeErrorHandlingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self session] queue:nil usingBlock:^(NSNotification *note) {
 			LoViewController *strongSelf = weakSelf;
@@ -101,8 +134,6 @@ static void * CaptureArraySize = &CaptureArraySize;
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[[self videoDeviceInput] device]];
 		[[NSNotificationCenter defaultCenter] removeObserver:self.runtimeErrorHandlingObserver];
 		[self removeObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" context:SessionRunningCameraPermissionContext];
-		[self removeObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
-		[self removeObserver:self forKeyPath:@"captures" context:CaptureArraySize];
 	});
 }
 
@@ -122,25 +153,32 @@ static void * CaptureArraySize = &CaptureArraySize;
                       ofObject:(id)object
                         change:(NSDictionary *)change
                        context:(void *)context {
-    if (context == CaptureArraySize) {
-        if (self.captures.count >=4) {
-            [self outputToLibrary];
-        }
-    }
+    // enable button based on permission observation
 }
 
 - (IBAction)doShoot:(id)sender {
-    [self runCaptureAnimation];
-    [self shootOnce];
+    if (self.timer == nil) {
+        self.shotCount = 0;
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
+    }
 }
 
 - (void)shootOnce {
+    self.shotCount++;
+    bool final = false;
+    if (self.shotCount == 4) {
+        [self.timer invalidate];
+        self.timer = nil;
+        final = true;
+    }
 	dispatch_async(self.sessionQueue, ^{
 		[self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-            [self willChangeValueForKey:@"captures"];
             CFRetain(imageDataSampleBuffer);
             [self.captures addObject: (__bridge_transfer id)imageDataSampleBuffer];
-            [self didChangeValueForKey:@"captures"];
+            [self runCaptureAnimation];
+            if (final) {
+                [self outputToLibrary];
+            }
 		}];
 	});
 }
