@@ -206,8 +206,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     NSAssert([images count] == 4, @"expecting array of size 4");
     float columnWidth = (float)size / 4.0;
     UIImage *firstImage = [images objectAtIndex:0];
-    NSLog(@"height:%f, width:%f", firstImage.size.height, firstImage.size.width);
-    CGSize imSize = firstImage.size;
+    NSAssert(firstImage.size.height > firstImage.size.width, @"Image bytes expected in portrait.");
     //create a context to do our clipping in
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(size, size), YES, 1.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -230,11 +229,15 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
     NSMutableArray* croppedImages = [NSMutableArray arrayWithCapacity:4];
     for (int i = 0; i < 4; i++){
-        UIImage *image = [images objectAtIndex:i];
-        CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], CGRectMake(columnWidth * i, 0, imSize.width/4.0, imSize.height));
+        UIImage *image = [UIImage imageWithCGImage:[[images objectAtIndex:i] CGImage]
+                                             scale:1.0
+                                       orientation:UIImageOrientationUp];
+        CGRect cropRect = CGRectMake((image.size.width/4.0) * i, 0, image.size.width/4.0, image.size.height);
+        CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
+        NSAssert(imageRef != NULL, @"image crop failed");
         UIImage *img = [UIImage imageWithCGImage:imageRef];
         [croppedImages addObject:img];
-        [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[img CGImage] orientation:(ALAssetOrientation)[firstImage imageOrientation] completionBlock:nil];
+//        [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[img CGImage] orientation:(ALAssetOrientation)[firstImage imageOrientation] completionBlock:nil];
         CGImageRelease(imageRef);
     }
     for (int i = 0; i < 4; i++) {
