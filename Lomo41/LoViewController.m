@@ -7,8 +7,11 @@
 //
 
 #import "LoViewController.h"
+
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
+
+#import "LoShotSet.h"
 
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
 
@@ -19,7 +22,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) AVCaptureSession *session;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
-@property (nonatomic) NSMutableArray *captures;
+@property (nonatomic) LoShotSet *currentShots;
 @property (nonatomic) id runtimeErrorHandlingObserver;
 @property (nonatomic, readonly, getter = isSessionRunningAndHasCameraPermission) BOOL sessionRunningAndHasCameraPermission;
 @property (nonatomic) BOOL hasCameraPermission;
@@ -68,7 +71,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.session = [[AVCaptureSession alloc] init];
-    self.captures = [NSMutableArray arrayWithCapacity:4];
+    self.currentShots = [[LoShotSet alloc] init];
 	[self checkCameraPermissions];
 	self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
@@ -176,7 +179,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         dispatch_async(self.sessionQueue, ^{
             if (imageDataSampleBuffer) {
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                [self.captures addObject: [[UIImage alloc] initWithData:imageData]];
+                [self.currentShots addShot:[[UIImage alloc] initWithData:imageData]];
             }
             CFRelease(imageDataSampleBuffer);
             [self runCaptureAnimation];
@@ -189,15 +192,15 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
 - (void)outputToLibrary {
     dispatch_async(self.sessionQueue, ^{
-        if (self.captures.count != 4) {
-            NSLog(@"Picture count was %lu, did not save to library.", self.captures.count);
+        if (self.currentShots.count != 4) {
+            NSLog(@"Picture count was %lu, did not save to library.", self.currentShots.count);
             return;
         }
-        UIImage *firstImage = [self.captures objectAtIndex:0];
-        UIImage *collage = [LoViewController collageFromImages:self.captures];
+        UIImage *firstImage = [self.currentShots.shots objectAtIndex:0];
+        UIImage *collage = [LoViewController collageFromImages:self.currentShots.shots];
 
         [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[collage CGImage] orientation:(ALAssetOrientation)[firstImage imageOrientation] completionBlock:nil];
-        [self.captures removeAllObjects];
+        [self.currentShots purge];
     });
 }
 
