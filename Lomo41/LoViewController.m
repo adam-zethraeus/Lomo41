@@ -194,77 +194,44 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             return;
         }
         UIImage *firstImage = [self.captures objectAtIndex:0];
-        UIImage *collage = [LoViewController collageWithSize: 1000 fromImages:self.captures];
+        UIImage *collage = [LoViewController collageFromImages:self.captures];
 
         [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[collage CGImage] orientation:(ALAssetOrientation)[firstImage imageOrientation] completionBlock:nil];
         [self.captures removeAllObjects];
     });
 }
 
-+ (UIImage *)collageWithSize:(NSInteger)size fromImages:(NSArray *)images {
-    // use the selectedImages for generating the thumbnail
++ (UIImage *)collageFromImages:(NSArray *)images {
     NSAssert([images count] == 4, @"expecting array of size 4");
-    float columnWidth = (float)size / 4.0;
     UIImage *firstImage = [images objectAtIndex:0];
-    NSAssert(firstImage.size.height > firstImage.size.width, @"Image bytes expected in portrait.");
-    //create a context to do our clipping in
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(size, size), YES, 1.0);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(firstImage.size.height, firstImage.size.width), YES, 1.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
 
-    /* crop:
-    CGRect rect = CGRectMake(size.width / 4, size.height / 4 ,
-                             (size.width / 2), (size.height / 2));
-
-    // Create bitmap image from original image data,
-    // using rectangle to specify desired crop area
-    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], rect);
-    UIImage *img = [UIImage imageWithCGImage:imageRef];
-    CGImageRelease(imageRef);
-     */
-
-    // Fill black
-	CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
 	CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
-	CGContextFillRect(context, CGRectMake(0.0, 0.0, size, size));
 
     NSMutableArray* croppedImages = [NSMutableArray arrayWithCapacity:4];
     for (int i = 0; i < 4; i++){
         UIImage *image = [UIImage imageWithCGImage:[[images objectAtIndex:i] CGImage]
                                              scale:1.0
                                        orientation:UIImageOrientationUp];
-        CGRect cropRect = CGRectMake((image.size.width/4.0) * i, 0, image.size.width/4.0, image.size.height);
+        CGRect cropRect = CGRectMake((image.size.width/4.0) + ((image.size.width/8.0) * i), 0, image.size.width/4.0, image.size.height);
         CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
         NSAssert(imageRef != NULL, @"image crop failed");
         UIImage *img = [UIImage imageWithCGImage:imageRef];
         [croppedImages addObject:img];
-//        [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[img CGImage] orientation:(ALAssetOrientation)[firstImage imageOrientation] completionBlock:nil];
         CGImageRelease(imageRef);
     }
     for (int i = 0; i < 4; i++) {
         CGContextSaveGState(context);
-        // get the current image
-        UIImage *image = [images objectAtIndex:i];
-        
-        //create a rect with the size we want to crop the image to
-        CGRect clippedRect = CGRectMake(i*columnWidth, 0, columnWidth-20, size);
-        CGContextClipToRect(context, clippedRect);
-        
-        //create a rect equivalent to the full size of the image
-        CGRect drawRect = CGRectMake(0, 0, size, size);
-        
-        //draw the image to our clipped context using our offset rect
-        CGContextTranslateCTM(context, 0, size/*.height*/);
+        UIImage *image = [croppedImages objectAtIndex:i];
+        CGRect drawRect = CGRectMake(image.size.width * i, 0, image.size.width, image.size.height);
+        CGContextTranslateCTM(context, 0, image.size.height);
         CGContextScaleCTM(context, 1.0, -1.0);
         CGContextDrawImage(context, drawRect, image.CGImage);
         CGContextRestoreGState(context);
     }
-    //pull the image from our cropped context
     UIImage *collage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    //pop the context to get back to the default
     UIGraphicsEndImageContext();
-    
-    //Note: this is autoreleased
     return collage;
 }
 
