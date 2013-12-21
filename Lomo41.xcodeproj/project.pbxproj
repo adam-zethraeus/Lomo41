@@ -170,10 +170,10 @@
 				1982EA0F185850A600CC0731 /* LoViewController.m */,
 				1982EA2E1864E79A00CC0731 /* LoShotSet.h */,
 				1982EA2F1864E79A00CC0731 /* LoShotSet.m */,
-				1982EA11185850A600CC0731 /* Images.xcassets */,
-				1982EA00185850A600CC0731 /* Supporting Files */,
 				1982EA311865487600CC0731 /* Lo41ShotProcessor.h */,
 				1982EA321865487600CC0731 /* Lo41ShotProcessor.m */,
+				1982EA11185850A600CC0731 /* Images.xcassets */,
+				1982EA00185850A600CC0731 /* Supporting Files */,
 			);
 			path = Lomo41;
 			sourceTree = "<group>";
