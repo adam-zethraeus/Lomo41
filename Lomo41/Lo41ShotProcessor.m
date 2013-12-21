@@ -14,7 +14,7 @@ const static float paddingRatio = 1.0/250.0;
 const static GPUVector3 backgroundColor =  {0.1, 0.1, 0.1};
 const static float vignetteStart = 0.4;
 const static float vignetteEnd = 0.8;
-const static float saturationLevel = 0.85;
+const static float saturationLevel = 0.8;
 
 @interface Lo41ShotProcessor ()
 
