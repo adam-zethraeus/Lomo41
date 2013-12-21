@@ -84,6 +84,7 @@ const static float saturationLevel = 0.85;
     for (int i = 0; i < 4; i++) {
         CGContextSaveGState(context);
         UIImage *image = [self.postProcessedIndividualShots objectAtIndex:i];
+        NSAssert(image.size.height > image.size.width, @"Assumption height > width failed.");
         CGRect drawRect = CGRectMake((image.size.width + padding) * i, 0, image.size.width, image.size.height);
         CGContextTranslateCTM(context, 0, image.size.height);
         CGContextScaleCTM(context, 1.0, -1.0);

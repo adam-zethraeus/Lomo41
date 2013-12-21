@@ -14,6 +14,7 @@
 #import "Lo41ShotProcessor.h"
 #import "LoShotSet.h"
 
+static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
 
 @interface LoViewController ()
@@ -119,6 +120,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (void)viewWillAppear:(BOOL)animated {
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningCameraPermissionContext];
+		[self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
 		__weak LoViewController *weakSelf = self;
 		self.runtimeErrorHandlingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self session] queue:nil usingBlock:^(NSNotification *note) {
 			LoViewController *strongSelf = weakSelf;
@@ -137,6 +139,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[[self videoDeviceInput] device]];
 		[[NSNotificationCenter defaultCenter] removeObserver:self.runtimeErrorHandlingObserver];
 		[self removeObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" context:SessionRunningCameraPermissionContext];
+        [self removeObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
 	});
 }
 
@@ -156,7 +159,12 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                       ofObject:(id)object
                         change:(NSDictionary *)change
                        context:(void *)context {
-    // enable button based on permission observation
+	if (context == CapturingStillImageContext) {
+		BOOL isCapturingStillImage = [change[NSKeyValueChangeNewKey] boolValue];
+		if (isCapturingStillImage) {
+			[self runCaptureAnimation];
+		}
+	}
 }
 
 - (IBAction)doShoot:(id)sender {
@@ -167,7 +175,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
 - (void)shootOnce {
     bool final = false;
-    if (self.currentShots.count == 4) {
+    if (self.currentShots.count == 3) {
         [self.timer invalidate];
         self.timer = nil;
         final = true;
@@ -180,7 +188,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                 [self.currentShots addShot:[[UIImage alloc] initWithData:imageData]];
             }
             CFRelease(imageDataSampleBuffer);
-            [self runCaptureAnimation];
             if (final) {
                 [self processShotSet];
             }

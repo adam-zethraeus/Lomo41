@@ -2,6 +2,7 @@
 * layout errors in portrait orientation
 * extra camera flash animations. (extra timer ticks?)
 * possible underuse of GPUImage. crop?
+* shoot enabled before it's ready
 
 # Ideas
 * randomize filter effects within bounds
