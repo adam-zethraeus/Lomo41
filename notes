@@ -1,0 +1,12 @@
+#Known Issues
+* layout errors in portrait orientation
+* extra camera flash animations. (extra timer ticks?)
+* possible underuse of GPUImage. crop?
+
+# Ideas
+* randomize filter effects within bounds
+* constant filter states for an install
+* shake to rerandomize filter states?
+* album for camera
+* preview of shot image
+* tune dimensions to regular film
