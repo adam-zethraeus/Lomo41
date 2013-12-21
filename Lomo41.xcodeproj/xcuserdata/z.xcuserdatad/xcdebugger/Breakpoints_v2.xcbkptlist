@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lomo41/Lo41ShotProcessor.m"
-            timestampString = "409293279.158256"
+            timestampString = "409310527.969596"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
             landmarkName = "-groupShots"
             landmarkType = "5">
          </BreakpointContent>

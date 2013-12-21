@@ -8,6 +8,8 @@
 
 #import "Lo41ShotProcessor.h"
 
+#import "GPUImage.h"
+
 @interface Lo41ShotProcessor ()
 
 @property (nonatomic) LoShotSet *shotSet;
@@ -76,6 +78,8 @@
     if (!self.groupedImage) {
         @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Shots must be grouped before final processing." userInfo:nil];
     }
-    return self.groupedImage;
+    GPUImageSepiaFilter *stillImageFilter2 = [[GPUImageSepiaFilter alloc] init];
+    UIImage *quickFilteredImage = [stillImageFilter2 imageByFilteringImage:self.groupedImage];
+    return quickFilteredImage;
 }
 @end
