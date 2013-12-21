@@ -11,6 +11,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 
+#import "Lo41ShotProcessor.h"
 #import "LoShotSet.h"
 
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
@@ -27,7 +28,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic, readonly, getter = isSessionRunningAndHasCameraPermission) BOOL sessionRunningAndHasCameraPermission;
 @property (nonatomic) BOOL hasCameraPermission;
 @property (nonatomic) NSTimer *timer;
-@property (nonatomic) int shotCount;
 - (IBAction)doShoot:(id)sender;
 @end
 
@@ -71,7 +71,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.session = [[AVCaptureSession alloc] init];
-    self.currentShots = [[LoShotSet alloc] init];
+    self.currentShots = [[LoShotSet alloc] initForSize:4];
 	[self checkCameraPermissions];
 	self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
@@ -161,15 +161,13 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
 - (IBAction)doShoot:(id)sender {
     if (self.timer == nil) {
-        self.shotCount = 0;
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
     }
 }
 
 - (void)shootOnce {
-    self.shotCount++;
     bool final = false;
-    if (self.shotCount == 4) {
+    if (self.currentShots.count == 4) {
         [self.timer invalidate];
         self.timer = nil;
         final = true;
@@ -184,58 +182,23 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             CFRelease(imageDataSampleBuffer);
             [self runCaptureAnimation];
             if (final) {
-                [self outputToLibrary];
+                [self processShotSet];
             }
         });
     }];
 }
 
-- (void)outputToLibrary {
+- (void)processShotSet {
     dispatch_async(self.sessionQueue, ^{
-        if (self.currentShots.count != 4) {
-            NSLog(@"Picture count was %lu, did not save to library.", self.currentShots.count);
-            return;
+        Lo41ShotProcessor* processor = [[Lo41ShotProcessor alloc] initWithShotSet:self.currentShots];
+        [processor processIndividualShots];
+        [processor groupShots];
+        UIImage *finalGroupedImage = [processor getProcessedGroupImage];
+        if (finalGroupedImage) {
+            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[finalGroupedImage CGImage] orientation:(ALAssetOrientation)[finalGroupedImage imageOrientation] completionBlock:nil];
         }
-        UIImage *firstImage = [self.currentShots.shots objectAtIndex:0];
-        UIImage *collage = [LoViewController collageFromImages:self.currentShots.shots];
-
-        [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[collage CGImage] orientation:(ALAssetOrientation)[firstImage imageOrientation] completionBlock:nil];
         [self.currentShots purge];
     });
-}
-
-+ (UIImage *)collageFromImages:(NSArray *)images {
-    NSAssert([images count] == 4, @"expecting array of size 4");
-    UIImage *firstImage = [images objectAtIndex:0];
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(firstImage.size.height, firstImage.size.width), YES, 1.0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-
-	CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
-
-    NSMutableArray* croppedImages = [NSMutableArray arrayWithCapacity:4];
-    for (int i = 0; i < 4; i++){
-        UIImage *image = [UIImage imageWithCGImage:[[images objectAtIndex:i] CGImage]
-                                             scale:1.0
-                                       orientation:UIImageOrientationUp];
-        CGRect cropRect = CGRectMake((image.size.width/4.0) + ((image.size.width/8.0) * i), 0, image.size.width/4.0, image.size.height);
-        CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
-        NSAssert(imageRef != NULL, @"image crop failed");
-        UIImage *img = [UIImage imageWithCGImage:imageRef];
-        [croppedImages addObject:img];
-        CGImageRelease(imageRef);
-    }
-    for (int i = 0; i < 4; i++) {
-        CGContextSaveGState(context);
-        UIImage *image = [croppedImages objectAtIndex:i];
-        CGRect drawRect = CGRectMake(image.size.width * i, 0, image.size.width, image.size.height);
-        CGContextTranslateCTM(context, 0, image.size.height);
-        CGContextScaleCTM(context, 1.0, -1.0);
-        CGContextDrawImage(context, drawRect, image.CGImage);
-        CGContextRestoreGState(context);
-    }
-    UIImage *collage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return collage;
 }
 
 - (void)runCaptureAnimation {

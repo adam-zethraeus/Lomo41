@@ -9,8 +9,19 @@
 #import <Foundation/Foundation.h>
 
 @interface LoShotSet : NSObject
-@property (nonatomic) NSMutableArray *shots; //TODO: make private
+
 @property (nonatomic, readonly, getter = getCount) NSUInteger count;
+
+// Init with intended size. Default init is 4.
+- (id)initForSize: (NSUInteger) size;
+
+// Be aware, addShot will fail silently if you attempt to add more shots
+// than the set was specified to be able to contain.
 - (void)addShot:(UIImage *)image;
+
+- (NSArray*)getShotsArray;
+
+// Purge the set's memebers.
 - (void)purge;
+
 @end

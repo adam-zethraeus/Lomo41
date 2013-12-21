@@ -22,6 +22,7 @@
 		1982EA23185850A600CC0731 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1982EA21185850A600CC0731 /* InfoPlist.strings */; };
 		1982EA25185850A600CC0731 /* Lomo41Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA24185850A600CC0731 /* Lomo41Tests.m */; };
 		1982EA301864E79A00CC0731 /* LoShotSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA2F1864E79A00CC0731 /* LoShotSet.m */; };
+		1982EA331865487600CC0731 /* Lo41ShotProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA321865487600CC0731 /* Lo41ShotProcessor.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		1982EA24185850A600CC0731 /* Lomo41Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Lomo41Tests.m; sourceTree = "<group>"; };
 		1982EA2E1864E79A00CC0731 /* LoShotSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoShotSet.h; sourceTree = "<group>"; };
 		1982EA2F1864E79A00CC0731 /* LoShotSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoShotSet.m; sourceTree = "<group>"; };
+		1982EA311865487600CC0731 /* Lo41ShotProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lo41ShotProcessor.h; sourceTree = "<group>"; };
+		1982EA321865487600CC0731 /* Lo41ShotProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Lo41ShotProcessor.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +127,8 @@
 				1982EA2F1864E79A00CC0731 /* LoShotSet.m */,
 				1982EA11185850A600CC0731 /* Images.xcassets */,
 				1982EA00185850A600CC0731 /* Supporting Files */,
+				1982EA311865487600CC0731 /* Lo41ShotProcessor.h */,
+				1982EA321865487600CC0731 /* Lo41ShotProcessor.m */,
 			);
 			path = Lomo41;
 			sourceTree = "<group>";
@@ -258,6 +263,7 @@
 				1982EA06185850A600CC0731 /* main.m in Sources */,
 				1982EA10185850A600CC0731 /* LoViewController.m in Sources */,
 				1982EA0A185850A600CC0731 /* LoAppDelegate.m in Sources */,
+				1982EA331865487600CC0731 /* Lo41ShotProcessor.m in Sources */,
 				1982EA301864E79A00CC0731 /* LoShotSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
