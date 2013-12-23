@@ -11,8 +11,10 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 
+#import "ALAssetsLibrary+CustomPhotoAlbum.h"
 #import "Lo41ShotProcessor.h"
 #import "LoShotSet.h"
+
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
@@ -198,7 +200,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         [processor groupShots];
         UIImage *finalGroupedImage = [processor getProcessedGroupImage];
         if (finalGroupedImage) {
-            [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[finalGroupedImage CGImage] orientation:(ALAssetOrientation)[finalGroupedImage imageOrientation] completionBlock:nil];
+            [[[ALAssetsLibrary alloc] init] saveImage:finalGroupedImage toAlbum:@"Lomo41" withCompletionBlock:nil];
         }
         [self.currentShots purge];
     });
