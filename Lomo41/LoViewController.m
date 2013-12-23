@@ -147,10 +147,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     [super didReceiveMemoryWarning];
 }
 
-- (BOOL)prefersStatusBarHidden {
-	return YES;
-}
-
 - (BOOL)hasRunningSessionAndCameraPermission {
 	return self.session.isRunning && self.hasCameraPermission;
 }

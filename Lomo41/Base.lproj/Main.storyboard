@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Cv6-I5-rvU">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Lo View Controller-->
+        <!--Lo View Controller - Camera-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="LoViewController" sceneMemberID="viewController">
@@ -13,15 +13,14 @@
                         <viewControllerLayoutGuide type="bottom" id="SAq-eF-XFC"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhB-ZX-PJ8">
-                                <rect key="frame" x="151" y="107" width="267" height="105"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhB-ZX-PJ8">
+                                <rect key="frame" x="76" y="216" width="169" height="87"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="64"/>
                                 <state key="normal" title="Shoot.">
-                                    <color key="titleColor" red="0.006925218506854308" green="0.04355350243993205" blue="0.067128057065217406" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -29,10 +28,13 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.10316429239306302" green="0.64881220080030322" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="YhB-ZX-PJ8" secondAttribute="centerX" id="iFl-nK-nix"/>
+                            <constraint firstAttribute="centerY" secondItem="YhB-ZX-PJ8" secondAttribute="centerY" id="w73-Cf-pMB"/>
+                        </constraints>
                     </view>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <tabBarItem key="tabBarItem" title="Camera" id="wx1-MN-Pi3"/>
                     <connections>
                         <outlet property="shootButton" destination="YhB-ZX-PJ8" id="YOy-Es-wSI"/>
                         <outlet property="shootView" destination="kh9-bI-dsS" id="3Cp-lq-G4f"/>
@@ -40,6 +42,45 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="692" y="-184"/>
+        </scene>
+        <!--View Controller - Gallery-->
+        <scene sceneID="2Kz-Kl-YYC">
+            <objects>
+                <viewController id="hcx-KL-jns" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6Ot-Ic-ttG"/>
+                        <viewControllerLayoutGuide type="bottom" id="Xu0-0T-oW5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="951-pU-oHr">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Gallery" id="YVM-VF-gJv"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mZM-Gh-Jop" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="692" y="576"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="y99-wU-6Nm">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Cv6-I5-rvU" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="Z30-BL-6e9">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="Mhe-Ze-YaS"/>
+                        <segue destination="hcx-KL-jns" kind="relationship" relationship="viewControllers" id="jka-Jc-hid"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dUm-Zg-Mj7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="94" y="150"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

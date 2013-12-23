@@ -47,27 +47,29 @@ const static float saturationLevel = 0.8;
     }
     self.postProcessedIndividualShots = [NSMutableArray arrayWithCapacity:4];
     for (int i = 0; i < 4; i++){
-        UIImage *image = [UIImage imageWithCGImage:[[self.shotSet.getShotsArray objectAtIndex:i] CGImage]
-                                             scale:1.0
-                                       orientation:UIImageOrientationUp];
-        CGRect cropRect = CGRectMake((image.size.width/4.0) + ((image.size.width/8.0) * i), 0, image.size.width/4.0, image.size.height);
-        CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
-        NSAssert(imageRef != NULL, @"image crop failed");
-        UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
-        GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:croppedImage];
+        GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:[self.shotSet.getShotsArray objectAtIndex:i]];
+
+        CGRect cropRect;
+        cropRect.origin.x = 0.25 + ((0.25 / 4.0) * (float) i);
+        cropRect.origin.y = 0;
+        cropRect.size.width = 0.25;
+        cropRect.size.height = 1.0;
+        GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
+
         GPUImageVignetteFilter *vignetteFilter = [[GPUImageVignetteFilter alloc] init];
         vignetteFilter.vignetteColor = backgroundColor;
         vignetteFilter.vignetteStart = vignetteStart;
         vignetteFilter.vignetteEnd = vignetteEnd;
+
         GPUImageSaturationFilter *saturationFilter = [[GPUImageSaturationFilter alloc] init];
         saturationFilter.saturation = saturationLevel;
-        [stillImageSource addTarget:saturationFilter];
+
+        [stillImageSource addTarget:cropFilter];
+        [cropFilter addTarget:saturationFilter];
         [saturationFilter addTarget:vignetteFilter];
         [stillImageSource processImage];
-        
-        UIImage *processedImage = [vignetteFilter imageFromCurrentlyProcessedOutput];
+        UIImage *processedImage = [vignetteFilter imageFromCurrentlyProcessedOutputWithOrientation:UIImageOrientationUp];
         [self.postProcessedIndividualShots addObject:processedImage];
-        CGImageRelease(imageRef);
     }
 }
 
