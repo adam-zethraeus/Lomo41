@@ -67,6 +67,10 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	return [NSSet setWithObjects:@"session.running", @"hasCameraPermission", nil];
 }
 
+-(BOOL)prefersStatusBarHidden{
+    return YES;
+}
+
 - (BOOL)isSessionRunningAndHasCameraPermission {
 	return [[self session] isRunning] && [self hasCameraPermission];
 }

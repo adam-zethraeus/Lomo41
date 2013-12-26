@@ -30,6 +30,7 @@
 		1982EA831865948200CC0731 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982EA821865948200CC0731 /* QuartzCore.framework */; };
 		1982EA851865948800CC0731 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982EA841865948800CC0731 /* AVFoundation.framework */; };
 		1982EA881868050400CC0731 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA871868050400CC0731 /* ALAssetsLibrary+CustomPhotoAlbum.m */; };
+		1982EA8B186CEC1C00CC0731 /* LoUICollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA8A186CEC1C00CC0731 /* LoUICollectionView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,8 @@
 		1982EA841865948800CC0731 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1982EA861868050400CC0731 /* ALAssetsLibrary+CustomPhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAssetsLibrary+CustomPhotoAlbum.h"; sourceTree = "<group>"; };
 		1982EA871868050400CC0731 /* ALAssetsLibrary+CustomPhotoAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsLibrary+CustomPhotoAlbum.m"; sourceTree = "<group>"; };
+		1982EA89186CEC1C00CC0731 /* LoUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoUICollectionView.h; sourceTree = "<group>"; };
+		1982EA8A186CEC1C00CC0731 /* LoUICollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoUICollectionView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +174,8 @@
 				1982EA08185850A600CC0731 /* LoAppDelegate.h */,
 				1982EA09185850A600CC0731 /* LoAppDelegate.m */,
 				1982EA0B185850A600CC0731 /* Main.storyboard */,
+				1982EA89186CEC1C00CC0731 /* LoUICollectionView.h */,
+				1982EA8A186CEC1C00CC0731 /* LoUICollectionView.m */,
 				1982EA0E185850A600CC0731 /* LoViewController.h */,
 				1982EA0F185850A600CC0731 /* LoViewController.m */,
 				1982EA2E1864E79A00CC0731 /* LoShotSet.h */,
@@ -346,6 +351,7 @@
 				1982EA06185850A600CC0731 /* main.m in Sources */,
 				1982EA10185850A600CC0731 /* LoViewController.m in Sources */,
 				1982EA0A185850A600CC0731 /* LoAppDelegate.m in Sources */,
+				1982EA8B186CEC1C00CC0731 /* LoUICollectionView.m in Sources */,
 				1982EA331865487600CC0731 /* Lo41ShotProcessor.m in Sources */,
 				1982EA301864E79A00CC0731 /* LoShotSet.m in Sources */,
 				1982EA881868050400CC0731 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,

@@ -44,25 +44,6 @@
             </objects>
             <point key="canvasLocation" x="692" y="-184"/>
         </scene>
-        <!--View Controller - Gallery-->
-        <scene sceneID="2Kz-Kl-YYC">
-            <objects>
-                <viewController id="hcx-KL-jns" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6Ot-Ic-ttG"/>
-                        <viewControllerLayoutGuide type="bottom" id="Xu0-0T-oW5"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="951-pU-oHr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Gallery" id="YVM-VF-gJv"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mZM-Gh-Jop" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="692" y="576"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="y99-wU-6Nm">
             <objects>
@@ -75,12 +56,47 @@
                     </tabBar>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="Mhe-Ze-YaS"/>
-                        <segue destination="hcx-KL-jns" kind="relationship" relationship="viewControllers" id="jka-Jc-hid"/>
+                        <segue destination="88M-O3-Wt7" kind="relationship" relationship="viewControllers" id="zft-m7-qZN"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dUm-Zg-Mj7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="94" y="150"/>
+        </scene>
+        <!--Collection View Controller - Gallery-->
+        <scene sceneID="6dG-O3-Uee">
+            <objects>
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="88M-O3-Wt7" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="aLy-fS-nud" customClass="LoUICollectionView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ZRT-wl-HqW">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Hfc-YH-kUE">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="88M-O3-Wt7" id="rVO-xY-SBi"/>
+                            <outlet property="delegate" destination="88M-O3-Wt7" id="wh4-GF-2E1"/>
+                        </connections>
+                    </collectionView>
+                    <tabBarItem key="tabBarItem" title="Gallery" id="lCQ-6i-hW4"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yFE-PD-1pE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="692" y="485"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
