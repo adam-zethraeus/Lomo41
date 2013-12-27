@@ -36,7 +36,7 @@
     //search all photo albums in the library
     [self enumerateGroupsWithTypes:ALAssetsGroupAlbum 
                         usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-
+                            
                             //compare the names of the albums
                             if ([albumName compare: [group valueForProperty:ALAssetsGroupPropertyName]]==NSOrderedSame) {
                                 

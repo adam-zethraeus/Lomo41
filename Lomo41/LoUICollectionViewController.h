@@ -1,5 +1,5 @@
 //
-//  LoLoUICollectionView.h
+//  LoUICollectionViewController.h
 //  Lomo41
 //
 //  Created by Adam Zethraeus on 12/26/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoUICollectionView : UICollectionView
+@interface LoUICollectionViewController : UICollectionViewController
 
 @end

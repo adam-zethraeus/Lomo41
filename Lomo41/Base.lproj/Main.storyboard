@@ -63,36 +63,46 @@
             </objects>
             <point key="canvasLocation" x="94" y="150"/>
         </scene>
-        <!--Collection View Controller - Gallery-->
+        <!--LoUI Collection View Controller - Gallery-->
         <scene sceneID="6dG-O3-Uee">
             <objects>
-                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="88M-O3-Wt7" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="aLy-fS-nud" customClass="LoUICollectionView">
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="88M-O3-Wt7" customClass="LoUICollectionViewController" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="aLy-fS-nud">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ZRT-wl-HqW">
-                            <size key="itemSize" width="50" height="50"/>
+                            <size key="itemSize" width="303" height="128"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Hfc-YH-kUE">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoCell" id="e7l-5d-8p9">
+                                <rect key="frame" x="9" y="10" width="303" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JGE-zF-jw9">
+                                            <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </imageView>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </collectionViewCell>
                         </cells>
                         <connections>
-                            <outlet property="dataSource" destination="88M-O3-Wt7" id="rVO-xY-SBi"/>
-                            <outlet property="delegate" destination="88M-O3-Wt7" id="wh4-GF-2E1"/>
+                            <outlet property="dataSource" destination="88M-O3-Wt7" id="L6O-lR-kLY"/>
+                            <outlet property="delegate" destination="88M-O3-Wt7" id="QgT-wo-zxS"/>
                         </connections>
                     </collectionView>
                     <tabBarItem key="tabBarItem" title="Gallery" id="lCQ-6i-hW4"/>
+                    <connections>
+                        <outlet property="collectionView" destination="aLy-fS-nud" id="Hwk-Xj-AGd"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yFE-PD-1pE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
