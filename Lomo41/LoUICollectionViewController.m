@@ -29,7 +29,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.title = @"Gallery";
     if (!self.pictures) {
         self.pictures = [[NSMutableArray alloc] init];
     } else {
@@ -64,6 +63,8 @@
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    self.album = nil;
+    [self.pictures removeAllObjects];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,7 +82,7 @@
     static NSString *CellIdentifier = @"photoCell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    ALAsset *asset = self.pictures[indexPath.row];
+    ALAsset *asset = self.pictures[self.pictures.count - 1 - indexPath.row];
     CGImageRef thumbnailImageRef = [[asset defaultRepresentation] fullScreenImage];//[asset thumbnail];
     UIImage *thumbnail = [UIImage imageWithCGImage:thumbnailImageRef];
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
