@@ -24,8 +24,7 @@
     CGImageRef imageRef = [[self.asset defaultRepresentation] fullResolutionImage];
     UIImage *image = [UIImage imageWithCGImage:imageRef scale:1.0f orientation:UIImageOrientationRight];
     self.imageView.image = image;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(doClose)];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doClose)];
     tapGesture.numberOfTapsRequired = 1;
     self.imageView.userInteractionEnabled = YES;
     [self.imageView addGestureRecognizer:tapGesture];

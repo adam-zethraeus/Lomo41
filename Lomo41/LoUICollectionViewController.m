@@ -11,7 +11,7 @@
 #import "LoImageViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface LoUICollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface LoUICollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic) ALAssetsGroup *album;
 @property (nonatomic) NSMutableArray *assets;
@@ -36,31 +36,26 @@
         [self.assets removeAllObjects];
     }
     if (!self.library) {
-    self.library = [[ALAssetsLibrary alloc] init];
+        self.library = [[ALAssetsLibrary alloc] init];
     }
     [self.library enumerateGroupsWithTypes:ALAssetsGroupAlbum
-                       usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-                           if ([@"Lomo41" compare: [group valueForProperty:ALAssetsGroupPropertyName]]==NSOrderedSame) {
-                               self.album = group;
-                               ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                                   if (result) {
-                                       [self.assets addObject:result];
-                                   }
-                               };
-                               
-                               ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
-                               [self.album setAssetsFilter:onlyPhotosFilter];
-                               [self.album enumerateAssetsUsingBlock:assetsEnumerationBlock];
-                           }
-                        }
-                     failureBlock:^(NSError* er){
-                         self.album = nil;
-                     }];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self.collectionView reloadData];
+                                usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+                                    if ([@"Lomo41" compare: [group valueForProperty:ALAssetsGroupPropertyName]] == NSOrderedSame) {
+                                        self.album = group;
+                                        ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                                            if (result) {
+                                                [self.assets addObject:result];
+                                            }
+                                        };
+                                        ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
+                                        [self.album setAssetsFilter:onlyPhotosFilter];
+                                        [self.album enumerateAssetsUsingBlock:assetsEnumerationBlock];
+                                    }
+                                    [self.collectionView reloadData];
+                                }
+                                failureBlock:^(NSError* er){
+                                    self.album = nil;
+                                }];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -89,8 +84,20 @@
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
     imageView.image = thumbnail;
     
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipeRight:)];
+    swipeRight.delegate = self;
+    swipeRight.numberOfTouchesRequired = 1;
+    [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    [cell addGestureRecognizer:swipeRight];
+    
     return cell;
 }
+
+-(void)didSwipeRight: (UISwipeGestureRecognizer*) recognizer {
+    NSLog(@"Swiped Right");
+    NSLog(@"view: %@",recognizer.view);
+}
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"viewImage"]) {
@@ -99,5 +106,7 @@
         destViewController.asset = self.assets[self.assets.count - 1 - indexPath.row];
     }
 }
+
+
 
 @end
