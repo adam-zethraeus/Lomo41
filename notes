@@ -1,6 +1,8 @@
 #Known Issues
 * possible underuse of GPUImage.
 * shoot enabled before it's ready
+* flip animations happen to different images, apparently arbitrarily.
+  - Don't use Cell for action, add proper sub views.
 
 # Ideas
 * randomize filter effects within bounds

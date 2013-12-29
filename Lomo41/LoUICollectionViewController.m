@@ -73,6 +73,7 @@
 }
 
 #define kImageViewTag 1
+#define kBacksideViewTag 2
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"photoCell";
@@ -84,18 +85,40 @@
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageViewTag];
     imageView.image = thumbnail;
     
-    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipeRight:)];
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
     swipeRight.delegate = self;
     swipeRight.numberOfTouchesRequired = 1;
     [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
     [cell addGestureRecognizer:swipeRight];
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
+    swipeLeft.delegate = self;
+    swipeLeft.numberOfTouchesRequired = 1;
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    [cell addGestureRecognizer:swipeLeft];
     
     return cell;
 }
 
--(void)didSwipeRight: (UISwipeGestureRecognizer*) recognizer {
-    NSLog(@"Swiped Right");
-    NSLog(@"view: %@",recognizer.view);
+-(void)didSwipe: (UISwipeGestureRecognizer*) recognizer {
+    UICollectionViewCell *flipContainerView = (UICollectionViewCell*) recognizer.view;
+    UIImageView *imageView = (UIImageView *)[flipContainerView viewWithTag:kImageViewTag];
+    UIView *backsideView = (UIView *)[flipContainerView viewWithTag:kBacksideViewTag];
+    UIViewAnimationOptions direction = UIViewAnimationOptionTransitionFlipFromLeft;
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
+        direction = UIViewAnimationOptionTransitionFlipFromRight;
+    }
+    [UIView transitionWithView:flipContainerView
+                      duration:0.2f
+                       options:direction
+                    animations:^{
+                        if (!imageView.isHidden) {
+                            imageView.hidden = YES;
+                            backsideView.hidden = NO;
+                        } else {
+                            imageView.hidden = NO;
+                            backsideView.hidden = YES;
+                        }
+                    } completion:nil];
 }
 
 
