@@ -16,18 +16,26 @@
 
 @implementation LoImageViewController
 
--(BOOL)prefersStatusBarHidden {
+- (BOOL)prefersStatusBarHidden {
     return YES;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewDidLoad {
     CGImageRef imageRef = [[self.asset defaultRepresentation] fullResolutionImage];
     UIImage *image = [UIImage imageWithCGImage:imageRef scale:1.0f orientation:UIImageOrientationRight];
     self.imageView.image = image;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(doClose)];
+    tapGesture.numberOfTapsRequired = 1;
+    self.imageView.userInteractionEnabled = YES;
+    [self.imageView addGestureRecognizer:tapGesture];
 }
 
--(UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView {
+- (UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return self.imageView;
 }
 
+- (void)doClose {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end
