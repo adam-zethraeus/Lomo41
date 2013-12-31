@@ -12,6 +12,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface LoUICollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
+- (IBAction)doDelete:(id)sender;
+- (IBAction)doShare:(id)sender;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic) ALAssetsGroup *album;
 @property (nonatomic) NSMutableArray *assets;
@@ -137,4 +139,11 @@
 
 
 
+- (IBAction)doDelete:(id)sender {
+    NSLog(@"delete");
+}
+
+- (IBAction)doShare:(id)sender {
+    NSLog(@"share");
+}
 @end

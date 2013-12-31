@@ -93,12 +93,31 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dfm-VP-w7A">
-                                                            <rect key="frame" x="115" y="55" width="72" height="17"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dfm-VP-w7A" userLabel="Trash Button">
+                                                            <rect key="frame" x="70" y="40" width="40" height="40"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <state key="normal" title="Delete">
+                                                            <accessibility key="accessibilityConfiguration">
+                                                                <accessibilityTraits key="traits" none="YES" button="YES" image="YES"/>
+                                                            </accessibility>
+                                                            <state key="normal" image="garbage">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
+                                                            <connections>
+                                                                <action selector="doDelete:" destination="88M-O3-Wt7" eventType="touchUpInside" id="J2q-bH-stF"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vr9-WN-tN0" userLabel="Share Button">
+                                                            <rect key="frame" x="190" y="40" width="40" height="40"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <accessibility key="accessibilityConfiguration">
+                                                                <accessibilityTraits key="traits" none="YES" button="YES" image="YES"/>
+                                                            </accessibility>
+                                                            <state key="normal" image="share">
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="doShare:" destination="88M-O3-Wt7" eventType="touchUpInside" id="ahr-0Z-dhM"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.91266134510869568" green="0.91266134510869568" blue="0.91266134510869568" alpha="1" colorSpace="calibratedRGB"/>
@@ -191,6 +210,8 @@
     <resources>
         <image name="camera" width="28" height="21"/>
         <image name="gallery" width="28" height="22"/>
+        <image name="garbage" width="21" height="28"/>
+        <image name="share" width="21" height="28"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
