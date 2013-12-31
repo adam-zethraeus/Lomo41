@@ -34,7 +34,7 @@
                             <constraint firstAttribute="centerY" secondItem="YhB-ZX-PJ8" secondAttribute="centerY" id="w73-Cf-pMB"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Camera" id="wx1-MN-Pi3"/>
+                    <tabBarItem key="tabBarItem" title="Camera" image="camera" id="wx1-MN-Pi3"/>
                     <connections>
                         <outlet property="shootButton" destination="YhB-ZX-PJ8" id="YOy-Es-wSI"/>
                         <outlet property="shootView" destination="kh9-bI-dsS" id="3Cp-lq-G4f"/>
@@ -63,7 +63,7 @@
             </objects>
             <point key="canvasLocation" x="148" y="296"/>
         </scene>
-        <!--LoUI Collection View Controller - Item-->
+        <!--LoUI Collection View Controller - Gallery-->
         <scene sceneID="6dG-O3-Uee">
             <objects>
                 <collectionViewController autoresizesArchivedViewToFullSize="NO" id="88M-O3-Wt7" customClass="LoUICollectionViewController" sceneMemberID="viewController">
@@ -85,30 +85,51 @@
                                     <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view hidden="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0TI-pT-iWc">
+                                        <view tag="4" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WaA-Bv-2nA">
                                             <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dfm-VP-w7A">
-                                                    <rect key="frame" x="115" y="55" width="72" height="17"/>
+                                                <view hidden="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0TI-pT-iWc">
+                                                    <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Delete">
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dfm-VP-w7A">
+                                                            <rect key="frame" x="115" y="55" width="72" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <state key="normal" title="Delete">
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.91266134510869568" green="0.91266134510869568" blue="0.91266134510869568" alpha="1" colorSpace="calibratedRGB"/>
+                                                </view>
+                                                <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rau-Zo-Mhu">
+                                                    <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Bj-Ze-J9U">
+                                                            <rect key="frame" x="0.0" y="0.0" width="302" height="128"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <state key="normal">
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <segue destination="1Qh-zd-MzO" kind="modal" identifier="viewImage" id="7ou-3a-aPR"/>
+                                                            </connections>
+                                                        </button>
+                                                        <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JGE-zF-jw9">
+                                                            <rect key="frame" x="-1" y="0.0" width="303" height="128"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.91266134510869568" green="0.91266134510869568" blue="0.91266134510869568" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         </view>
-                                        <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JGE-zF-jw9">
-                                            <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <connections>
-                                    <segue destination="1Qh-zd-MzO" kind="modal" identifier="viewImage" id="W4h-wg-t45"/>
-                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -116,7 +137,7 @@
                             <outlet property="delegate" destination="88M-O3-Wt7" id="QgT-wo-zxS"/>
                         </connections>
                     </collectionView>
-                    <tabBarItem key="tabBarItem" title="Item" id="q2S-W2-Z1e"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="Gallery" image="gallery" id="q2S-W2-Z1e"/>
                     <navigationItem key="navigationItem" id="ZVc-23-6hj"/>
                     <connections>
                         <outlet property="collectionView" destination="aLy-fS-nud" id="Hwk-Xj-AGd"/>
@@ -167,6 +188,10 @@
             <point key="canvasLocation" x="1123" y="465"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="camera" width="28" height="21"/>
+        <image name="gallery" width="28" height="22"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
