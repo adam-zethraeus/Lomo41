@@ -1,8 +1,9 @@
 #Known Issues
 * possible underuse of GPUImage.
 * shoot enabled before it's ready
-* flip animations happen to different images, apparently arbitrarily.
-  - Don't use Cell for action, add proper sub views.
+* cells should usa a nicely defined programatic view system
+* re-instate preview
+* view swap during shooting causes crash
 
 # Ideas
 * randomize filter effects within bounds
