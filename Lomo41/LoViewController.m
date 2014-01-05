@@ -22,7 +22,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @interface LoViewController ()
 @property (weak, nonatomic) IBOutlet UIView *shootView;
 @property (weak, nonatomic) IBOutlet UIButton *shootButton;
-@property (nonatomic) dispatch_queue_t sessionQueue;
+@property (nonatomic) dispatch_queue_t sessionQueue; // todo: make global?
 @property (nonatomic) AVCaptureSession *session;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;

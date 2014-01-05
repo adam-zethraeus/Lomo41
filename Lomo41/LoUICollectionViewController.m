@@ -18,6 +18,7 @@
 @property (nonatomic) ALAssetsGroup *album;
 @property (nonatomic) NSMutableArray *assets;
 @property (nonatomic) ALAssetsLibrary *library;
+@property (nonatomic) NSUInteger actionIndex;
 @end
 
 @implementation LoUICollectionViewController
@@ -32,6 +33,7 @@
 
 - (void)viewWillAppear: (BOOL)animated {
     [super viewWillAppear:animated];
+    self.actionIndex = -1;
     if (!self.assets) {
         self.assets = [[NSMutableArray alloc] init];
     } else {
@@ -105,27 +107,56 @@
 }
 
 - (void)didSwipe: (UISwipeGestureRecognizer*)recognizer {
+    UICollectionViewCell *cell = (UICollectionViewCell*)recognizer.view.superview.superview;
     UIView *flipContainerView = (UIView*) recognizer.view;
     UIView *frontView = (UIView *)[flipContainerView viewWithTag:kFrontViewTag];
-    UIView *backsideView = (UIView *)[flipContainerView viewWithTag:kBacksideViewTag];
     UIViewAnimationOptions direction = UIViewAnimationOptionTransitionFlipFromLeft;
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
         direction = UIViewAnimationOptionTransitionFlipFromRight;
     }
-    [UIView transitionWithView:flipContainerView
-                      duration:0.2f
-                       options:direction
-                    animations:^{
-                        if (!frontView.isHidden) {
-                            frontView.hidden = YES;
-                            backsideView.hidden = NO;
-                        } else {
-                            frontView.hidden = NO;
-                            backsideView.hidden = YES;
-                        }
-                    } completion:nil];
+    if (!frontView.isHidden) {
+        [self flipAllCellsToFrontInDirection: direction];
+        [LoUICollectionViewController flipToBackOfCell:cell inDirection:direction];
+    } else {
+        [self flipAllCellsToFrontInDirection: direction];
+    }
 }
 
+- (void)flipAllCellsToFrontInDirection: (UIViewAnimationOptions) direction {
+    for (UICollectionViewCell *cell in self.collectionView.visibleCells) {
+        [LoUICollectionViewController flipToFrontOfCell:cell inDirection:direction];
+    }
+}
+
++ (void)flipToFrontOfCell: (UICollectionViewCell *)cell inDirection: (UIViewAnimationOptions) direction {
+    UIView *flippableView = (UIView *)[cell viewWithTag:KFlippableViewTag];
+    UIView *frontView = (UIView *)[flippableView viewWithTag:kFrontViewTag];
+    UIView *backView = (UIView *)[flippableView viewWithTag:kBacksideViewTag];
+    if (frontView.isHidden) {
+        [UIView transitionWithView:flippableView
+                          duration:0.2f
+                           options:direction
+                        animations:^{
+                            frontView.hidden = NO;
+                            backView.hidden = YES;
+                        } completion:nil];
+    }
+}
+
++ (void)flipToBackOfCell: (UICollectionViewCell *)cell inDirection: (UIViewAnimationOptions) direction {
+    UIView *flippableView = (UIView *)[cell viewWithTag:KFlippableViewTag];
+    UIView *frontView = (UIView *)[flippableView viewWithTag:kFrontViewTag];
+    UIView *backView = (UIView *)[flippableView viewWithTag:kBacksideViewTag];
+    if (backView.isHidden) {
+        [UIView transitionWithView:flippableView
+                          duration:0.2f
+                           options:direction
+                        animations:^{
+                            frontView.hidden = YES;
+                            backView.hidden = NO;
+                        } completion:nil];
+    }
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"viewImage"]) {
@@ -137,13 +168,32 @@
     }
 }
 
-
-
 - (IBAction)doDelete:(id)sender {
-    NSLog(@"delete");
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell*)((UIView*)sender).superview.superview.superview.superview];
+    self.actionIndex = self.assets.count - 1 - indexPath.row;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Picture"
+                                                    message:@"Would you like to delete the picture?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:nil];
+    [alert addButtonWithTitle:@"Delete"];
+    [alert show];
 }
 
 - (IBAction)doShare:(id)sender {
-    NSLog(@"share");
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell*)((UIView*)sender).superview.superview.superview.superview];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self.assets[self.assets.count - 1 - indexPath.row]] applicationActivities:nil];
+    [self presentViewController:activityController animated:YES completion:nil];
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSAssert(self.actionIndex >= 0, @"index for action was not set");
+        ALAsset* assetToDelete = self.assets[self.actionIndex];
+        [self.assets removeObjectAtIndex:self.actionIndex];
+        [self.collectionView reloadData];
+        [assetToDelete setImageData:nil metadata:nil completionBlock:nil];
+    }
+}
+
 @end
