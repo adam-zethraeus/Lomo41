@@ -141,9 +141,9 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
 - (void)viewWillDisappear:(BOOL)animated {
     if (self.timer) {
+        [self.currentShots purge];
         [self.timer invalidate];
         self.timer = nil;
-        [self.currentShots purge];
     }
 }
 
@@ -178,9 +178,9 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (IBAction)doShoot:(id)sender {
-    if (self.timer == nil) {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
+    if (self.timer == nil && self.currentShots.count == 0) {
         [self shootOnce];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
     }
 }
 

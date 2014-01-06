@@ -3,6 +3,7 @@
 * shoot enabled before it's ready
 * cells should usa a nicely defined programatic view system
 * gallery doesn't refresh when image is added. noticable on quick switch after shots finalize.
+* isshooting state tracking is yucky
 
 # Ideas
 * randomize filter effects within bounds
