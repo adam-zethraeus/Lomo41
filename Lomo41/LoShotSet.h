@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Very Nice Co. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface LoShotSet : NSObject
 
 @property (nonatomic, readonly, getter = getCount) NSUInteger count;

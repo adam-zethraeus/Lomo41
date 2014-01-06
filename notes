@@ -2,7 +2,6 @@
 * possible underuse of GPUImage.
 * shoot enabled before it's ready
 * cells should usa a nicely defined programatic view system
-* re-instate preview
 * view swap during shooting causes crash
 
 # Ideas

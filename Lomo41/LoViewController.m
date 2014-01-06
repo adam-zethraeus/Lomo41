@@ -12,9 +12,9 @@
 #import <AVFoundation/AVFoundation.h>
 
 #import "ALAssetsLibrary+CustomPhotoAlbum.h"
+#import "LoCameraPreviewView.h"
 #import "Lo41ShotProcessor.h"
 #import "LoShotSet.h"
-
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
@@ -22,6 +22,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @interface LoViewController ()
 @property (weak, nonatomic) IBOutlet UIView *shootView;
 @property (weak, nonatomic) IBOutlet UIButton *shootButton;
+@property (weak, nonatomic) IBOutlet LoCameraPreviewView *previewView;
 @property (nonatomic) dispatch_queue_t sessionQueue; // todo: make global?
 @property (nonatomic) AVCaptureSession *session;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
@@ -78,6 +79,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.session = [[AVCaptureSession alloc] init];
+    self.previewView.session = self.session;
     self.currentShots = [[LoShotSet alloc] initForSize:4];
 	[self checkCameraPermissions];
 	self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);

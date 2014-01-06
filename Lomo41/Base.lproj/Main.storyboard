@@ -48,9 +48,16 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.062745101749897003" green="0.78039222955703735" blue="0.91372555494308472" alpha="1" colorSpace="deviceRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="inA-I9-M6V">
+                            <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="inA-I9-M6V">
                                 <rect key="frame" x="110" y="102" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rzb-IX-RKT" customClass="LoCameraPreviewView">
+                                        <rect key="frame" x="-86" y="-86" width="272" height="272"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.91266134509999997" green="0.91266134509999997" blue="0.91266134509999997" alpha="0.0" colorSpace="calibratedRGB"/>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" red="0.91266134509999997" green="0.91266134509999997" blue="0.91266134509999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
@@ -58,6 +65,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Camera" image="camera" id="wx1-MN-Pi3"/>
                     <connections>
+                        <outlet property="previewView" destination="Rzb-IX-RKT" id="AGk-rr-GhG"/>
                         <outlet property="shootButton" destination="YhB-ZX-PJ8" id="YOy-Es-wSI"/>
                         <outlet property="shootView" destination="kh9-bI-dsS" id="3Cp-lq-G4f"/>
                     </connections>
@@ -75,6 +83,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="Z30-BL-6e9">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="0.0" green="0.74117648601531982" blue="0.90588241815567017" alpha="1" colorSpace="deviceRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="Mhe-Ze-YaS"/>

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		191B1565186F895200357698 /* LoImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 191B1564186F895200357698 /* LoImageViewController.m */; };
+		1973BA13187A74640026BC67 /* LoCameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1973BA12187A74640026BC67 /* LoCameraPreviewView.m */; };
 		1982E9FA185850A600CC0731 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982E9F9185850A600CC0731 /* Foundation.framework */; };
 		1982E9FC185850A600CC0731 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982E9FB185850A600CC0731 /* CoreGraphics.framework */; };
 		1982E9FE185850A600CC0731 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982E9FD185850A600CC0731 /* UIKit.framework */; };
@@ -68,6 +69,8 @@
 /* Begin PBXFileReference section */
 		191B1563186F895200357698 /* LoImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoImageViewController.h; sourceTree = "<group>"; };
 		191B1564186F895200357698 /* LoImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoImageViewController.m; sourceTree = "<group>"; };
+		1973BA11187A74640026BC67 /* LoCameraPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoCameraPreviewView.h; sourceTree = "<group>"; };
+		1973BA12187A74640026BC67 /* LoCameraPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoCameraPreviewView.m; sourceTree = "<group>"; };
 		1982E9F6185850A600CC0731 /* Lomo41.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lomo41.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1982E9F9185850A600CC0731 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1982E9FB185850A600CC0731 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -173,6 +176,8 @@
 			isa = PBXGroup;
 			children = (
 				1982EA0B185850A600CC0731 /* Main.storyboard */,
+				1973BA11187A74640026BC67 /* LoCameraPreviewView.h */,
+				1973BA12187A74640026BC67 /* LoCameraPreviewView.m */,
 				191B1563186F895200357698 /* LoImageViewController.h */,
 				191B1564186F895200357698 /* LoImageViewController.m */,
 				1982EA8C186D2DCF00CC0731 /* LoUICollectionViewController.h */,
@@ -353,6 +358,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1973BA13187A74640026BC67 /* LoCameraPreviewView.m in Sources */,
 				1982EA06185850A600CC0731 /* main.m in Sources */,
 				1982EA10185850A600CC0731 /* LoViewController.m in Sources */,
 				1982EA0A185850A600CC0731 /* LoAppDelegate.m in Sources */,
