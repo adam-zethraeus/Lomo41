@@ -50,10 +50,8 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	return captureDevice;
 }
 
-+ (void)setFlashMode:(AVCaptureFlashMode)flashMode forDevice:(AVCaptureDevice *)device
-{
-	if ([device hasFlash] && [device isFlashModeSupported:flashMode])
-	{
++ (void)setFlashMode:(AVCaptureFlashMode)flashMode forDevice:(AVCaptureDevice *)device {
+	if ([device hasFlash] && [device isFlashModeSupported:flashMode]) {
 		NSError *error = nil;
 		if ([device lockForConfiguration:&error]) {
 			[device setFlashMode:flashMode];
@@ -68,7 +66,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	return [NSSet setWithObjects:@"session.running", @"hasCameraPermission", nil];
 }
 
--(BOOL)prefersStatusBarHidden{
+- (BOOL)prefersStatusBarHidden {
     return YES;
 }
 
@@ -141,6 +139,14 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	});
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    if (self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+        [self.currentShots purge];
+    }
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
 	dispatch_async(self.sessionQueue, ^{
 		[self.session stopRunning];
@@ -174,6 +180,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (IBAction)doShoot:(id)sender {
     if (self.timer == nil) {
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
+        [self shootOnce];
     }
 }
 

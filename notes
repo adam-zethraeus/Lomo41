@@ -2,7 +2,7 @@
 * possible underuse of GPUImage.
 * shoot enabled before it's ready
 * cells should usa a nicely defined programatic view system
-* view swap during shooting causes crash
+* gallery doesn't refresh when image is added. noticable on quick switch after shots finalize.
 
 # Ideas
 * randomize filter effects within bounds
@@ -11,3 +11,6 @@
 * preview of shot image
 * tune dimensions to regular film
 * progressively load gallery
+* lines fade/brighten as shots are taken
+* swipe on lines to change color & add overlay color to corresponding image
+
