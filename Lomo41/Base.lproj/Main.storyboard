@@ -16,14 +16,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhB-ZX-PJ8">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhB-ZX-PJ8">
                                 <rect key="frame" x="110" y="342" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="64"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="64"/>
+                                <state key="normal" backgroundImage="mid-grey"/>
+                                <state key="highlighted" backgroundImage="light-grey"/>
                                 <connections>
                                     <action selector="doShoot:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Gue-3I-bta"/>
                                 </connections>
@@ -240,6 +239,8 @@
         <image name="camera" width="28" height="21"/>
         <image name="gallery" width="28" height="22"/>
         <image name="garbage" width="21" height="28"/>
+        <image name="light-grey" width="1" height="1"/>
+        <image name="mid-grey" width="1" height="1"/>
         <image name="share" width="21" height="28"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
