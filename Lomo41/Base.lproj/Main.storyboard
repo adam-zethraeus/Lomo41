@@ -108,74 +108,12 @@
                             <inset key="sectionInset" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoCell" id="e7l-5d-8p9">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoCell" id="e7l-5d-8p9" customClass="LoImagePreviewCell">
                                 <rect key="frame" x="9" y="10" width="303" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view tag="4" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WaA-Bv-2nA">
-                                            <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <subviews>
-                                                <view hidden="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0TI-pT-iWc">
-                                                    <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dfm-VP-w7A" userLabel="Trash Button">
-                                                            <rect key="frame" x="70" y="40" width="40" height="40"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <accessibility key="accessibilityConfiguration">
-                                                                <accessibilityTraits key="traits" none="YES" button="YES" image="YES"/>
-                                                            </accessibility>
-                                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <state key="normal" image="garbage"/>
-                                                            <state key="highlighted" image="garbage"/>
-                                                            <connections>
-                                                                <action selector="doDelete:" destination="88M-O3-Wt7" eventType="touchUpInside" id="J2q-bH-stF"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vr9-WN-tN0" userLabel="Share Button">
-                                                            <rect key="frame" x="190" y="40" width="40" height="40"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <accessibility key="accessibilityConfiguration">
-                                                                <accessibilityTraits key="traits" none="YES" button="YES" image="YES"/>
-                                                            </accessibility>
-                                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <state key="normal" image="share"/>
-                                                            <connections>
-                                                                <action selector="doShare:" destination="88M-O3-Wt7" eventType="touchUpInside" id="ahr-0Z-dhM"/>
-                                                            </connections>
-                                                        </button>
-                                                    </subviews>
-                                                    <color key="backgroundColor" red="0.95575747282608692" green="0.95575747282608692" blue="0.95575747282608692" alpha="1" colorSpace="calibratedRGB"/>
-                                                </view>
-                                                <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rau-Zo-Mhu">
-                                                    <rect key="frame" x="0.0" y="0.0" width="303" height="128"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Bj-Ze-J9U">
-                                                            <rect key="frame" x="0.0" y="0.0" width="302" height="128"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <state key="normal">
-                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                            </state>
-                                                            <connections>
-                                                                <segue destination="1Qh-zd-MzO" kind="modal" identifier="viewImage" id="7ou-3a-aPR"/>
-                                                            </connections>
-                                                        </button>
-                                                        <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JGE-zF-jw9">
-                                                            <rect key="frame" x="-1" y="0.0" width="303" height="128"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                        </imageView>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                                </view>
-                                            </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        </view>
-                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </collectionViewCell>
@@ -189,6 +127,7 @@
                     <navigationItem key="navigationItem" id="ZVc-23-6hj"/>
                     <connections>
                         <outlet property="collectionView" destination="aLy-fS-nud" id="Hwk-Xj-AGd"/>
+                        <segue destination="1Qh-zd-MzO" kind="modal" identifier="viewImage" id="vQE-wb-pHe"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yFE-PD-1pE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -239,10 +178,8 @@
     <resources>
         <image name="camera" width="28" height="21"/>
         <image name="gallery" width="28" height="22"/>
-        <image name="garbage" width="21" height="28"/>
         <image name="light-grey" width="1" height="1"/>
         <image name="mid-grey" width="1" height="1"/>
-        <image name="share" width="21" height="28"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

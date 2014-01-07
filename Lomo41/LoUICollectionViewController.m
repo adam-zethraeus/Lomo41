@@ -8,12 +8,14 @@
 
 #import "LoUICollectionViewController.h"
 
+#import "LoImagePreviewCell.h"
 #import "LoImageViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface LoUICollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 - (IBAction)doDelete:(id)sender;
 - (IBAction)doShare:(id)sender;
+- (IBAction)doShow:(id)sender;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic) ALAssetsGroup *album;
 @property (nonatomic) NSMutableArray *assets;
@@ -75,46 +77,45 @@
     return self.assets.count;
 }
 
-//TODO: This is inelegant. Find a better pattern.
-#define kFrontViewTag 1
-#define kBacksideViewTag 2
-#define KImageViewTag 3
-#define KFlippableViewTag 4
-- (UICollectionViewCell *)collectionView: (UICollectionView *)collectionView cellForItemAtIndexPath: (NSIndexPath *)indexPath {
+- (LoImagePreviewCell *)collectionView: (UICollectionView *)collectionView cellForItemAtIndexPath: (NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"photoCell";
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     ALAsset *asset = self.assets[self.assets.count - 1 - indexPath.row];
     CGImageRef thumbnailImageRef = [[asset defaultRepresentation] fullScreenImage];
+    static BOOL nibMyCellLoaded = NO;
+    if(!nibMyCellLoaded) {
+        UINib *nib = [UINib nibWithNibName:@"photoCell" bundle: nil];
+        [collectionView registerNib:nib forCellWithReuseIdentifier:CellIdentifier];
+        nibMyCellLoaded = YES;
+    }
+    LoImagePreviewCell *cell = (LoImagePreviewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+
     UIImage *thumbnail = [UIImage imageWithCGImage:thumbnailImageRef];
-    UIImageView *imageView = (UIImageView *)[cell viewWithTag:KImageViewTag];
-    imageView.image = thumbnail;
-    UIView *flippableView = (UIView *)[cell viewWithTag:KFlippableViewTag];
+    cell.imageView.image = thumbnail;
+    cell.frontView.hidden = NO;
+    cell.backView.hidden = YES;
+
     UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
     swipeRight.delegate = self;
     swipeRight.numberOfTouchesRequired = 1;
     [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
-    [flippableView addGestureRecognizer:swipeRight];
+    [cell addGestureRecognizer:swipeRight];
+
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
     swipeLeft.delegate = self;
     swipeLeft.numberOfTouchesRequired = 1;
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-    [flippableView addGestureRecognizer:swipeLeft];
-    UIView *frontView = (UIView *)[flippableView viewWithTag:kFrontViewTag];
-    UIView *backsideView = (UIView *)[flippableView viewWithTag:kBacksideViewTag];
-    frontView.hidden = NO;
-    backsideView.hidden = YES;
+    [cell addGestureRecognizer:swipeLeft];
+
     return cell;
 }
 
-- (void)didSwipe: (UISwipeGestureRecognizer*)recognizer {
-    UICollectionViewCell *cell = (UICollectionViewCell*)recognizer.view.superview.superview;
-    UIView *flipContainerView = (UIView*) recognizer.view;
-    UIView *frontView = (UIView *)[flipContainerView viewWithTag:kFrontViewTag];
+- (void)didSwipe: (UISwipeGestureRecognizer *)recognizer {
+    LoImagePreviewCell *cell = (LoImagePreviewCell *)recognizer.view;
     UIViewAnimationOptions direction = UIViewAnimationOptionTransitionFlipFromLeft;
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
         direction = UIViewAnimationOptionTransitionFlipFromRight;
     }
-    if (!frontView.isHidden) {
+    if (!cell.frontView.isHidden) {
         [self flipAllCellsToFrontInDirection: direction];
         [LoUICollectionViewController flipToBackOfCell:cell inDirection:direction];
     } else {
@@ -123,53 +124,37 @@
 }
 
 - (void)flipAllCellsToFrontInDirection: (UIViewAnimationOptions) direction {
-    for (UICollectionViewCell *cell in self.collectionView.visibleCells) {
+    for (LoImagePreviewCell *cell in self.collectionView.visibleCells) {
         [LoUICollectionViewController flipToFrontOfCell:cell inDirection:direction];
     }
 }
 
-+ (void)flipToFrontOfCell: (UICollectionViewCell *)cell inDirection: (UIViewAnimationOptions) direction {
-    UIView *flippableView = (UIView *)[cell viewWithTag:KFlippableViewTag];
-    UIView *frontView = (UIView *)[flippableView viewWithTag:kFrontViewTag];
-    UIView *backView = (UIView *)[flippableView viewWithTag:kBacksideViewTag];
-    if (frontView.isHidden) {
-        [UIView transitionWithView:flippableView
++ (void)flipToFrontOfCell: (LoImagePreviewCell *)cell inDirection: (UIViewAnimationOptions) direction {
+    if (cell.frontView.isHidden) {
+        [UIView transitionWithView:cell
                           duration:0.2f
                            options:direction
                         animations:^{
-                            frontView.hidden = NO;
-                            backView.hidden = YES;
+                            cell.frontView.hidden = NO;
+                            cell.backView.hidden = YES;
                         } completion:nil];
     }
 }
 
-+ (void)flipToBackOfCell: (UICollectionViewCell *)cell inDirection: (UIViewAnimationOptions) direction {
-    UIView *flippableView = (UIView *)[cell viewWithTag:KFlippableViewTag];
-    UIView *frontView = (UIView *)[flippableView viewWithTag:kFrontViewTag];
-    UIView *backView = (UIView *)[flippableView viewWithTag:kBacksideViewTag];
-    if (backView.isHidden) {
-        [UIView transitionWithView:flippableView
++ (void)flipToBackOfCell: (LoImagePreviewCell *)cell inDirection: (UIViewAnimationOptions) direction {
+    if (!cell.frontView.isHidden) {
+        [UIView transitionWithView:cell
                           duration:0.2f
                            options:direction
                         animations:^{
-                            frontView.hidden = YES;
-                            backView.hidden = NO;
+                            cell.frontView.hidden = YES;
+                            cell.backView.hidden = NO;
                         } completion:nil];
-    }
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"viewImage"]) {
-        // TODO: The Button's parent's parent is the UICollectionViewCell.
-        // This is gross and I'm using it only to avoid subclassing, which is probably dumb.
-        NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell*)((UIView*)sender).superview.superview.superview.superview];
-        LoImageViewController *destViewController = segue.destinationViewController;
-        destViewController.asset = self.assets[self.assets.count - 1 - indexPath.row];
     }
 }
 
 - (IBAction)doDelete:(id)sender {
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell*)((UIView*)sender).superview.superview.superview.superview];
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)((UIView *)sender).superview.superview.superview];
     self.actionIndex = self.assets.count - 1 - indexPath.row;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Picture"
                                                     message:@"Would you like to delete the picture?"
@@ -181,9 +166,21 @@
 }
 
 - (IBAction)doShare:(id)sender {
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell*)((UIView*)sender).superview.superview.superview.superview];
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)((UIView *)sender).superview.superview.superview];
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self.assets[self.assets.count - 1 - indexPath.row]] applicationActivities:nil];
     [self presentViewController:activityController animated:YES completion:nil];
+}
+
+- (IBAction)doShow:(id)sender {
+    [self performSegueWithIdentifier: @"viewImage" sender: ((UIView *)sender).superview.superview.superview];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"viewImage"]) {
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)sender];
+        LoImageViewController *destViewController = segue.destinationViewController;
+        destViewController.asset = self.assets[self.assets.count - 1 - indexPath.row];
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
