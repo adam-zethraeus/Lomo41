@@ -25,7 +25,7 @@
 
 @implementation LoUICollectionViewController
 
-- (BOOL)prefersStatusBarHidden{
+- (BOOL)prefersStatusBarHidden {
     return YES;
 }
 

@@ -32,6 +32,8 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic, readonly, getter = isSessionRunningAndHasCameraPermission) BOOL sessionRunningAndHasCameraPermission;
 @property (nonatomic) BOOL hasCameraPermission;
 @property (nonatomic) NSTimer *timer;
+@property (nonatomic) NSInteger shotCount;
+@property (nonatomic, readonly, getter = isCurrentlyShooting) BOOL isShooting;
 - (IBAction)doShoot:(id)sender;
 @end
 
@@ -64,6 +66,11 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
 + (NSSet *)keyPathsForValuesAffectingSessionRunningAndDeviceAuthorized {
 	return [NSSet setWithObjects:@"session.running", @"hasCameraPermission", nil];
+}
+
+- (BOOL)isCurrentlyShooting {
+    NSAssert(self.shotCount <= 4, @"Shot count was > 4");
+    return (self.shotCount > 0);
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -105,7 +112,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                 NSLog(@"%@", error);
             }
         }
-        [LoViewController setFlashMode:AVCaptureFlashModeOff forDevice:videoDevice];
+        [LoViewController setFlashMode:AVCaptureFlashModeAuto forDevice:videoDevice];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
 		if (error) {
 			NSLog(@"%@", error);
@@ -140,11 +147,12 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [self.currentShots purge];
     if (self.timer) {
-        [self.currentShots purge];
         [self.timer invalidate];
         self.timer = nil;
     }
+    self.shotCount = 0;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -178,15 +186,16 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (IBAction)doShoot:(id)sender {
-    if (self.timer == nil && self.currentShots.count == 0) {
+    if (!self.isShooting) {
         [self shootOnce];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
     }
 }
 
 - (void)shootOnce {
+    self.shotCount++;
     bool final = false;
-    if (self.currentShots.count == 3) {
+    if (self.shotCount >= 4) {
         [self.timer invalidate];
         self.timer = nil;
         final = true;
@@ -201,6 +210,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             CFRelease(imageDataSampleBuffer);
             if (final) {
                 [self processShotSet];
+                self.shotCount = 0;
             }
         });
     }];
