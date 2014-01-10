@@ -94,4 +94,8 @@
     
 }
 
+- (void)getAssetListForAlbum:(NSString *)album withSuccessBlock:(void (^)(NSMutableArray *devices))success withFailuireBlock:(void (^)())failure{
+
+}
+
 @end

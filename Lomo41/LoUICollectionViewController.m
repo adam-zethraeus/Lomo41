@@ -20,7 +20,7 @@
 @property (nonatomic) ALAssetsGroup *album;
 @property (nonatomic) NSMutableArray *assets;
 @property (nonatomic) ALAssetsLibrary *library;
-@property (nonatomic) NSUInteger actionIndex;
+@property (nonatomic) NSUInteger deleteIndex;
 @end
 
 @implementation LoUICollectionViewController
@@ -31,19 +31,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.library = [[ALAssetsLibrary alloc] init];
+    self.assets = [[NSMutableArray alloc] init];
 }
 
 - (void)viewWillAppear: (BOOL)animated {
     [super viewWillAppear:animated];
-    self.actionIndex = -1;
-    if (!self.assets) {
-        self.assets = [[NSMutableArray alloc] init];
-    } else {
-        [self.assets removeAllObjects];
-    }
-    if (!self.library) {
-        self.library = [[ALAssetsLibrary alloc] init];
-    }
+    self.deleteIndex = -1;
+    [self.assets removeAllObjects];
+
     [self.library enumerateGroupsWithTypes:ALAssetsGroupAlbum
                                 usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
                                     if ([@"Lomo41" compare: [group valueForProperty:ALAssetsGroupPropertyName]] == NSOrderedSame) {
@@ -155,7 +151,7 @@
 
 - (IBAction)doDelete:(id)sender {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)((UIView *)sender).superview.superview.superview];
-    self.actionIndex = self.assets.count - 1 - indexPath.row;
+    self.deleteIndex = self.assets.count - 1 - indexPath.row;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Picture"
                                                     message:@"Would you like to delete the picture?"
                                                    delegate:self
@@ -185,9 +181,9 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        NSAssert(self.actionIndex >= 0, @"index for action was not set");
-        ALAsset* assetToDelete = self.assets[self.actionIndex];
-        [self.assets removeObjectAtIndex:self.actionIndex];
+        NSAssert(self.deleteIndex >= 0, @"index for action was not set");
+        ALAsset* assetToDelete = self.assets[self.deleteIndex];
+        [self.assets removeObjectAtIndex:self.deleteIndex];
         [self.collectionView reloadData];
         [assetToDelete setImageData:nil metadata:nil completionBlock:nil];
     }

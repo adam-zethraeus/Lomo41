@@ -24,6 +24,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (weak, nonatomic) IBOutlet UIButton *shootButton;
 @property (weak, nonatomic) IBOutlet LoCameraPreviewView *previewView;
 @property (nonatomic) dispatch_queue_t sessionQueue; // todo: make global?
+@property (nonatomic) ALAssetsLibrary *library;
 @property (nonatomic) AVCaptureSession *session;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
@@ -64,7 +65,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	}
 }
 
-+ (NSSet *)keyPathsForValuesAffectingSessionRunningAndDeviceAuthorized {
++ (NSSet *)keyPathsForValuesAffectingSessionRunningAndHasCameraPermission {
 	return [NSSet setWithObjects:@"session.running", @"hasCameraPermission", nil];
 }
 
@@ -78,12 +79,13 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (BOOL)isSessionRunningAndHasCameraPermission {
-	return [[self session] isRunning] && [self hasCameraPermission];
+	return self.session.isRunning && self.hasCameraPermission;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.session = [[AVCaptureSession alloc] init];
+    self.library = [[ALAssetsLibrary alloc] init];
     self.previewView.session = self.session;
     self.currentShots = [[LoShotSet alloc] initForSize:4];
 	[self checkCameraPermissions];
@@ -182,7 +184,16 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		if (isCapturingStillImage) {
 			[self runCaptureAnimation];
 		}
-	}
+	} else if (context == SessionRunningCameraPermissionContext) {
+        BOOL hasPermission = [change[NSKeyValueChangeNewKey] boolValue];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (hasPermission) {
+                [self.shootButton setEnabled:YES];
+            } else {
+                [self.shootButton setEnabled:NO];
+            }
+        });
+    }
 }
 
 - (IBAction)doShoot:(id)sender {
@@ -223,7 +234,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         [processor groupShots];
         UIImage *finalGroupedImage = [processor getProcessedGroupImage];
         if (finalGroupedImage) {
-            [[[ALAssetsLibrary alloc] init] saveImage:finalGroupedImage toAlbum:@"Lomo41" withCompletionBlock:nil];
+            [self.library saveImage:finalGroupedImage toAlbum:@"Lomo41" withCompletionBlock:nil];
         }
         [self.currentShots purge];
     });

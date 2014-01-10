@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhB-ZX-PJ8">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhB-ZX-PJ8">
                                 <rect key="frame" x="110" y="342" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -65,7 +65,7 @@
                     <tabBarItem key="tabBarItem" title="Camera" image="camera" id="wx1-MN-Pi3"/>
                     <connections>
                         <outlet property="previewView" destination="Rzb-IX-RKT" id="AGk-rr-GhG"/>
-                        <outlet property="shootButton" destination="YhB-ZX-PJ8" id="YOy-Es-wSI"/>
+                        <outlet property="shootButton" destination="YhB-ZX-PJ8" id="i17-fH-I6v"/>
                         <outlet property="shootView" destination="kh9-bI-dsS" id="3Cp-lq-G4f"/>
                     </connections>
                 </viewController>

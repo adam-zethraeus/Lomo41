@@ -1,6 +1,5 @@
 #Known Issues
 * possible underuse of GPUImage.
-* shoot enabled before it's ready
 * gallery doesn't refresh when image is added. noticable on quick switch after shots finalize.
 
 # Ideas
