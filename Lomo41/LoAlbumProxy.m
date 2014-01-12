@@ -46,6 +46,7 @@
     [self.library getAssetListForAlbum:self.albumName
                       withSuccessBlock:^(NSMutableArray *assets) {
                           self.assets = assets;
+                          NSLog(@"assets updated: %lu", self.assets.count);
                       }
                      withFailureBlock:^(NSError *error) {
                          NSLog(@"updateAssets error: %@", error);

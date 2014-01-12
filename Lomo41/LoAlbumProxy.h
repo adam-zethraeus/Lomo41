@@ -15,5 +15,6 @@
 - (id)initForAlbum: (NSString *)albumName;
 - (void)addImage: (UIImage *)image;
 - (void)deleteAssetAtIndex: (NSUInteger)index;
+- (void)updateAssets; // remove if possible
 
 @end

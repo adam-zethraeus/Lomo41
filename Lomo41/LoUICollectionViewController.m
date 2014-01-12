@@ -47,6 +47,12 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     });
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    dispatch_async(self.sessionQueue, ^{
+        //[self.albumProxy updateAssets];
+    });
+}
+
 - (void)viewWillDisappear: (BOOL)animated {
     dispatch_async(self.sessionQueue, ^{
         [self.albumProxy removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];

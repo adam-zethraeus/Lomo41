@@ -29,6 +29,7 @@ const static float saturationLevel = 0.8;
     self = [super init];
     if (self) {
         if (set.count != 4) {
+            NSLog(@"shot set size was: %lu", set.count);
             @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Lo41ShotProcessor needs a LoShotSet of size 4." userInfo:nil];
         }
         self.shotSet = set;
