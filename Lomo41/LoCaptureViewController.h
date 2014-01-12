@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class LoAlbumProxy;
+
 @interface LoCaptureViewController : UIViewController
+
+@property (nonatomic) LoAlbumProxy *album;
 
 @end

@@ -36,7 +36,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSInteger shotCount;
 @property (nonatomic, readonly, getter = isCurrentlyShooting) BOOL isShooting;
-@property (nonatomic) LoAlbumProxy *album;
 - (IBAction)doShoot:(id)sender;
 @end
 
@@ -89,15 +88,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     self.captureSession = [[AVCaptureSession alloc] init];
     self.currentShots = [[LoShotSet alloc] initForSize:4];
 	[self checkCameraPermissions];
-    //TODO: set this up in Appdelegate
-    self.album = [[LoAlbumProxy alloc] initForAlbum:@"Lomo41"];
-    UITabBarController *tbc = (UITabBarController *)self.tabBarController;
-    for (UIViewController* vc in tbc.viewControllers) {
-        if ([vc class] == [LoUICollectionViewController class]) {
-            LoUICollectionViewController *cvc = (LoUICollectionViewController *)vc;
-            cvc.albumProxy = self.album;
-        }
-    }
 	self.sessionQueue = dispatch_queue_create("capture session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
 		NSError *error = nil;

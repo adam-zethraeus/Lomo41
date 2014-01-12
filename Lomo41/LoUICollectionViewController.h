@@ -11,5 +11,5 @@
 @class LoAlbumProxy;
 
 @interface LoUICollectionViewController : UICollectionViewController
-@property (nonatomic) LoAlbumProxy *albumProxy;
+@property (nonatomic) LoAlbumProxy *album;
 @end

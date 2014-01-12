@@ -35,7 +35,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.sessionQueue = dispatch_queue_create("collection view proxy queue", DISPATCH_QUEUE_SERIAL);
-    NSAssert(self.albumProxy != nil, @"albumProxy should have been setup by LoCaptureViewController");
+    NSAssert(self.album != nil, @"album should have been setup by LoCaptureViewController");
 }
 
 - (void)viewWillAppear: (BOOL)animated {
@@ -43,19 +43,19 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     self.deleteIndex = -1;
     [self.collectionView reloadData];
     dispatch_async(self.sessionQueue, ^{
-        [self.albumProxy addObserver:self forKeyPath:@"assets" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:AlbumAssetsRefreshContext];
+        [self.album addObserver:self forKeyPath:@"assets" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:AlbumAssetsRefreshContext];
     });
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     dispatch_async(self.sessionQueue, ^{
-        [self.albumProxy updateAssets];
+        [self.album updateAssets];
     });
 }
 
 - (void)viewWillDisappear: (BOOL)animated {
     dispatch_async(self.sessionQueue, ^{
-        [self.albumProxy removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
+        [self.album removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
     });
 }
 
@@ -64,12 +64,12 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    return self.albumProxy.assets.count;
+    return self.album.assets.count;
 }
 
 - (LoImagePreviewCell *)collectionView: (UICollectionView *)collectionView cellForItemAtIndexPath: (NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"photoCell";
-    ALAsset *asset = self.albumProxy.assets[self.albumProxy.assets.count - 1 - indexPath.row];
+    ALAsset *asset = self.album.assets[self.album.assets.count - 1 - indexPath.row];
     CGImageRef thumbnailImageRef = [[asset defaultRepresentation] fullScreenImage];
     static BOOL nibMyCellLoaded = NO;
     if(!nibMyCellLoaded) {
@@ -145,7 +145,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 
 - (IBAction)doDelete:(id)sender {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)((UIView *)sender).superview.superview.superview];
-    self.deleteIndex = self.albumProxy.assets.count - 1 - indexPath.row;
+    self.deleteIndex = self.album.assets.count - 1 - indexPath.row;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Picture"
                                                     message:@"Would you like to delete the picture?"
                                                    delegate:self
@@ -157,7 +157,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 
 - (IBAction)doShare:(id)sender {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)((UIView *)sender).superview.superview.superview];
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self.albumProxy.assets[self.albumProxy.assets.count - 1 - indexPath.row]] applicationActivities:nil];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self.album.assets[self.album.assets.count - 1 - indexPath.row]] applicationActivities:nil];
     [self presentViewController:activityController animated:YES completion:nil];
 }
 
@@ -169,14 +169,14 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     if ([segue.identifier isEqualToString:@"viewImage"]) {
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)sender];
         LoImageViewController *destViewController = segue.destinationViewController;
-        destViewController.asset = self.albumProxy.assets[self.albumProxy.assets.count - 1 - indexPath.row];
+        destViewController.asset = self.album.assets[self.album.assets.count - 1 - indexPath.row];
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         NSAssert(self.deleteIndex >= 0, @"index for action was not set");
-        [self.albumProxy deleteAssetAtIndex:self.deleteIndex];
+        [self.album deleteAssetAtIndex:self.deleteIndex];
     }
 }
 
