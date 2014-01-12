@@ -8,9 +8,11 @@
 
 #import "LoUICollectionViewController.h"
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
+#import "ALAssetsLibrary+PhotoAlbumFunctionality.h"
 #import "LoImagePreviewCell.h"
 #import "LoImageViewController.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface LoUICollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 - (IBAction)doDelete:(id)sender;
@@ -39,25 +41,10 @@
     [super viewWillAppear:animated];
     self.deleteIndex = -1;
     [self.assets removeAllObjects];
-
-    [self.library enumerateGroupsWithTypes:ALAssetsGroupAlbum
-                                usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-                                    if ([@"Lomo41" compare: [group valueForProperty:ALAssetsGroupPropertyName]] == NSOrderedSame) {
-                                        self.album = group;
-                                        ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                                            if (result) {
-                                                [self.assets addObject:result];
-                                            }
-                                        };
-                                        ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
-                                        [self.album setAssetsFilter:onlyPhotosFilter];
-                                        [self.album enumerateAssetsUsingBlock:assetsEnumerationBlock];
-                                    }
-                                    [self.collectionView reloadData];
-                                }
-                                failureBlock:^(NSError* er){
-                                    self.album = nil;
-                                }];
+    [self.library getAssetListForAlbum:@"Lomo41" withSuccessBlock:^(NSMutableArray *assets) {
+        self.assets = assets;
+        [self.collectionView reloadData];
+    } withFailuireBlock:nil];
 }
 
 - (void)viewDidDisappear: (BOOL)animated {

@@ -11,7 +11,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 
-#import "ALAssetsLibrary+CustomPhotoAlbum.h"
+#import "ALAssetsLibrary+PhotoAlbumFunctionality.h"
 #import "LoCameraPreviewView.h"
 #import "Lo41ShotProcessor.h"
 #import "LoShotSet.h"
@@ -114,7 +114,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                 NSLog(@"%@", error);
             }
         }
-        [LoViewController setFlashMode:AVCaptureFlashModeAuto forDevice:videoDevice];
+        [LoViewController setFlashMode:AVCaptureFlashModeOff forDevice:videoDevice];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
 		if (error) {
 			NSLog(@"%@", error);
@@ -234,7 +234,10 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         [processor groupShots];
         UIImage *finalGroupedImage = [processor getProcessedGroupImage];
         if (finalGroupedImage) {
-            [self.library saveImage:finalGroupedImage toAlbum:@"Lomo41" withCompletionBlock:nil];
+            [self.library saveImage:finalGroupedImage
+                            toAlbum:@"Lomo41"
+                   withSuccessBlock:nil
+                   withFailureBlock:nil];
         }
         [self.currentShots purge];
     });
