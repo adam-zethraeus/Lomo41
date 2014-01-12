@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Lo View Controller - Camera-->
+        <!--Lo Capture View Controller - Camera-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="LoViewController" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="LoCaptureViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7fs-bF-qkm"/>
                         <viewControllerLayoutGuide type="bottom" id="SAq-eF-XFC"/>

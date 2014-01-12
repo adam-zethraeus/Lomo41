@@ -18,7 +18,7 @@
 		1982EA06185850A600CC0731 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA05185850A600CC0731 /* main.m */; };
 		1982EA0A185850A600CC0731 /* LoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA09185850A600CC0731 /* LoAppDelegate.m */; };
 		1982EA0D185850A600CC0731 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1982EA0B185850A600CC0731 /* Main.storyboard */; };
-		1982EA10185850A600CC0731 /* LoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA0F185850A600CC0731 /* LoViewController.m */; };
+		1982EA10185850A600CC0731 /* LoCaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA0F185850A600CC0731 /* LoCaptureViewController.m */; };
 		1982EA12185850A600CC0731 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1982EA11185850A600CC0731 /* Images.xcassets */; };
 		1982EA19185850A600CC0731 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982EA18185850A600CC0731 /* XCTest.framework */; };
 		1982EA1A185850A600CC0731 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982E9F9185850A600CC0731 /* Foundation.framework */; };
@@ -87,8 +87,8 @@
 		1982EA08185850A600CC0731 /* LoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoAppDelegate.h; sourceTree = "<group>"; };
 		1982EA09185850A600CC0731 /* LoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoAppDelegate.m; sourceTree = "<group>"; };
 		1982EA0C185850A600CC0731 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		1982EA0E185850A600CC0731 /* LoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoViewController.h; sourceTree = "<group>"; };
-		1982EA0F185850A600CC0731 /* LoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoViewController.m; sourceTree = "<group>"; };
+		1982EA0E185850A600CC0731 /* LoCaptureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoCaptureViewController.h; sourceTree = "<group>"; };
+		1982EA0F185850A600CC0731 /* LoCaptureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoCaptureViewController.m; sourceTree = "<group>"; };
 		1982EA11185850A600CC0731 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1982EA17185850A600CC0731 /* Lomo41Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Lomo41Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1982EA18185850A600CC0731 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -194,8 +194,8 @@
 				1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */,
 				1982EA08185850A600CC0731 /* LoAppDelegate.h */,
 				1982EA09185850A600CC0731 /* LoAppDelegate.m */,
-				1982EA0E185850A600CC0731 /* LoViewController.h */,
-				1982EA0F185850A600CC0731 /* LoViewController.m */,
+				1982EA0E185850A600CC0731 /* LoCaptureViewController.h */,
+				1982EA0F185850A600CC0731 /* LoCaptureViewController.m */,
 				1982EA2E1864E79A00CC0731 /* LoShotSet.h */,
 				1982EA2F1864E79A00CC0731 /* LoShotSet.m */,
 				1982EA311865487600CC0731 /* Lo41ShotProcessor.h */,
@@ -369,7 +369,7 @@
 			files = (
 				1973BA13187A74640026BC67 /* LoCameraPreviewView.m in Sources */,
 				1982EA06185850A600CC0731 /* main.m in Sources */,
-				1982EA10185850A600CC0731 /* LoViewController.m in Sources */,
+				1982EA10185850A600CC0731 /* LoCaptureViewController.m in Sources */,
 				1982EA0A185850A600CC0731 /* LoAppDelegate.m in Sources */,
 				1982EA331865487600CC0731 /* Lo41ShotProcessor.m in Sources */,
 				1982EA301864E79A00CC0731 /* LoShotSet.m in Sources */,

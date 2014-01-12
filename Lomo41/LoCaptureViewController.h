@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoViewController : UIViewController
+@interface LoCaptureViewController : UIViewController
 
 @end

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Very Nice Co. All rights reserved.
 //
 
-#import "LoViewController.h"
+#import "LoCaptureViewController.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
@@ -19,7 +19,7 @@
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
 
-@interface LoViewController ()
+@interface LoCaptureViewController ()
 @property (weak, nonatomic) IBOutlet UIView *shootView;
 @property (weak, nonatomic) IBOutlet UIButton *shootButton;
 @property (weak, nonatomic) IBOutlet LoCameraPreviewView *previewView;
@@ -38,7 +38,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (IBAction)doShoot:(id)sender;
 @end
 
-@implementation LoViewController
+@implementation LoCaptureViewController
 
 + (AVCaptureDevice *)deviceWithMediaType:(NSString *)mediaType
                       preferringPosition:(AVCaptureDevicePosition)position {
@@ -93,7 +93,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	dispatch_async(self.sessionQueue, ^{
 		//[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
 		NSError *error = nil;
-		AVCaptureDevice *videoDevice = [LoViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
+		AVCaptureDevice *videoDevice = [LoCaptureViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
         //TODO: lock these for sequential pictures
         if ([videoDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
             if ([videoDevice lockForConfiguration:&error]) {
@@ -114,7 +114,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                 NSLog(@"%@", error);
             }
         }
-        [LoViewController setFlashMode:AVCaptureFlashModeOff forDevice:videoDevice];
+        [LoCaptureViewController setFlashMode:AVCaptureFlashModeOff forDevice:videoDevice];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
 		if (error) {
 			NSLog(@"%@", error);
@@ -136,9 +136,9 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningCameraPermissionContext];
 		[self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
-		__weak LoViewController *weakSelf = self;
+		__weak LoCaptureViewController *weakSelf = self;
 		self.runtimeErrorHandlingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self session] queue:nil usingBlock:^(NSNotification *note) {
-			LoViewController *strongSelf = weakSelf;
+			LoCaptureViewController *strongSelf = weakSelf;
 			dispatch_async(strongSelf.sessionQueue, ^{
 				// Manually restarting the session since it must have been stopped due to an error.
 				[strongSelf.session startRunning];
