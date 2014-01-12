@@ -91,10 +91,8 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	[self checkCameraPermissions];
 	self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
-		//[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
 		NSError *error = nil;
 		AVCaptureDevice *videoDevice = [LoCaptureViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
-        //TODO: lock these for sequential pictures
         if ([videoDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
             if ([videoDevice lockForConfiguration:&error]) {
                 CGPoint autofocusPoint = CGPointMake(0.5f, 0.5f);
@@ -212,7 +210,12 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         final = true;
     }
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-        CFRetain(imageDataSampleBuffer);
+        if (imageDataSampleBuffer) {
+            CFRetain(imageDataSampleBuffer);
+        } else {
+            // The view may have swapped.
+            return;
+        }
         dispatch_async(self.sessionQueue, ^{
             if (imageDataSampleBuffer) {
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
