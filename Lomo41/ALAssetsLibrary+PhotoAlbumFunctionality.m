@@ -26,8 +26,15 @@
       withFailureBlock:(void (^)(NSError *error))failureBlock {
     [self assetForURL: assetURL
           resultBlock:^(ALAsset *asset) {
-              [group addAsset: asset];
-              if (successBlock) successBlock(assetURL);
+//              NSLog(@"group asset count 1: %lu", [group numberOfAssets]);
+              if ([group addAsset: asset]) { // This line's effects appear to be async.
+//                  NSLog(@"group asset count 2: %lu", [group numberOfAssets]); // Always observed as the same value as 1.
+                  if (successBlock) {
+                      successBlock(assetURL);
+                  }
+              } else {
+                  failureBlock([[NSError alloc] init]);
+              }
           } failureBlock: failureBlock];
 }
 

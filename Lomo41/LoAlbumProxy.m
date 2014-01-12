@@ -15,7 +15,6 @@
 @interface LoAlbumProxy ()
 @property (nonatomic) NSString* albumName;
 @property (nonatomic) ALAssetsLibrary* library;
-@property (nonatomic) dispatch_queue_t sessionQueue;
 @end
 
 @implementation LoAlbumProxy
@@ -34,10 +33,7 @@
         self.albumName = albumName;
         self.library = [[ALAssetsLibrary alloc] init];
         self.assets = [[NSMutableArray alloc] init];
-        self.sessionQueue = dispatch_queue_create("album proxy queue", DISPATCH_QUEUE_SERIAL);
-        dispatch_async(self.sessionQueue, ^(){
-            [self updateAssets];
-        });
+        [self updateAssets];
     }
     return self;
 }
@@ -46,7 +42,6 @@
     [self.library getAssetListForAlbum:self.albumName
                       withSuccessBlock:^(NSMutableArray *assets) {
                           self.assets = assets;
-                          NSLog(@"assets updated: %lu", self.assets.count);
                       }
                      withFailureBlock:^(NSError *error) {
                          NSLog(@"updateAssets error: %@", error);
@@ -54,15 +49,13 @@
 }
 
 - (void)addImage: (UIImage *)image {
-    dispatch_async(self.sessionQueue, ^(){
-        [self.library saveImage:image
-                        toAlbum:self.albumName
-               withSuccessBlock:^(NSURL *assetURL) {
-                   [self updateAssets];
-               } withFailureBlock:^(NSError *error) {
-                   NSLog(@"addImage error: %@", error);
-               }];
-    });
+    [self.library saveImage:image
+                    toAlbum:self.albumName
+           withSuccessBlock:^(NSURL *assetURL) {
+               [self updateAssets]; // Often called too early due to likely framework bug.
+           } withFailureBlock:^(NSError *error) {
+               NSLog(@"addImage error: %@", error);
+           }];
 }
 
 - (void)deleteAssetAtIndex: (NSUInteger)index {
