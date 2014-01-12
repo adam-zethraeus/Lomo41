@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoUICollectionViewController : UICollectionViewController
+@class LoAlbumProxy;
 
+@interface LoUICollectionViewController : UICollectionViewController
+@property (nonatomic) LoAlbumProxy *albumProxy;
 @end

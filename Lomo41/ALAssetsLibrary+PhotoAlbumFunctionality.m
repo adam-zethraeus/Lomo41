@@ -62,7 +62,7 @@
 
 - (void)getAssetListForAlbum:(NSString *)albumName
             withSuccessBlock:(void (^)(NSMutableArray *assets))successBlock
-           withFailuireBlock:(void (^)(NSError* error))failureBlock {
+           withFailureBlock:(void (^)(NSError* error))failureBlock {
     __block NSMutableArray *assets = [[NSMutableArray alloc] init];
     [self enumerateGroupsWithTypes:ALAssetsGroupAlbum
                         usingBlock:^(ALAssetsGroup *group, BOOL *stop) {

@@ -14,5 +14,5 @@
 
 - (void)getAssetListForAlbum:(NSString *)albumName
             withSuccessBlock:(void (^)(NSMutableArray *assets))successBlock
-           withFailuireBlock:(void (^)(NSError* error))failureBlock;
+           withFailureBlock:(void (^)(NSError* error))failureBlock;
 @end

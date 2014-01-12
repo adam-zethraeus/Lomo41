@@ -35,6 +35,9 @@
         self.library = [[ALAssetsLibrary alloc] init];
         self.assets = [[NSMutableArray alloc] init];
         self.sessionQueue = dispatch_queue_create("album proxy queue", DISPATCH_QUEUE_SERIAL);
+        dispatch_async(self.sessionQueue, ^(){
+            [self updateAssets];
+        });
     }
     return self;
 }
@@ -44,7 +47,9 @@
                       withSuccessBlock:^(NSMutableArray *assets) {
                           self.assets = assets;
                       }
-                     withFailuireBlock:nil];
+                     withFailureBlock:^(NSError *error) {
+                         NSLog(@"updateAssets error: %@", error);
+                     }];
 }
 
 - (void)addImage: (UIImage *)image {
@@ -53,7 +58,9 @@
                         toAlbum:self.albumName
                withSuccessBlock:^(NSURL *assetURL) {
                    [self updateAssets];
-               } withFailureBlock:nil];
+               } withFailureBlock:^(NSError *error) {
+                   NSLog(@"addImage error: %@", error);
+               }];
     });
 }
 
@@ -61,11 +68,15 @@
     ALAsset* assetToDelete = self.assets[index];
     // Immediately remove from proxy.
     [self.assets removeObjectAtIndex:index];
-    dispatch_async(self.sessionQueue, ^(){
-        // Trigger library deletion and proxy update.
-        [assetToDelete setImageData:nil metadata:nil completionBlock:nil];
-        [self updateAssets];
-    });
+    // Trigger library deletion and proxy update.
+    [assetToDelete setImageData:nil
+                       metadata:nil
+                completionBlock:^(NSURL *assetURL, NSError *error) {
+                    if (error) {
+                        NSLog(@"deleteAssetAtIndex error: %@", error);
+                    }
+                    [self updateAssets];
+                }];
 }
 
 @end

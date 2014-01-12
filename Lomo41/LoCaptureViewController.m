@@ -15,6 +15,8 @@
 #import "LoCameraPreviewView.h"
 #import "Lo41ShotProcessor.h"
 #import "LoShotSet.h"
+#import "LoAlbumProxy.h"
+#import "LoUICollectionViewController.h"
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
@@ -24,7 +26,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (weak, nonatomic) IBOutlet UIButton *shootButton;
 @property (weak, nonatomic) IBOutlet LoCameraPreviewView *previewView;
 @property (nonatomic) dispatch_queue_t sessionQueue;
-@property (nonatomic) ALAssetsLibrary *library;
 @property (nonatomic) AVCaptureSession *captureSession;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
@@ -35,6 +36,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSInteger shotCount;
 @property (nonatomic, readonly, getter = isCurrentlyShooting) BOOL isShooting;
+@property (nonatomic) LoAlbumProxy *album;
 - (IBAction)doShoot:(id)sender;
 @end
 
@@ -85,10 +87,9 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.captureSession = [[AVCaptureSession alloc] init];
-    self.library = [[ALAssetsLibrary alloc] init];
-    self.previewView.session = self.captureSession;
     self.currentShots = [[LoShotSet alloc] initForSize:4];
 	[self checkCameraPermissions];
+    self.album = [[LoAlbumProxy alloc] initForAlbum:@"Lomo41"];    //TODO: set this up in Appdelegate
 	self.sessionQueue = dispatch_queue_create("capture session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
 		NSError *error = nil;
@@ -127,6 +128,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 			[self.captureSession addOutput:stillImageOutput];
 			self.stillImageOutput = stillImageOutput;
 		}
+        self.previewView.session = self.captureSession;
     });
 }
 
@@ -144,6 +146,14 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		}];
 		[self.captureSession startRunning];
 	});
+    //TODO: set this up in Appdelegate
+    UITabBarController *tbc = (UITabBarController *)self.tabBarController;
+    for (UIViewController* vc in tbc.viewControllers) {
+        if ([vc class] == [LoUICollectionViewController class]) {
+            LoUICollectionViewController *cvc = (LoUICollectionViewController *)vc;
+            cvc.albumProxy = self.album;
+        }
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -239,10 +249,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         [processor groupShots];
         UIImage *finalGroupedImage = [processor getProcessedGroupImage];
         if (finalGroupedImage) {
-            [self.library saveImage:finalGroupedImage
-                            toAlbum:@"Lomo41"
-                   withSuccessBlock:nil
-                   withFailureBlock:nil];
+            [self.album addImage:finalGroupedImage];
         }
         [self.currentShots purge];
     });
