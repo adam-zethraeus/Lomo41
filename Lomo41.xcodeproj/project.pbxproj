@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		191B1565186F895200357698 /* LoImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 191B1564186F895200357698 /* LoImageViewController.m */; };
+		19478217188237B40023DD0F /* LoAlbumProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 19478216188237B40023DD0F /* LoAlbumProxy.m */; };
 		1973BA13187A74640026BC67 /* LoCameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1973BA12187A74640026BC67 /* LoCameraPreviewView.m */; };
 		1973BA19187B42780026BC67 /* photoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1973BA18187B42780026BC67 /* photoCell.xib */; };
 		1973BA1C187B465D0026BC67 /* LoImagePreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1973BA1B187B465D0026BC67 /* LoImagePreviewCell.m */; };
@@ -71,6 +72,8 @@
 /* Begin PBXFileReference section */
 		191B1563186F895200357698 /* LoImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoImageViewController.h; sourceTree = "<group>"; };
 		191B1564186F895200357698 /* LoImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoImageViewController.m; sourceTree = "<group>"; };
+		19478215188237B40023DD0F /* LoAlbumProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoAlbumProxy.h; sourceTree = "<group>"; };
+		19478216188237B40023DD0F /* LoAlbumProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoAlbumProxy.m; sourceTree = "<group>"; };
 		1973BA11187A74640026BC67 /* LoCameraPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoCameraPreviewView.h; sourceTree = "<group>"; };
 		1973BA12187A74640026BC67 /* LoCameraPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoCameraPreviewView.m; sourceTree = "<group>"; };
 		1973BA18187B42780026BC67 /* photoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = photoCell.xib; path = ../photoCell.xib; sourceTree = "<group>"; };
@@ -190,6 +193,8 @@
 				191B1564186F895200357698 /* LoImageViewController.m */,
 				1982EA8C186D2DCF00CC0731 /* LoUICollectionViewController.h */,
 				1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */,
+				19478215188237B40023DD0F /* LoAlbumProxy.h */,
+				19478216188237B40023DD0F /* LoAlbumProxy.m */,
 				1982EA861868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.h */,
 				1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */,
 				1982EA08185850A600CC0731 /* LoAppDelegate.h */,
@@ -371,6 +376,7 @@
 				1982EA06185850A600CC0731 /* main.m in Sources */,
 				1982EA10185850A600CC0731 /* LoCaptureViewController.m in Sources */,
 				1982EA0A185850A600CC0731 /* LoAppDelegate.m in Sources */,
+				19478217188237B40023DD0F /* LoAlbumProxy.m in Sources */,
 				1982EA331865487600CC0731 /* Lo41ShotProcessor.m in Sources */,
 				1982EA301864E79A00CC0731 /* LoShotSet.m in Sources */,
 				1982EA881868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m in Sources */,

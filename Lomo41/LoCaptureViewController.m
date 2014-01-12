@@ -23,9 +23,9 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (weak, nonatomic) IBOutlet UIView *shootView;
 @property (weak, nonatomic) IBOutlet UIButton *shootButton;
 @property (weak, nonatomic) IBOutlet LoCameraPreviewView *previewView;
-@property (nonatomic) dispatch_queue_t sessionQueue; // todo: make global?
+@property (nonatomic) dispatch_queue_t sessionQueue;
 @property (nonatomic) ALAssetsLibrary *library;
-@property (nonatomic) AVCaptureSession *session;
+@property (nonatomic) AVCaptureSession *captureSession;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic) LoShotSet *currentShots;
@@ -66,7 +66,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 + (NSSet *)keyPathsForValuesAffectingSessionRunningAndHasCameraPermission {
-	return [NSSet setWithObjects:@"session.running", @"hasCameraPermission", nil];
+	return [NSSet setWithObjects:@"captureSession.running", @"hasCameraPermission", nil];
 }
 
 - (BOOL)isCurrentlyShooting {
@@ -79,17 +79,17 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (BOOL)isSessionRunningAndHasCameraPermission {
-	return self.session.isRunning && self.hasCameraPermission;
+	return self.captureSession.isRunning && self.hasCameraPermission;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.session = [[AVCaptureSession alloc] init];
+    self.captureSession = [[AVCaptureSession alloc] init];
     self.library = [[ALAssetsLibrary alloc] init];
-    self.previewView.session = self.session;
+    self.previewView.session = self.captureSession;
     self.currentShots = [[LoShotSet alloc] initForSize:4];
 	[self checkCameraPermissions];
-	self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
+	self.sessionQueue = dispatch_queue_create("capture session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
 		NSError *error = nil;
 		AVCaptureDevice *videoDevice = [LoCaptureViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
@@ -117,14 +117,14 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		if (error) {
 			NSLog(@"%@", error);
 		}
-		if ([self.session canAddInput:videoDeviceInput]) {
-			[self.session addInput:videoDeviceInput];
+		if ([self.captureSession canAddInput:videoDeviceInput]) {
+			[self.captureSession addInput:videoDeviceInput];
 			self.videoDeviceInput = videoDeviceInput;
 		}
 		AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-		if ([self.session canAddOutput:stillImageOutput]) {
+		if ([self.captureSession canAddOutput:stillImageOutput]) {
 			[stillImageOutput setOutputSettings:@{AVVideoCodecKey:AVVideoCodecJPEG}];
-			[self.session addOutput:stillImageOutput];
+			[self.captureSession addOutput:stillImageOutput];
 			self.stillImageOutput = stillImageOutput;
 		}
     });
@@ -135,29 +135,31 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		[self addObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningCameraPermissionContext];
 		[self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
 		__weak LoCaptureViewController *weakSelf = self;
-		self.runtimeErrorHandlingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self session] queue:nil usingBlock:^(NSNotification *note) {
+		self.runtimeErrorHandlingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self captureSession] queue:nil usingBlock:^(NSNotification *note) {
 			LoCaptureViewController *strongSelf = weakSelf;
 			dispatch_async(strongSelf.sessionQueue, ^{
 				// Manually restarting the session since it must have been stopped due to an error.
-				[strongSelf.session startRunning];
+				[strongSelf.captureSession startRunning];
 			});
 		}];
-		[self.session startRunning];
+		[self.captureSession startRunning];
 	});
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [self.currentShots purge];
     if (self.timer) {
         [self.timer invalidate];
         self.timer = nil;
     }
     self.shotCount = 0;
+    dispatch_async(self.sessionQueue, ^{
+        [self.currentShots purge];
+    });
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
 	dispatch_async(self.sessionQueue, ^{
-		[self.session stopRunning];
+		[self.captureSession stopRunning];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[[self videoDeviceInput] device]];
 		[[NSNotificationCenter defaultCenter] removeObserver:self.runtimeErrorHandlingObserver];
 		[self removeObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" context:SessionRunningCameraPermissionContext];
@@ -170,7 +172,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (BOOL)hasRunningSessionAndCameraPermission {
-	return self.session.isRunning && self.hasCameraPermission;
+	return self.captureSession.isRunning && self.hasCameraPermission;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
