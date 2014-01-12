@@ -41,9 +41,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 - (void)viewWillAppear: (BOOL)animated {
     [super viewWillAppear:animated];
     self.deleteIndex = -1;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.collectionView reloadData];
-    });
+    [self.collectionView reloadData];
     dispatch_async(self.sessionQueue, ^{
         [self.albumProxy addObserver:self forKeyPath:@"assets" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:AlbumAssetsRefreshContext];
     });

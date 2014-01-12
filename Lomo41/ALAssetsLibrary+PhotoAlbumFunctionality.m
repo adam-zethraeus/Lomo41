@@ -73,10 +73,12 @@
                                 [album enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                                     if (result) {
                                         [assets addObject:result];
+                                    } else {
+                                        // 'result' value nil indicates final iteration.
+                                        if (successBlock) successBlock(assets);
                                     }
                                 }];
                             }
-                            if (successBlock) successBlock(assets);
                         }
                       failureBlock:^(NSError* error){
                           if (failureBlock) failureBlock(error);
