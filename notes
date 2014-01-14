@@ -1,6 +1,5 @@
 #Known Issues
 * possible underuse of GPUImage.
-* assets updated count after image add is sometimes one less than it should be. async issue somewhere
 
 # Ideas
 * randomize filter effects within bounds

@@ -11,6 +11,7 @@
 #import "GPUImage.h"
 
 const static float paddingRatio = 1.0/250.0;
+const static float paddingToClipRatio = 1.0/60.0;
 const static GPUVector3 backgroundColor =  {0.1, 0.1, 0.1};
 const static float vignetteStart = 0.4;
 const static float vignetteEnd = 0.8;
@@ -27,6 +28,8 @@ const static float clipSpan = 0.5;
 @property (nonatomic) CGPoint outputSize;
 @property (nonatomic) CGPoint clipSize;
 @property (nonatomic) CGFloat clipRatio;
+@property (nonatomic) CGFloat clipStartPoint;
+@property (nonatomic) CGFloat clipPointIncrements;
 @end
 
 @implementation Lo41ShotProcessor
@@ -76,6 +79,7 @@ const static float clipSpan = 0.5;
     NSLog(@"clipRatio: %f", self.clipRatio);
     
     CGFloat clipStartPoint = (1.0 - clipSpan)/2;
+    self.clipStartPoint = clipStartPoint;
     NSLog(@"clip start: %f", clipStartPoint);
     CGFloat clipEndPoint = 1.0 - clipStartPoint - self.clipRatio;
     NSLog(@"clip end: %f", clipEndPoint);
@@ -84,7 +88,14 @@ const static float clipSpan = 0.5;
     NSLog(@"clipPointSpan: %f", clipPointSpan);
     
     CGFloat clipPointIncrements = clipPointSpan / 3.0;
+    self.clipPointIncrements = clipPointIncrements;
     NSLog(@"clipPointIncrements: %f", clipPointIncrements);
+    
+    CGFloat p = self.outputSize.x / (4.0 + (3.0 * paddingToClipRatio));
+    CGFloat q = paddingToClipRatio * p;
+    
+    NSLog(@"p:%f q:%f", p, q);
+    
 }
 
 - (void)processIndividualShots {
@@ -97,9 +108,9 @@ const static float clipSpan = 0.5;
         GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:[self.shotSet.getShotsArray objectAtIndex:i]];
 
         CGRect cropRect;
-        cropRect.origin.x = 0.25 + ((0.25 / 4.0) * (float) i);
+        cropRect.origin.x = self.clipStartPoint + (self.clipPointIncrements * (float) i);
         cropRect.origin.y = 0;
-        cropRect.size.width = 0.25;
+        cropRect.size.width = self.clipRatio;
         cropRect.size.height = 1.0;
         GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
 
@@ -124,10 +135,10 @@ const static float clipSpan = 0.5;
     if (!self.postProcessedIndividualShots) {
         @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Shots must processed individually before grouping." userInfo:nil];
     }
-    CGSize shotSize = [[self.shotSet.getShotsArray objectAtIndex:0] size];
-    NSAssert(shotSize.height > shotSize.width, @"Assumption height > width failed.");
-    CGFloat padding = shotSize.height * paddingRatio;
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(shotSize.height + (padding * 3.0), shotSize.width), YES, 1.0);
+    //CGSize shotSize = [[self.shotSet.getShotsArray objectAtIndex:0] size];
+    //NSAssert(shotSize.height > shotSize.width, @"Assumption height > width failed.");
+    CGFloat padding = self.outputSize.x * paddingRatio;
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.outputSize.x + (padding * 3.0), self.outputSize.y), YES, 1.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetRGBFillColor(context, backgroundColor.one, backgroundColor.two, backgroundColor.three, 1.0);
     for (int i = 0; i < 4; i++) {
@@ -142,6 +153,7 @@ const static float clipSpan = 0.5;
     }
     self.groupedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    NSLog(@"%f %f", self.groupedImage.size.width, self.groupedImage.size.height);
 }
 
 - (UIImage*)getProcessedGroupImage {
