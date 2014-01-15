@@ -33,29 +33,41 @@
                                             <action selector="doShoot:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Gue-3I-bta"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iLO-ji-gRB">
+                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iLO-ji-gRB">
                                         <rect key="frame" x="30" y="210" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.52105874510000005" green="0.90468179739999999" blue="0.77608917430000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <color key="backgroundColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                                        </accessibility>
                                     </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tMi-Ek-JzC">
+                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tMi-Ek-JzC">
                                         <rect key="frame" x="30" y="180" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.52105874510000005" green="0.90468179739999999" blue="0.77608917430000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <color key="backgroundColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                                        </accessibility>
                                     </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mHo-aA-XSD">
+                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mHo-aA-XSD">
                                         <rect key="frame" x="30" y="150" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.52105874510000005" green="0.90468179739999999" blue="0.77608917430000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <color key="backgroundColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                                        </accessibility>
                                     </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZOu-Td-2Hh">
+                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZOu-Td-2Hh">
                                         <rect key="frame" x="30" y="120" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.52105874510000005" green="0.90468179739999999" blue="0.77608917430000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <color key="backgroundColor" red="0.92549019607843142" green="0.15294117647058825" blue="0.44313725490196076" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                                        </accessibility>
                                     </view>
                                     <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="inA-I9-M6V">
                                         <rect key="frame" x="20" y="0.0" width="100" height="100"/>
@@ -103,7 +115,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="Z30-BL-6e9">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <color key="tintColor" red="0.52105874510704153" green="0.90468179744525545" blue="0.77608917433739688" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="tintColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="Mhe-Ze-YaS"/>

@@ -24,7 +24,7 @@
                                     <accessibilityTraits key="traits" none="YES" button="YES" image="YES"/>
                                 </accessibility>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                 <state key="normal" image="garbage"/>
                                 <state key="highlighted" image="garbage"/>
                                 <connections>
@@ -38,7 +38,7 @@
                                     <accessibilityTraits key="traits" none="YES" button="YES" image="YES"/>
                                 </accessibility>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                 <state key="normal" image="share"/>
                                 <connections>
                                     <action selector="doShare:" destination="-2" eventType="touchUpInside" id="juE-sY-ASn"/>
