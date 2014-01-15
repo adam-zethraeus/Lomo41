@@ -10,8 +10,7 @@
 
 #import "GPUImage.h"
 
-const static float paddingRatio = 1.0/250.0;
-const static float paddingToClipRatio = 1.0/60.0;
+const static float paddingToClipRatio = 1.0/70.0;
 const static GPUVector3 backgroundColor =  {0.1, 0.1, 0.1};
 const static float vignetteStart = 0.4;
 const static float vignetteEnd = 0.8;
@@ -30,6 +29,7 @@ const static float clipSpan = 0.5;
 @property (nonatomic) CGFloat clipRatio;
 @property (nonatomic) CGFloat clipStartPoint;
 @property (nonatomic) CGFloat clipPointIncrements;
+@property (nonatomic) CGFloat padding;
 @end
 
 @implementation Lo41ShotProcessor
@@ -67,15 +67,20 @@ const static float clipSpan = 0.5;
     self.outputSize = outputSize;
     NSLog(@"length4:%f length6:%f", outputSize.y, outputSize.x);
 
-    CGFloat longClipEdge = length4;
-    CGFloat shortClipEdge = length6 / 4.0;
+    CGFloat shortClipEdgeLength = self.outputSize.x / (4.0 + (3.0 * paddingToClipRatio));
+    CGFloat padding = paddingToClipRatio * shortClipEdgeLength;
+    self.padding = padding;
+    NSLog(@"shortClipEdgeLength:%f padding:%f", shortClipEdgeLength, padding);
+    
+    CGFloat longClipEdgeLength = length4;
+    //CGFloat shortClipEdge = length6 / 4.0;
     CGPoint clipSize;
-    clipSize.x = shortClipEdge;
-    clipSize.y = longClipEdge;
+    clipSize.x = shortClipEdgeLength;
+    clipSize.y = longClipEdgeLength;
     self.clipSize = clipSize;
     NSLog(@"longClipEdge:%f shortClipEdge:%f", clipSize.y, clipSize.x);
     
-    self.clipRatio = shortClipEdge / longEdge;
+    self.clipRatio = shortClipEdgeLength / longEdge;
     NSLog(@"clipRatio: %f", self.clipRatio);
     
     CGFloat clipStartPoint = (1.0 - clipSpan)/2;
@@ -90,11 +95,6 @@ const static float clipSpan = 0.5;
     CGFloat clipPointIncrements = clipPointSpan / 3.0;
     self.clipPointIncrements = clipPointIncrements;
     NSLog(@"clipPointIncrements: %f", clipPointIncrements);
-    
-    CGFloat p = self.outputSize.x / (4.0 + (3.0 * paddingToClipRatio));
-    CGFloat q = paddingToClipRatio * p;
-    
-    NSLog(@"p:%f q:%f", p, q);
     
 }
 
@@ -135,18 +135,15 @@ const static float clipSpan = 0.5;
     if (!self.postProcessedIndividualShots) {
         @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Shots must processed individually before grouping." userInfo:nil];
     }
-    //CGSize shotSize = [[self.shotSet.getShotsArray objectAtIndex:0] size];
-    //NSAssert(shotSize.height > shotSize.width, @"Assumption height > width failed.");
-    CGFloat padding = self.outputSize.x * paddingRatio;
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.outputSize.x + (padding * 3.0), self.outputSize.y), YES, 1.0);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.outputSize.x, self.outputSize.y), YES, 1.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetRGBFillColor(context, backgroundColor.one, backgroundColor.two, backgroundColor.three, 1.0);
     for (int i = 0; i < 4; i++) {
         CGContextSaveGState(context);
         UIImage *image = [self.postProcessedIndividualShots objectAtIndex:i];
         NSAssert(image.size.height > image.size.width, @"Assumption height > width failed.");
-        CGRect drawRect = CGRectMake((image.size.width + padding) * i, 0, image.size.width, image.size.height);
-        CGContextTranslateCTM(context, 0, image.size.height);
+        CGRect drawRect = CGRectMake((self.clipSize.x + self.padding) * i, 0, self.clipSize.x, self.clipSize.y);
+        CGContextTranslateCTM(context, 0, self.clipSize.y);
         CGContextScaleCTM(context, 1.0, -1.0);
         CGContextDrawImage(context, drawRect, image.CGImage);
         CGContextRestoreGState(context);
