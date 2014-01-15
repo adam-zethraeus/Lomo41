@@ -14,7 +14,6 @@ const static float paddingToClipRatio = 1.0/70.0;
 const static GPUVector3 backgroundColor =  {0.1, 0.1, 0.1};
 const static float vignetteStart = 0.4;
 const static float vignetteEnd = 0.8;
-const static float saturationLevel = 0.8;
 // Distance across the center than clips can be taken from. Max 1.0.
 const static float clipSpan = 0.5;
 
@@ -113,18 +112,20 @@ const static float clipSpan = 0.5;
         cropRect.size.width = self.clipRatio;
         cropRect.size.height = 1.0;
         GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
+        GPUImageMissEtikateFilter *missEtikateFilter = [[GPUImageMissEtikateFilter alloc] init];
 
         GPUImageVignetteFilter *vignetteFilter = [[GPUImageVignetteFilter alloc] init];
         vignetteFilter.vignetteColor = backgroundColor;
         vignetteFilter.vignetteStart = vignetteStart;
         vignetteFilter.vignetteEnd = vignetteEnd;
 
-        GPUImageSaturationFilter *saturationFilter = [[GPUImageSaturationFilter alloc] init];
-        saturationFilter.saturation = saturationLevel;
+        //GPUImageSaturationFilter *saturationFilter = [[GPUImageSaturationFilter alloc] init];
+        //saturationFilter.saturation = saturationLevel;
 
         [stillImageSource addTarget:cropFilter];
-        [cropFilter addTarget:saturationFilter];
-        [saturationFilter addTarget:vignetteFilter];
+        [cropFilter addTarget:missEtikateFilter];
+        [missEtikateFilter addTarget:vignetteFilter];
+        //[saturationFilter addTarget:vignetteFilter];
         [stillImageSource processImage];
         UIImage *processedImage = [vignetteFilter imageFromCurrentlyProcessedOutputWithOrientation:UIImageOrientationUp];
         [self.postProcessedIndividualShots addObject:processedImage];
