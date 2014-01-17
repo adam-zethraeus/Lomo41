@@ -35,11 +35,15 @@ const static float clipSpan = 0.5;
 - (id)initWithShotSet: (LoShotSet*) set {
     self = [super init];
     if (self) {
+#ifdef DEBUG
         if (set.count != 4) {
             NSLog(@"shot set size was: %lu", (unsigned long)set.count);
             @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Lo41ShotProcessor needs a LoShotSet of size 4." userInfo:nil];
         }
         self.shotSet = set;
+#else
+        return nil;
+#endif
     }
     return self;
 }
@@ -88,7 +92,11 @@ const static float clipSpan = 0.5;
 
 - (void)processIndividualShots {
     if (!self.shotSet) {
+#ifdef DEBUG
         @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Shots must be availabele to process." userInfo:nil];
+#else
+        return;
+#endif
     }
     [self calculateOutputSizesFromImage:[self.shotSet.getShotsArray objectAtIndex:0]];
     self.postProcessedIndividualShots = [NSMutableArray arrayWithCapacity:4];
@@ -120,7 +128,11 @@ const static float clipSpan = 0.5;
 
 - (void)groupShots {
     if (!self.postProcessedIndividualShots) {
+#ifdef DEBUG
         @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Shots must processed individually before grouping." userInfo:nil];
+#else
+        return;
+#endif
     }
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.outputSize.x, self.outputSize.y), YES, 1.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -141,7 +153,11 @@ const static float clipSpan = 0.5;
 
 - (UIImage*)getProcessedGroupImage {
     if (!self.groupedImage) {
+#ifdef DEBUG
         @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Shots must be grouped before final processing." userInfo:nil];
+#else
+        return nil;
+#endif
     }
     return self.groupedImage;
 }
