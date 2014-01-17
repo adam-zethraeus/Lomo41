@@ -17,24 +17,28 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Jm-R3-zYW">
-                                <rect key="frame" x="90" y="90" width="140" height="340"/>
+                                <rect key="frame" x="90" y="93" width="140" height="335"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhB-ZX-PJ8">
-                                        <rect key="frame" x="20" y="240" width="100" height="100"/>
+                                        <rect key="frame" x="30" y="255" width="80" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="64"/>
-                                        <state key="normal" backgroundImage="light-grey">
-                                            <color key="titleShadowColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <state key="normal" image="shutter_narrow">
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <state key="highlighted" backgroundImage="mid-grey"/>
+                                        <state key="highlighted" image="shutter_wide">
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
                                         <connections>
                                             <action selector="doShoot:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Gue-3I-bta"/>
                                         </connections>
                                     </button>
                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iLO-ji-gRB">
-                                        <rect key="frame" x="30" y="210" width="80" height="10"/>
+                                        <rect key="frame" x="30" y="219" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -43,7 +47,7 @@
                                         </accessibility>
                                     </view>
                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tMi-Ek-JzC">
-                                        <rect key="frame" x="30" y="180" width="80" height="10"/>
+                                        <rect key="frame" x="30" y="189" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -52,7 +56,7 @@
                                         </accessibility>
                                     </view>
                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mHo-aA-XSD">
-                                        <rect key="frame" x="30" y="150" width="80" height="10"/>
+                                        <rect key="frame" x="30" y="159" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -61,7 +65,7 @@
                                         </accessibility>
                                     </view>
                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZOu-Td-2Hh">
-                                        <rect key="frame" x="30" y="120" width="80" height="10"/>
+                                        <rect key="frame" x="30" y="129" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.92549019607843142" green="0.15294117647058825" blue="0.44313725490196076" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -85,7 +89,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="140" id="Apx-Y8-UEX"/>
-                                    <constraint firstAttribute="height" constant="340" id="cFw-wq-Rag"/>
+                                    <constraint firstAttribute="height" constant="335" id="cFw-wq-Rag" userLabel="Height - (335) - View"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -220,8 +224,8 @@
     <resources>
         <image name="camera" width="28" height="21"/>
         <image name="gallery" width="28" height="22"/>
-        <image name="light-grey" width="1" height="1"/>
-        <image name="mid-grey" width="1" height="1"/>
+        <image name="shutter_narrow" width="80" height="80"/>
+        <image name="shutter_wide" width="80" height="80"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
