@@ -144,6 +144,62 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		194EC48D1888F254009BC1CD /* Capture View */ = {
+			isa = PBXGroup;
+			children = (
+				1973BA11187A74640026BC67 /* LoCameraPreviewView.h */,
+				1973BA12187A74640026BC67 /* LoCameraPreviewView.m */,
+				1982EA0E185850A600CC0731 /* LoCaptureViewController.h */,
+				1982EA0F185850A600CC0731 /* LoCaptureViewController.m */,
+			);
+			name = "Capture View";
+			sourceTree = "<group>";
+		};
+		194EC4901888F26F009BC1CD /* Interface Files */ = {
+			isa = PBXGroup;
+			children = (
+				1982EA0B185850A600CC0731 /* Main.storyboard */,
+				1973BA18187B42780026BC67 /* photoCell.xib */,
+				1982EA11185850A600CC0731 /* Images.xcassets */,
+			);
+			name = "Interface Files";
+			sourceTree = "<group>";
+		};
+		194EC4911888F294009BC1CD /* Album View */ = {
+			isa = PBXGroup;
+			children = (
+				1973BA1A187B465D0026BC67 /* LoImagePreviewCell.h */,
+				1973BA1B187B465D0026BC67 /* LoImagePreviewCell.m */,
+				1982EA8C186D2DCF00CC0731 /* LoUICollectionViewController.h */,
+				1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */,
+			);
+			name = "Album View";
+			sourceTree = "<group>";
+		};
+		194EC4921888F2C0009BC1CD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				19478215188237B40023DD0F /* LoAlbumProxy.h */,
+				19478216188237B40023DD0F /* LoAlbumProxy.m */,
+				1982EA861868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.h */,
+				1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */,
+				1982EA2E1864E79A00CC0731 /* LoShotSet.h */,
+				1982EA2F1864E79A00CC0731 /* LoShotSet.m */,
+				1982EA311865487600CC0731 /* Lo41ShotProcessor.h */,
+				1982EA321865487600CC0731 /* Lo41ShotProcessor.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		194EC4931888F304009BC1CD /* Image View */ = {
+			isa = PBXGroup;
+			children = (
+				191B1563186F895200357698 /* LoImageViewController.h */,
+				191B1564186F895200357698 /* LoImageViewController.m */,
+			);
+			name = "Image View";
+			sourceTree = "<group>";
+		};
 		1982E9ED185850A600CC0731 = {
 			isa = PBXGroup;
 			children = (
@@ -183,29 +239,13 @@
 		1982E9FF185850A600CC0731 /* Lomo41 */ = {
 			isa = PBXGroup;
 			children = (
-				1982EA0B185850A600CC0731 /* Main.storyboard */,
-				1973BA18187B42780026BC67 /* photoCell.xib */,
-				1973BA1A187B465D0026BC67 /* LoImagePreviewCell.h */,
-				1973BA1B187B465D0026BC67 /* LoImagePreviewCell.m */,
-				1973BA11187A74640026BC67 /* LoCameraPreviewView.h */,
-				1973BA12187A74640026BC67 /* LoCameraPreviewView.m */,
-				191B1563186F895200357698 /* LoImageViewController.h */,
-				191B1564186F895200357698 /* LoImageViewController.m */,
-				1982EA8C186D2DCF00CC0731 /* LoUICollectionViewController.h */,
-				1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */,
-				19478215188237B40023DD0F /* LoAlbumProxy.h */,
-				19478216188237B40023DD0F /* LoAlbumProxy.m */,
-				1982EA861868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.h */,
-				1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */,
+				194EC4901888F26F009BC1CD /* Interface Files */,
+				194EC4921888F2C0009BC1CD /* Models */,
+				194EC4911888F294009BC1CD /* Album View */,
+				194EC48D1888F254009BC1CD /* Capture View */,
+				194EC4931888F304009BC1CD /* Image View */,
 				1982EA08185850A600CC0731 /* LoAppDelegate.h */,
 				1982EA09185850A600CC0731 /* LoAppDelegate.m */,
-				1982EA0E185850A600CC0731 /* LoCaptureViewController.h */,
-				1982EA0F185850A600CC0731 /* LoCaptureViewController.m */,
-				1982EA2E1864E79A00CC0731 /* LoShotSet.h */,
-				1982EA2F1864E79A00CC0731 /* LoShotSet.m */,
-				1982EA311865487600CC0731 /* Lo41ShotProcessor.h */,
-				1982EA321865487600CC0731 /* Lo41ShotProcessor.m */,
-				1982EA11185850A600CC0731 /* Images.xcassets */,
 				1982EA00185850A600CC0731 /* Supporting Files */,
 			);
 			path = Lomo41;
