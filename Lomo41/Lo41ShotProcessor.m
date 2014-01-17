@@ -56,7 +56,6 @@ const static float clipSpan = 0.5;
     inputSize.x = longEdge;
     inputSize.y = shortEdge;
     self.inputSize = inputSize;
-    NSLog(@"long:%f short:%f", inputSize.x, inputSize.y);
 
     CGFloat length4 = shortEdge;
     CGFloat length6 = length4 * 1.5;
@@ -64,36 +63,26 @@ const static float clipSpan = 0.5;
     outputSize.x = length6;
     outputSize.y = length4;
     self.outputSize = outputSize;
-    NSLog(@"length4:%f length6:%f", outputSize.y, outputSize.x);
 
     CGFloat shortClipEdgeLength = self.outputSize.x / (4.0 + (3.0 * paddingToClipRatio));
     CGFloat padding = paddingToClipRatio * shortClipEdgeLength;
     self.padding = padding;
-    NSLog(@"shortClipEdgeLength:%f padding:%f", shortClipEdgeLength, padding);
     
     CGFloat longClipEdgeLength = length4;
-    //CGFloat shortClipEdge = length6 / 4.0;
     CGPoint clipSize;
     clipSize.x = shortClipEdgeLength;
     clipSize.y = longClipEdgeLength;
     self.clipSize = clipSize;
-    NSLog(@"longClipEdge:%f shortClipEdge:%f", clipSize.y, clipSize.x);
     
     self.clipRatio = shortClipEdgeLength / longEdge;
-    NSLog(@"clipRatio: %f", self.clipRatio);
     
     CGFloat clipStartPoint = (1.0 - clipSpan)/2;
     self.clipStartPoint = clipStartPoint;
-    NSLog(@"clip start: %f", clipStartPoint);
+
     CGFloat clipEndPoint = 1.0 - clipStartPoint - self.clipRatio;
-    NSLog(@"clip end: %f", clipEndPoint);
-    
     CGFloat clipPointSpan = clipEndPoint - clipStartPoint;
-    NSLog(@"clipPointSpan: %f", clipPointSpan);
-    
     CGFloat clipPointIncrements = clipPointSpan / 3.0;
     self.clipPointIncrements = clipPointIncrements;
-    NSLog(@"clipPointIncrements: %f", clipPointIncrements);
     
 }
 
@@ -111,7 +100,8 @@ const static float clipSpan = 0.5;
         cropRect.origin.y = 0;
         cropRect.size.width = self.clipRatio;
         cropRect.size.height = 1.0;
-        GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
+        GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];;
+
         GPUImageMissEtikateFilter *missEtikateFilter = [[GPUImageMissEtikateFilter alloc] init];
 
         GPUImageVignetteFilter *vignetteFilter = [[GPUImageVignetteFilter alloc] init];
@@ -119,13 +109,9 @@ const static float clipSpan = 0.5;
         vignetteFilter.vignetteStart = vignetteStart;
         vignetteFilter.vignetteEnd = vignetteEnd;
 
-        //GPUImageSaturationFilter *saturationFilter = [[GPUImageSaturationFilter alloc] init];
-        //saturationFilter.saturation = saturationLevel;
-
         [stillImageSource addTarget:cropFilter];
         [cropFilter addTarget:missEtikateFilter];
         [missEtikateFilter addTarget:vignetteFilter];
-        //[saturationFilter addTarget:vignetteFilter];
         [stillImageSource processImage];
         UIImage *processedImage = [vignetteFilter imageFromCurrentlyProcessedOutputWithOrientation:UIImageOrientationUp];
         [self.postProcessedIndividualShots addObject:processedImage];
@@ -151,7 +137,6 @@ const static float clipSpan = 0.5;
     }
     self.groupedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    NSLog(@"%f %f", self.groupedImage.size.width, self.groupedImage.size.height);
 }
 
 - (UIImage*)getProcessedGroupImage {
