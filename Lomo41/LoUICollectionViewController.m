@@ -70,7 +70,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 - (LoImagePreviewCell *)collectionView: (UICollectionView *)collectionView cellForItemAtIndexPath: (NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"photoCell";
     ALAsset *asset = self.album.assets[self.album.assets.count - 1 - indexPath.row];
-    CGImageRef thumbnailImageRef = [[asset defaultRepresentation] fullScreenImage];
+    CGImageRef thumbnailImageRef = [asset aspectRatioThumbnail];
     static BOOL nibMyCellLoaded = NO;
     if(!nibMyCellLoaded) {
         UINib *nib = [UINib nibWithNibName:@"photoCell" bundle: nil];
