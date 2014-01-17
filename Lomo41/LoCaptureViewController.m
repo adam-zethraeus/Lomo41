@@ -33,6 +33,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) id runtimeErrorHandlingObserver;
 @property (nonatomic, readonly, getter = isSessionRunningAndHasCameraPermission) BOOL sessionRunningAndHasCameraPermission;
 @property (nonatomic) BOOL hasCameraPermission;
+@property BOOL isFlashing;
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSInteger shotCount;
 @property (nonatomic, readonly, getter = isCurrentlyShooting) BOOL isShooting;
@@ -145,6 +146,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		[self.captureSession startRunning];
 	});
     self.shotCount = 0;
+    self.isFlashing = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -249,11 +251,21 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (void)runCaptureAnimation {
+    if (self.isFlashing) {
+        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(runCaptureAnimation) userInfo:nil repeats:NO];
+        return;
+    }
+    self.isFlashing = YES;
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[self.shootView.layer setOpacity:0.0];
-		[UIView animateWithDuration:.25 animations:^{
+		[UIView animateWithDuration:.2
+                         animations:^{
             [self.shootView.layer setOpacity:1.0];
-		}];
+                         }
+                         completion:^(BOOL x){
+                             self.isFlashing = NO;
+                         }];
+
 	});
 }
 
