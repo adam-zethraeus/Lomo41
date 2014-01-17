@@ -18,7 +18,6 @@
 #import "LoAlbumProxy.h"
 #import "LoUICollectionViewController.h"
 
-static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
 
 @interface LoCaptureViewController ()
@@ -33,7 +32,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) id runtimeErrorHandlingObserver;
 @property (nonatomic, readonly, getter = isSessionRunningAndHasCameraPermission) BOOL sessionRunningAndHasCameraPermission;
 @property (nonatomic) BOOL hasCameraPermission;
-@property BOOL isFlashing;
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSInteger shotCount;
 @property (nonatomic, readonly, getter = isCurrentlyShooting) BOOL isShooting;
@@ -134,7 +132,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (void)viewWillAppear:(BOOL)animated {
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningCameraPermissionContext];
-		[self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
 		__weak LoCaptureViewController *weakSelf = self;
 		self.runtimeErrorHandlingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self captureSession] queue:nil usingBlock:^(NSNotification *note) {
 			LoCaptureViewController *strongSelf = weakSelf;
@@ -146,7 +143,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		[self.captureSession startRunning];
 	});
     self.shotCount = 0;
-    self.isFlashing = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -165,7 +161,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[[self videoDeviceInput] device]];
 		[[NSNotificationCenter defaultCenter] removeObserver:self.runtimeErrorHandlingObserver];
 		[self removeObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" context:SessionRunningCameraPermissionContext];
-        [self removeObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" context:CapturingStillImageContext];
 	});
 }
 
@@ -181,12 +176,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                       ofObject:(id)object
                         change:(NSDictionary *)change
                        context:(void *)context {
-	if (context == CapturingStillImageContext) {
-		BOOL isCapturingStillImage = [change[NSKeyValueChangeNewKey] boolValue];
-		if (isCapturingStillImage) {
-			[self runCaptureAnimation];
-		}
-	} else if (context == SessionRunningCameraPermissionContext) {
+	if (context == SessionRunningCameraPermissionContext) {
         BOOL hasPermission = [change[NSKeyValueChangeNewKey] boolValue];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (hasPermission) {
@@ -214,6 +204,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         self.timer = nil;
         final = true;
     }
+    [self runCaptureAnimation];
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         if (failed) return;
         if (imageDataSampleBuffer) {
@@ -251,21 +242,11 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (void)runCaptureAnimation {
-    if (self.isFlashing) {
-        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(runCaptureAnimation) userInfo:nil repeats:NO];
-        return;
-    }
-    self.isFlashing = YES;
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[self.shootView.layer setOpacity:0.0];
-		[UIView animateWithDuration:.2
-                         animations:^{
+		[UIView animateWithDuration:.25 animations:^{
             [self.shootView.layer setOpacity:1.0];
-                         }
-                         completion:^(BOOL x){
-                             self.isFlashing = NO;
-                         }];
-
+		}];
 	});
 }
 
