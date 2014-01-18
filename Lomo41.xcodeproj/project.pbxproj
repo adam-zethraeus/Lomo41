@@ -28,7 +28,6 @@
 		1982EA25185850A600CC0731 /* Lomo41Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA24185850A600CC0731 /* Lomo41Tests.m */; };
 		1982EA301864E79A00CC0731 /* LoShotSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA2F1864E79A00CC0731 /* LoShotSet.m */; };
 		1982EA331865487600CC0731 /* Lo41ShotProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA321865487600CC0731 /* Lo41ShotProcessor.m */; };
-		1982EA7B1865946600CC0731 /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982EA761865944C00CC0731 /* libGPUImage.a */; };
 		1982EA7D1865947100CC0731 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982EA7C1865947100CC0731 /* CoreMedia.framework */; };
 		1982EA7F1865947600CC0731 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982EA7E1865947600CC0731 /* CoreVideo.framework */; };
 		1982EA811865947E00CC0731 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982EA801865947E00CC0731 /* OpenGLES.framework */; };
@@ -36,6 +35,7 @@
 		1982EA851865948800CC0731 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982EA841865948800CC0731 /* AVFoundation.framework */; };
 		1982EA881868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */; };
 		1982EA8E186D2DCF00CC0731 /* LoUICollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */; };
+		92CD813D8BC047F6A09088D1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF23387409D4C31A9CDD15A /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,27 +45,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1982E9F5185850A600CC0731;
 			remoteInfo = Lomo41;
-		};
-		1982EA751865944C00CC0731 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1982EA6F1865944C00CC0731 /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BCF1A33414DDB1EC00852800;
-			remoteInfo = GPUImage;
-		};
-		1982EA771865944C00CC0731 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1982EA6F1865944C00CC0731 /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BCF1A34414DDB1EC00852800;
-			remoteInfo = GPUImageTests;
-		};
-		1982EA791865946100CC0731 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1982EA6F1865944C00CC0731 /* GPUImage.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = BCF1A33314DDB1EC00852800;
-			remoteInfo = GPUImage;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -102,7 +81,6 @@
 		1982EA2F1864E79A00CC0731 /* LoShotSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoShotSet.m; sourceTree = "<group>"; };
 		1982EA311865487600CC0731 /* Lo41ShotProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lo41ShotProcessor.h; sourceTree = "<group>"; };
 		1982EA321865487600CC0731 /* Lo41ShotProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Lo41ShotProcessor.m; sourceTree = "<group>"; };
-		1982EA6F1865944C00CC0731 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = submodules/GPUImage/framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		1982EA7C1865947100CC0731 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		1982EA7E1865947600CC0731 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		1982EA801865947E00CC0731 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -112,6 +90,8 @@
 		1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsLibrary+PhotoAlbumFunctionality.m"; sourceTree = "<group>"; };
 		1982EA8C186D2DCF00CC0731 /* LoUICollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoUICollectionViewController.h; sourceTree = "<group>"; };
 		1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoUICollectionViewController.m; sourceTree = "<group>"; };
+		4FF23387409D4C31A9CDD15A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6F3FE8CC644437592B2EEE6 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,10 +104,10 @@
 				1982EA811865947E00CC0731 /* OpenGLES.framework in Frameworks */,
 				1982EA7F1865947600CC0731 /* CoreVideo.framework in Frameworks */,
 				1982EA7D1865947100CC0731 /* CoreMedia.framework in Frameworks */,
-				1982EA7B1865946600CC0731 /* libGPUImage.a in Frameworks */,
 				1982E9FC185850A600CC0731 /* CoreGraphics.framework in Frameworks */,
 				1982E9FE185850A600CC0731 /* UIKit.framework in Frameworks */,
 				1982E9FA185850A600CC0731 /* Foundation.framework in Frameworks */,
+				92CD813D8BC047F6A09088D1 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,11 +183,11 @@
 		1982E9ED185850A600CC0731 = {
 			isa = PBXGroup;
 			children = (
-				1982EA6F1865944C00CC0731 /* GPUImage.xcodeproj */,
 				1982E9FF185850A600CC0731 /* Lomo41 */,
 				1982EA1E185850A600CC0731 /* Lomo41Tests */,
 				1982E9F8185850A600CC0731 /* Frameworks */,
 				1982E9F7185850A600CC0731 /* Products */,
+				D6F3FE8CC644437592B2EEE6 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -232,6 +212,7 @@
 				1982E9FB185850A600CC0731 /* CoreGraphics.framework */,
 				1982E9FD185850A600CC0731 /* UIKit.framework */,
 				1982EA18185850A600CC0731 /* XCTest.framework */,
+				4FF23387409D4C31A9CDD15A /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -280,15 +261,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		1982EA701865944C00CC0731 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1982EA761865944C00CC0731 /* libGPUImage.a */,
-				1982EA781865944C00CC0731 /* GPUImageTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -296,14 +268,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1982EA28185850A600CC0731 /* Build configuration list for PBXNativeTarget "Lomo41" */;
 			buildPhases = (
+				3C481FA977344D69A5E59D25 /* Check Pods Manifest.lock */,
 				1982E9F2185850A600CC0731 /* Sources */,
 				1982E9F3185850A600CC0731 /* Frameworks */,
 				1982E9F4185850A600CC0731 /* Resources */,
+				FC2724F7360C4ED6833C24AB /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				1982EA7A1865946100CC0731 /* PBXTargetDependency */,
 			);
 			name = Lomo41;
 			productName = Lomo41;
@@ -354,12 +327,6 @@
 			mainGroup = 1982E9ED185850A600CC0731;
 			productRefGroup = 1982E9F7185850A600CC0731 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 1982EA701865944C00CC0731 /* Products */;
-					ProjectRef = 1982EA6F1865944C00CC0731 /* GPUImage.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1982E9F5185850A600CC0731 /* Lomo41 */,
@@ -367,23 +334,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		1982EA761865944C00CC0731 /* libGPUImage.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libGPUImage.a;
-			remoteRef = 1982EA751865944C00CC0731 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1982EA781865944C00CC0731 /* GPUImageTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GPUImageTests.octest;
-			remoteRef = 1982EA771865944C00CC0731 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1982E9F4185850A600CC0731 /* Resources */ = {
@@ -406,6 +356,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3C481FA977344D69A5E59D25 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FC2724F7360C4ED6833C24AB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1982E9F2185850A600CC0731 /* Sources */ = {
@@ -441,11 +424,6 @@
 			isa = PBXTargetDependency;
 			target = 1982E9F5185850A600CC0731 /* Lomo41 */;
 			targetProxy = 1982EA1C185850A600CC0731 /* PBXContainerItemProxy */;
-		};
-		1982EA7A1865946100CC0731 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = GPUImage;
-			targetProxy = 1982EA791865946100CC0731 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -551,6 +529,7 @@
 		};
 		1982EA29185850A600CC0731 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6F3FE8CC644437592B2EEE6 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -569,6 +548,7 @@
 		};
 		1982EA2A185850A600CC0731 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6F3FE8CC644437592B2EEE6 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -576,7 +556,6 @@
 				GCC_PREFIX_HEADER = "Lomo41/Lomo41-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"submodules/GPUImage/framework/**",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "Lomo41/Lomo41-Info.plist";

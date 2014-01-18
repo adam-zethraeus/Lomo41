@@ -1,3 +1,0 @@
-[submodule "submodules/GPUImage"]
-	path = submodules/GPUImage
-	url = git@github.com:BradLarson/GPUImage.git
