@@ -24,6 +24,10 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (weak, nonatomic) IBOutlet UIView *shootView;
 @property (weak, nonatomic) IBOutlet UIButton *shootButton;
 @property (weak, nonatomic) IBOutlet LoCameraPreviewView *previewView;
+@property (weak, nonatomic) IBOutlet UIView *paneOne;
+@property (weak, nonatomic) IBOutlet UIView *paneTwo;
+@property (weak, nonatomic) IBOutlet UIView *paneThree;
+@property (weak, nonatomic) IBOutlet UIView *paneFour;
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (nonatomic) AVCaptureSession *captureSession;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
@@ -143,6 +147,10 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		[self.captureSession startRunning];
 	});
     self.shotCount = 0;
+    [self.paneOne.layer setOpacity: 1.0];
+    [self.paneTwo.layer setOpacity: 1.0];
+    [self.paneThree.layer setOpacity: 1.0];
+    [self.paneFour.layer setOpacity: 1.0];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -205,6 +213,22 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         final = true;
     }
     [self runCaptureAnimation];
+    switch (self.shotCount) {
+        case 1:
+            [self.paneOne.layer setOpacity: 0.5];
+            break;
+        case 2:
+            [self.paneTwo.layer setOpacity: 0.5];
+            break;
+        case 3:
+            [self.paneThree.layer setOpacity: 0.5];
+            break;
+        case 4:
+            [self.paneFour.layer setOpacity: 0.5];
+            break;
+        default:
+            break;
+    }
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         if (failed) return;
         if (imageDataSampleBuffer) {
@@ -222,7 +246,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             CFRelease(imageDataSampleBuffer);
             if (final) {
                 [self processShotSet];
-                self.shotCount = 0;
             }
         });
     }];
@@ -238,6 +261,13 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             [self.album addImage:finalGroupedImage];
         }
         [self.currentShots purge];
+        self.shotCount = 0;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.paneOne.layer setOpacity: 1.0];
+            [self.paneTwo.layer setOpacity: 1.0];
+            [self.paneThree.layer setOpacity: 1.0];
+            [self.paneFour.layer setOpacity: 1.0];
+        });
     });
 }
 
