@@ -215,16 +215,16 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     [self runCaptureAnimation];
     switch (self.shotCount) {
         case 1:
-            [self.paneOne.layer setOpacity: 0.5];
+            [self.paneOne.layer setOpacity: 0.2];
             break;
         case 2:
-            [self.paneTwo.layer setOpacity: 0.5];
+            [self.paneTwo.layer setOpacity: 0.2];
             break;
         case 3:
-            [self.paneThree.layer setOpacity: 0.5];
+            [self.paneThree.layer setOpacity: 0.2];
             break;
         case 4:
-            [self.paneFour.layer setOpacity: 0.5];
+            [self.paneFour.layer setOpacity: 0.2];
             break;
         default:
             break;
