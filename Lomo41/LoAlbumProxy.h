@@ -10,11 +10,11 @@
 
 @interface LoAlbumProxy : NSObject
 
-@property (nonatomic) NSMutableArray *assets; //TODO: make readonly
+@property (nonatomic) NSMutableArray *assets;
 
 - (id)initForAlbum: (NSString *)albumName;
 - (void)addImage: (UIImage *)image;
 - (void)deleteAssetAtIndex: (NSUInteger)index;
-- (void)updateAssets; // remove if possible
+- (void)updateAssets;
 
 @end

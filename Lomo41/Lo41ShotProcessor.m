@@ -11,12 +11,14 @@
 #import "GPUImage.h"
 #import "LoDefaultFilter.h"
 
-const static float paddingToClipRatio = 1.0f/70.0f;
+const static float paddingToClipRatio = 1.0f/45.0f;
 const static GPUVector3 backgroundColor =  {0.1, 0.1, 0.1};
-const static float vignetteStart = 0.3f;
-const static float vignetteEnd = 1.6f;
+const static float vignetteStart = 0.4f;
+const static float vignetteEnd = 1.4f;
 const static float saturationLevel = 1.1f;
 const static float contrastLevel = 1.3f;
+const static float blurExcludeRadius = 0.6f;
+const static float blurSize = 0.3f;
 // Distance across the center than clips can be taken from. Max 1.0.
 const static float clipSpan = 0.4f;
 
@@ -112,21 +114,21 @@ const static float clipSpan = 0.4f;
         cropRect.size.width = self.clipRatio;
         cropRect.size.height = 1.0;
         GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
-//        GPUImageSaturationFilter *saturationFilter = [[GPUImageSaturationFilter alloc] init];
-//        saturationFilter.saturation = saturationLevel;
-//        GPUImageContrastFilter *contrastFilter = [[GPUImageContrastFilter alloc] init];
-//        contrastFilter.contrast = contrastLevel;
         GPUImageVignetteFilter *vignetteFilter = [[GPUImageVignetteFilter alloc] init];
         vignetteFilter.vignetteColor = backgroundColor;
         vignetteFilter.vignetteStart = vignetteStart;
         vignetteFilter.vignetteEnd = vignetteEnd;
         LoDefaultFilter *lomoFilter = [[LoDefaultFilter alloc] init];
 
+        GPUImageGaussianSelectiveBlurFilter *gaussianFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
+        gaussianFilter.excludeCircleRadius = blurExcludeRadius;
+        gaussianFilter.excludeCirclePoint = CGPointMake(0.5, 0.5);
+        gaussianFilter.excludeBlurSize = blurSize;
+
         [stillImageSource addTarget:cropFilter];
         [cropFilter addTarget:lomoFilter];
-        [lomoFilter addTarget:vignetteFilter];
-//        [saturationFilter addTarget:contrastFilter];
-//        [contrastFilter addTarget:vignetteFilter];
+        [lomoFilter addTarget:gaussianFilter];
+        [gaussianFilter addTarget:vignetteFilter];
         [stillImageSource processImage];
 
         UIImage *processedImage = [vignetteFilter imageFromCurrentlyProcessedOutputWithOrientation:UIImageOrientationUp];
