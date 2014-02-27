@@ -14,7 +14,7 @@
 const static float paddingToClipRatio = 1.0f/70.0f;
 const static GPUVector3 backgroundColor =  {0.1, 0.1, 0.1};
 const static float vignetteStart = 0.3f;
-const static float vignetteEnd = 2.0f;
+const static float vignetteEnd = 1.6f;
 const static float saturationLevel = 1.1f;
 const static float contrastLevel = 1.3f;
 // Distance across the center than clips can be taken from. Max 1.0.
@@ -112,10 +112,10 @@ const static float clipSpan = 0.4f;
         cropRect.size.width = self.clipRatio;
         cropRect.size.height = 1.0;
         GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
-        GPUImageSaturationFilter *saturationFilter = [[GPUImageSaturationFilter alloc] init];
-        saturationFilter.saturation = saturationLevel;
-        GPUImageContrastFilter *contrastFilter = [[GPUImageContrastFilter alloc] init];
-        contrastFilter.contrast = contrastLevel;
+//        GPUImageSaturationFilter *saturationFilter = [[GPUImageSaturationFilter alloc] init];
+//        saturationFilter.saturation = saturationLevel;
+//        GPUImageContrastFilter *contrastFilter = [[GPUImageContrastFilter alloc] init];
+//        contrastFilter.contrast = contrastLevel;
         GPUImageVignetteFilter *vignetteFilter = [[GPUImageVignetteFilter alloc] init];
         vignetteFilter.vignetteColor = backgroundColor;
         vignetteFilter.vignetteStart = vignetteStart;
@@ -124,9 +124,9 @@ const static float clipSpan = 0.4f;
 
         [stillImageSource addTarget:cropFilter];
         [cropFilter addTarget:lomoFilter];
-        [lomoFilter addTarget:saturationFilter];
-        [saturationFilter addTarget:contrastFilter];
-        [contrastFilter addTarget:vignetteFilter];
+        [lomoFilter addTarget:vignetteFilter];
+//        [saturationFilter addTarget:contrastFilter];
+//        [contrastFilter addTarget:vignetteFilter];
         [stillImageSource processImage];
 
         UIImage *processedImage = [vignetteFilter imageFromCurrentlyProcessedOutputWithOrientation:UIImageOrientationUp];
