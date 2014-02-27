@@ -12,20 +12,18 @@
 
 @implementation LoDefaultFilter
 
-- (id)init;
-{
-    if (!(self = [super init]))
-    {
+- (id)init {
+    if (!(self = [super init])) {
         return nil;
     }
     
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-    UIImage *image = [UIImage imageNamed:@"lomo.png"];
+    UIImage *image = [UIImage imageNamed:@"lomo2.png"];
 #else
-    NSImage *image = [NSImage imageNamed:@"lomo.png"];
+    NSImage *image = [NSImage imageNamed:@"lomo2.png"];
 #endif
     
-    NSAssert(image, @"To use GPUImageMissEtikateFilter you need to add lookup_miss_etikate.png from GPUImage/framework/Resources to your application bundle.");
+    NSAssert(image, @"Image resource must be added to assets");
     
     lookupImageSource = [[GPUImagePicture alloc] initWithImage:image];
     GPUImageLookupFilter *lookupFilter = [[GPUImageLookupFilter alloc] init];
@@ -40,12 +38,9 @@
     return self;
 }
 
--(void)prepareForImageCapture {
+- (void)prepareForImageCapture {
     [lookupImageSource processImage];
     [super prepareForImageCapture];
 }
-
-#pragma mark -
-#pragma mark Accessors
 
 @end
