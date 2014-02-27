@@ -10,12 +10,14 @@
 
 #import "GPUImage.h"
 
-const static float paddingToClipRatio = 1.0/70.0;
+const static float paddingToClipRatio = 1.0f/70.0f;
 const static GPUVector3 backgroundColor =  {0.1, 0.1, 0.1};
-const static float vignetteStart = 0.4;
-const static float vignetteEnd = 0.8;
+const static float vignetteStart = 0.3f;
+const static float vignetteEnd = 2.0f;
+const static float saturationLevel = 1.1f;
+const static float contrastLevel = 1.3f;
 // Distance across the center than clips can be taken from. Max 1.0.
-const static float clipSpan = 0.5;
+const static float clipSpan = 0.4f;
 
 @interface Lo41ShotProcessor ()
 
@@ -108,20 +110,24 @@ const static float clipSpan = 0.5;
         cropRect.origin.y = 0;
         cropRect.size.width = self.clipRatio;
         cropRect.size.height = 1.0;
-        GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];;
-
-        GPUImageMissEtikateFilter *missEtikateFilter = [[GPUImageMissEtikateFilter alloc] init];
-
+        GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
+        GPUImageSaturationFilter *saturationFilter = [[GPUImageSaturationFilter alloc] init];
+        saturationFilter.saturation = saturationLevel;
+        GPUImageContrastFilter *contrastFilter = [[GPUImageContrastFilter alloc] init];
+        contrastFilter.contrast = contrastLevel;
         GPUImageVignetteFilter *vignetteFilter = [[GPUImageVignetteFilter alloc] init];
         vignetteFilter.vignetteColor = backgroundColor;
         vignetteFilter.vignetteStart = vignetteStart;
         vignetteFilter.vignetteEnd = vignetteEnd;
 
         [stillImageSource addTarget:cropFilter];
-        [cropFilter addTarget:missEtikateFilter];
-        [missEtikateFilter addTarget:vignetteFilter];
+        [cropFilter addTarget:saturationFilter];
+        [saturationFilter addTarget:contrastFilter];
+        [contrastFilter addTarget:vignetteFilter];
         [stillImageSource processImage];
+
         UIImage *processedImage = [vignetteFilter imageFromCurrentlyProcessedOutputWithOrientation:UIImageOrientationUp];
+
         [self.postProcessedIndividualShots addObject:processedImage];
     }
 }
