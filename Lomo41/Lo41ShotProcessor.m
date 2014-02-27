@@ -9,6 +9,7 @@
 #import "Lo41ShotProcessor.h"
 
 #import "GPUImage.h"
+#import "LoDefaultFilter.h"
 
 const static float paddingToClipRatio = 1.0f/70.0f;
 const static GPUVector3 backgroundColor =  {0.1, 0.1, 0.1};
@@ -119,9 +120,11 @@ const static float clipSpan = 0.4f;
         vignetteFilter.vignetteColor = backgroundColor;
         vignetteFilter.vignetteStart = vignetteStart;
         vignetteFilter.vignetteEnd = vignetteEnd;
+        LoDefaultFilter *lomoFilter = [[LoDefaultFilter alloc] init];
 
         [stillImageSource addTarget:cropFilter];
-        [cropFilter addTarget:saturationFilter];
+        [cropFilter addTarget:lomoFilter];
+        [lomoFilter addTarget:saturationFilter];
         [saturationFilter addTarget:contrastFilter];
         [contrastFilter addTarget:vignetteFilter];
         [stillImageSource processImage];

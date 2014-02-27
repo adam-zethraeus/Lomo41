@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		191B1565186F895200357698 /* LoImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 191B1564186F895200357698 /* LoImageViewController.m */; };
 		19478217188237B40023DD0F /* LoAlbumProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 19478216188237B40023DD0F /* LoAlbumProxy.m */; };
+		1962A94918BEC9F60068E36B /* LoDefaultFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1962A94818BEC9F60068E36B /* LoDefaultFilter.m */; };
 		1973BA13187A74640026BC67 /* LoCameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1973BA12187A74640026BC67 /* LoCameraPreviewView.m */; };
 		1973BA19187B42780026BC67 /* photoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1973BA18187B42780026BC67 /* photoCell.xib */; };
 		1973BA1C187B465D0026BC67 /* LoImagePreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1973BA1B187B465D0026BC67 /* LoImagePreviewCell.m */; };
@@ -53,6 +54,8 @@
 		191B1564186F895200357698 /* LoImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoImageViewController.m; sourceTree = "<group>"; };
 		19478215188237B40023DD0F /* LoAlbumProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoAlbumProxy.h; sourceTree = "<group>"; };
 		19478216188237B40023DD0F /* LoAlbumProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoAlbumProxy.m; sourceTree = "<group>"; };
+		1962A94718BEC9F60068E36B /* LoDefaultFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoDefaultFilter.h; sourceTree = "<group>"; };
+		1962A94818BEC9F60068E36B /* LoDefaultFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoDefaultFilter.m; sourceTree = "<group>"; };
 		1973BA11187A74640026BC67 /* LoCameraPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoCameraPreviewView.h; sourceTree = "<group>"; };
 		1973BA12187A74640026BC67 /* LoCameraPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoCameraPreviewView.m; sourceTree = "<group>"; };
 		1973BA18187B42780026BC67 /* photoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = photoCell.xib; path = ../photoCell.xib; sourceTree = "<group>"; };
@@ -165,8 +168,6 @@
 				1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */,
 				1982EA2E1864E79A00CC0731 /* LoShotSet.h */,
 				1982EA2F1864E79A00CC0731 /* LoShotSet.m */,
-				1982EA311865487600CC0731 /* Lo41ShotProcessor.h */,
-				1982EA321865487600CC0731 /* Lo41ShotProcessor.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -178,6 +179,17 @@
 				191B1564186F895200357698 /* LoImageViewController.m */,
 			);
 			name = "Image View";
+			sourceTree = "<group>";
+		};
+		1962A94618BEC97B0068E36B /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				1982EA311865487600CC0731 /* Lo41ShotProcessor.h */,
+				1982EA321865487600CC0731 /* Lo41ShotProcessor.m */,
+				1962A94718BEC9F60068E36B /* LoDefaultFilter.h */,
+				1962A94818BEC9F60068E36B /* LoDefaultFilter.m */,
+			);
+			name = Actions;
 			sourceTree = "<group>";
 		};
 		1982E9ED185850A600CC0731 = {
@@ -220,6 +232,7 @@
 		1982E9FF185850A600CC0731 /* Lomo41 */ = {
 			isa = PBXGroup;
 			children = (
+				1962A94618BEC97B0068E36B /* Actions */,
 				194EC4901888F26F009BC1CD /* Interface Files */,
 				194EC4921888F2C0009BC1CD /* Models */,
 				194EC4911888F294009BC1CD /* Album View */,
@@ -405,6 +418,7 @@
 				1982EA881868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m in Sources */,
 				1973BA1C187B465D0026BC67 /* LoImagePreviewCell.m in Sources */,
 				1982EA8E186D2DCF00CC0731 /* LoUICollectionViewController.m in Sources */,
+				1962A94918BEC9F60068E36B /* LoDefaultFilter.m in Sources */,
 				191B1565186F895200357698 /* LoImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
