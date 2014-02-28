@@ -1,6 +1,5 @@
 #Known Issues
 * possible underuse of GPUImage.
-* Lomo41 album creation fails (?!?!)
 * Images are not set with proper rotation information
 * outside tap after flipping a thumbnail opens other picture, instead of unrotating
 * can't flip between full screen images
