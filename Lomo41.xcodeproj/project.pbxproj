@@ -556,6 +556,7 @@
 				);
 				INFOPLIST_FILE = "Lomo41/Lomo41-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "6ACF87FF-A721-4CD9-8461-ED4FF485C46A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -574,6 +575,7 @@
 				);
 				INFOPLIST_FILE = "Lomo41/Lomo41-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "5778CF13-C186-437E-8C58-4B8EFF1B9F64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
