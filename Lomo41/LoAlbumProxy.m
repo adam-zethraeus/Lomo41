@@ -32,8 +32,20 @@
         }
         self.albumName = albumName;
         self.library = [[ALAssetsLibrary alloc] init];
-        self.assets = [[NSMutableArray alloc] init];
-        [self updateAssets];
+        __weak LoAlbumProxy *weakSelf = self;
+        [self.library addAssetsGroupAlbumWithName:albumName resultBlock:^(ALAssetsGroup *group) {
+            weakSelf.assets = [[NSMutableArray alloc] init];
+            [weakSelf updateAssets];
+        } failureBlock:^(NSError *error) {
+#ifdef DEBUG
+            @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Unexpected album creation failure" userInfo:nil];
+#else
+            NSLog(@"%@", error);
+            // try to continue anyway
+            weakSelf.assets = [[NSMutableArray alloc] init];
+            [weakSelf updateAssets];
+#endif
+        }];
     }
     return self;
 }
