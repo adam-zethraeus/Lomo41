@@ -81,7 +81,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return YES;
+    return NO;
 }
 
 - (BOOL)isSessionRunningAndHasCameraPermission {
