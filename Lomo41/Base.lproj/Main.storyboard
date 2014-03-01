@@ -258,6 +258,7 @@
         <image name="shutter_narrow" width="80" height="80"/>
         <image name="shutter_wide" width="80" height="80"/>
     </resources>
+    <color key="tintColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
