@@ -8,25 +8,13 @@
 
 #import "LoAppDelegate.h"
 
-#import "LoUICollectionViewController.h"
-#import "LoCaptureViewController.h"
 #import "LoAlbumProxy.h"
 
 @implementation LoAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    UITabBarController *tbc = (UITabBarController*)self.window.rootViewController;
-    LoAlbumProxy *album = [[LoAlbumProxy alloc] initForAlbum:@"Lomo41"];
-    for (UIViewController* vc in tbc.viewControllers) {
-        if ([vc class] == [LoUICollectionViewController class]) {
-            LoUICollectionViewController *cvc = (LoUICollectionViewController *)vc;
-            cvc.album = album;
-        } else if ([vc class] == [LoCaptureViewController class]) {
-            LoCaptureViewController *cvc = (LoCaptureViewController *)vc;
-            cvc.album = album;
-        }
-    }
+    self.album = [[LoAlbumProxy alloc] initForAlbum:@"Lomo41"];
     return YES;
 }
 							

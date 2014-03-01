@@ -17,6 +17,7 @@
 #import "LoShotSet.h"
 #import "LoAlbumProxy.h"
 #import "LoUICollectionViewController.h"
+#import "LoAppDelegate.h"
 
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
 
@@ -39,6 +40,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSInteger shotCount;
 @property (nonatomic, readonly, getter = isCurrentlyShooting) BOOL isShooting;
+@property (weak, nonatomic) LoAppDelegate *appDelegate;
 - (IBAction)doShoot:(id)sender;
 @end
 
@@ -88,6 +90,8 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    NSAssert(self.appDelegate.album != nil, @"album should have been set on AppDelegate");
     self.captureSession = [[AVCaptureSession alloc] init];
     self.currentShots = [[LoShotSet alloc] initForSize:4];
 	[self checkCameraPermissions];
@@ -258,7 +262,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         [processor groupShots];
         UIImage *finalGroupedImage = [processor getProcessedGroupImage];
         if (finalGroupedImage) {
-            [self.album addImage:finalGroupedImage];
+            [self.appDelegate.album addImage:finalGroupedImage];
         }
         [self.currentShots purge];
         self.shotCount = 0;

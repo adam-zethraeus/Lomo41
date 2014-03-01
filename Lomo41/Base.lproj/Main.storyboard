@@ -112,7 +112,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="692" y="-184"/>
+            <point key="canvasLocation" x="708" y="-453"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="y99-wU-6Nm">
@@ -127,14 +127,14 @@
                     </tabBar>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="Mhe-Ze-YaS"/>
-                        <segue destination="88M-O3-Wt7" kind="relationship" relationship="viewControllers" id="8dF-Wu-xFG"/>
+                        <segue destination="soO-E0-6UH" kind="relationship" relationship="viewControllers" id="8dF-Wu-xFG"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dUm-Zg-Mj7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="148" y="296"/>
         </scene>
-        <!--LoUI Collection View Controller - Gallery-->
+        <!--LoUI Collection View Controller-->
         <scene sceneID="6dG-O3-Uee">
             <objects>
                 <collectionViewController autoresizesArchivedViewToFullSize="NO" id="88M-O3-Wt7" customClass="LoUICollectionViewController" sceneMemberID="viewController">
@@ -150,7 +150,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoCell" id="e7l-5d-8p9" customClass="LoImagePreviewCell">
-                                <rect key="frame" x="8" y="8" width="147" height="98"/>
+                                <rect key="frame" x="8" y="72" width="147" height="98"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="147" height="98"/>
@@ -159,7 +159,7 @@
                                 </view>
                             </collectionViewCell>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoCell" id="I8h-Xd-jmb" customClass="LoImagePreviewCell">
-                                <rect key="frame" x="165" y="8" width="147" height="98"/>
+                                <rect key="frame" x="165" y="72" width="147" height="98"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="147" height="98"/>
@@ -173,16 +173,24 @@
                             <outlet property="delegate" destination="88M-O3-Wt7" id="QgT-wo-zxS"/>
                         </connections>
                     </collectionView>
-                    <tabBarItem key="tabBarItem" tag="1" title="Gallery" image="gallery" id="q2S-W2-Z1e"/>
-                    <navigationItem key="navigationItem" id="ZVc-23-6hj"/>
+                    <navigationItem key="navigationItem" id="ZVc-23-6hj">
+                        <barButtonItem key="leftBarButtonItem" enabled="NO" title="Delete" id="Ir7-B8-YQQ"/>
+                        <barButtonItem key="rightBarButtonItem" title="Select" id="jvP-Gn-UlO">
+                            <connections>
+                                <action selector="doToggleSelect:" destination="88M-O3-Wt7" id="cwT-XM-8kX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="aLy-fS-nud" id="Hwk-Xj-AGd"/>
+                        <outlet property="deleteButton" destination="Ir7-B8-YQQ" id="cqf-x7-wd6"/>
+                        <outlet property="doDeleteSelection" destination="Ir7-B8-YQQ" id="YiE-FV-1CB"/>
                         <segue destination="1Qh-zd-MzO" kind="modal" identifier="viewImage" id="vQE-wb-pHe"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yFE-PD-1pE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="692" y="465"/>
+            <point key="canvasLocation" x="1218" y="465"/>
         </scene>
         <!--Lo Image View Controller-->
         <scene sceneID="FV3-ga-CQI">
@@ -222,7 +230,26 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RRI-1l-IBY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1123" y="465"/>
+            <point key="canvasLocation" x="1649" y="465"/>
+        </scene>
+        <!--Navigation Controller - Gallery-->
+        <scene sceneID="re3-Gf-HJx">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="soO-E0-6UH" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" tag="1" title="Gallery" image="gallery" id="q2S-W2-Z1e"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="sf8-88-GA7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="88M-O3-Wt7" kind="relationship" relationship="rootViewController" id="dRL-Q4-OFb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aPT-9Q-Uh4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="692" y="465"/>
         </scene>
     </scenes>
     <resources>
