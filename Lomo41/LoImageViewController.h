@@ -11,5 +11,6 @@
 @class ALAsset;
 
 @interface LoImageViewController : UIViewController
-@property (nonatomic, weak) ALAsset *asset;
+@property (nonatomic, strong) NSArray *assetList;
+@property (nonatomic) NSInteger index;
 @end

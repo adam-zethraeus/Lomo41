@@ -21,7 +21,7 @@
 }
 
 - (void)viewDidLoad {
-    CGImageRef imageRef = [[self.asset defaultRepresentation] fullResolutionImage];
+    CGImageRef imageRef = [[self.assetList[self.index] defaultRepresentation] fullResolutionImage];
     UIImage *image = [UIImage imageWithCGImage:imageRef scale:1.0f orientation:UIImageOrientationRight];
     self.imageView.image = image;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doClose)];
