@@ -10,8 +10,9 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface LoImageViewController()<UIScrollViewDelegate>
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+#import "PhotoViewController.h"
+
+@interface LoImageViewController()<UIPageViewControllerDataSource, UIViewControllerTransitioningDelegate>
 @end
 
 @implementation LoImageViewController
@@ -21,20 +22,35 @@
 }
 
 - (void)viewDidLoad {
-    CGImageRef imageRef = [[self.assetList[self.index] defaultRepresentation] fullResolutionImage];
-    UIImage *image = [UIImage imageWithCGImage:imageRef scale:1.0f orientation:UIImageOrientationRight];
-    self.imageView.image = image;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doClose)];
-    tapGesture.numberOfTapsRequired = 1;
-    self.imageView.userInteractionEnabled = YES;
-    [self.imageView addGestureRecognizer:tapGesture];
+    UIImage *initialImage = [self imageForIndex:self.initialIndex];
+    self.dataSource = self;
+    PhotoViewController *initialPage = [PhotoViewController photoViewControllerForIndex:self.initialIndex andImage:initialImage];
+    [self setTransitioningDelegate:self];
+    if (initialPage != nil) {
+        [self setViewControllers:@[initialPage]
+                       direction:UIPageViewControllerNavigationDirectionForward
+                        animated:NO
+                      completion:NULL];
+    }
 }
 
-- (UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    return self.imageView;
+- (UIImage *)imageForIndex:(NSInteger)index {
+    if (index < 0 || index >= self.assetList.count) {
+        return nil;
+    }
+    CGImageRef imageRef = [[self.assetList[index] defaultRepresentation] fullResolutionImage];
+    return [UIImage imageWithCGImage:imageRef scale:1.0f orientation:UIImageOrientationRight];
 }
 
-- (void)doClose {
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (UIViewController *)pageViewController:(UIPageViewController *)pvc
+      viewControllerBeforeViewController:(PhotoViewController *)vc {
+    NSUInteger index = vc.index + 1;
+    return [PhotoViewController photoViewControllerForIndex:index andImage:[self imageForIndex:index]];
+}
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pvc
+       viewControllerAfterViewController:(PhotoViewController *)vc {
+    NSUInteger index = vc.index - 1;
+    return [PhotoViewController photoViewControllerForIndex:index andImage:[self imageForIndex:index]];
 }
 @end

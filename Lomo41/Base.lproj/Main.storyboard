@@ -185,7 +185,7 @@
                         <outlet property="collectionView" destination="aLy-fS-nud" id="Hwk-Xj-AGd"/>
                         <outlet property="deleteButton" destination="Ir7-B8-YQQ" id="cqf-x7-wd6"/>
                         <outlet property="doDeleteSelection" destination="Ir7-B8-YQQ" id="YiE-FV-1CB"/>
-                        <segue destination="1Qh-zd-MzO" kind="modal" identifier="viewImage" id="vQE-wb-pHe"/>
+                        <segue destination="EB3-u1-5ae" kind="modal" identifier="viewImage" id="oP5-e0-4vL"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yFE-PD-1pE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -193,44 +193,12 @@
             <point key="canvasLocation" x="1218" y="465"/>
         </scene>
         <!--Lo Image View Controller-->
-        <scene sceneID="FV3-ga-CQI">
+        <scene sceneID="MKE-zk-1ML">
             <objects>
-                <viewController id="1Qh-zd-MzO" customClass="LoImageViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6l0-2S-Lt6"/>
-                        <viewControllerLayoutGuide type="bottom" id="Sse-7d-0wp"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="M56-lk-Z9X">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" maximumZoomScale="7" translatesAutoresizingMaskIntoConstraints="NO" id="fRd-BO-37q">
-                                <rect key="frame" x="0.0" y="0.0" width="325" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Ml-dX-qkJ">
-                                        <rect key="frame" x="0.0" y="-7" width="320" height="575"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <rect key="contentStretch" x="0.49999999999999961" y="0.49999999999999994" width="1" height="1"/>
-                                <connections>
-                                    <outlet property="delegate" destination="1Qh-zd-MzO" id="W2X-V4-NGi"/>
-                                </connections>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="imageView" destination="0Ml-dX-qkJ" id="l6u-TC-1wI"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RRI-1l-IBY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="EB3-u1-5ae" customClass="LoImageViewController" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nSZ-ah-Ndd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1649" y="465"/>
+            <point key="canvasLocation" x="1680" y="465"/>
         </scene>
         <!--Navigation Controller - Gallery-->
         <scene sceneID="re3-Gf-HJx">

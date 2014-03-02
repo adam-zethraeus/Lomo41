@@ -13,6 +13,8 @@
 		1973BA13187A74640026BC67 /* LoCameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1973BA12187A74640026BC67 /* LoCameraPreviewView.m */; };
 		1973BA19187B42780026BC67 /* photoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1973BA18187B42780026BC67 /* photoCell.xib */; };
 		1973BA1C187B465D0026BC67 /* LoImagePreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1973BA1B187B465D0026BC67 /* LoImagePreviewCell.m */; };
+		1979A32F18C2AA3700A64834 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1979A32C18C2AA3700A64834 /* PhotoViewController.m */; };
+		1979A33018C2AA3700A64834 /* ImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1979A32E18C2AA3700A64834 /* ImageScrollView.m */; };
 		1982E9FA185850A600CC0731 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982E9F9185850A600CC0731 /* Foundation.framework */; };
 		1982E9FC185850A600CC0731 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982E9FB185850A600CC0731 /* CoreGraphics.framework */; };
 		1982E9FE185850A600CC0731 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982E9FD185850A600CC0731 /* UIKit.framework */; };
@@ -61,6 +63,10 @@
 		1973BA18187B42780026BC67 /* photoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = photoCell.xib; path = ../photoCell.xib; sourceTree = "<group>"; };
 		1973BA1A187B465D0026BC67 /* LoImagePreviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoImagePreviewCell.h; path = ../LoImagePreviewCell.h; sourceTree = "<group>"; };
 		1973BA1B187B465D0026BC67 /* LoImagePreviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoImagePreviewCell.m; path = ../LoImagePreviewCell.m; sourceTree = "<group>"; };
+		1979A32B18C2AA3700A64834 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
+		1979A32C18C2AA3700A64834 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
+		1979A32D18C2AA3700A64834 /* ImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageScrollView.h; sourceTree = "<group>"; };
+		1979A32E18C2AA3700A64834 /* ImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageScrollView.m; sourceTree = "<group>"; };
 		1982E9F6185850A600CC0731 /* Lomo41.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lomo41.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1982E9F9185850A600CC0731 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1982E9FB185850A600CC0731 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -172,13 +178,17 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		194EC4931888F304009BC1CD /* Image View */ = {
+		194EC4931888F304009BC1CD /* Gallery Image View */ = {
 			isa = PBXGroup;
 			children = (
+				1979A32B18C2AA3700A64834 /* PhotoViewController.h */,
+				1979A32C18C2AA3700A64834 /* PhotoViewController.m */,
+				1979A32D18C2AA3700A64834 /* ImageScrollView.h */,
+				1979A32E18C2AA3700A64834 /* ImageScrollView.m */,
 				191B1563186F895200357698 /* LoImageViewController.h */,
 				191B1564186F895200357698 /* LoImageViewController.m */,
 			);
-			name = "Image View";
+			name = "Gallery Image View";
 			sourceTree = "<group>";
 		};
 		1962A94618BEC97B0068E36B /* Actions */ = {
@@ -237,7 +247,7 @@
 				194EC4921888F2C0009BC1CD /* Models */,
 				194EC4911888F294009BC1CD /* Album View */,
 				194EC48D1888F254009BC1CD /* Capture View */,
-				194EC4931888F304009BC1CD /* Image View */,
+				194EC4931888F304009BC1CD /* Gallery Image View */,
 				1982EA08185850A600CC0731 /* LoAppDelegate.h */,
 				1982EA09185850A600CC0731 /* LoAppDelegate.m */,
 				1982EA00185850A600CC0731 /* Supporting Files */,
@@ -415,6 +425,8 @@
 				19478217188237B40023DD0F /* LoAlbumProxy.m in Sources */,
 				1982EA331865487600CC0731 /* Lo41ShotProcessor.m in Sources */,
 				1982EA301864E79A00CC0731 /* LoShotSet.m in Sources */,
+				1979A33018C2AA3700A64834 /* ImageScrollView.m in Sources */,
+				1979A32F18C2AA3700A64834 /* PhotoViewController.m in Sources */,
 				1982EA881868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m in Sources */,
 				1973BA1C187B465D0026BC67 /* LoImagePreviewCell.m in Sources */,
 				1982EA8E186D2DCF00CC0731 /* LoUICollectionViewController.m in Sources */,

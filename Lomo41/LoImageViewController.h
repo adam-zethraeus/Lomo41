@@ -10,7 +10,7 @@
 
 @class ALAsset;
 
-@interface LoImageViewController : UIViewController
+@interface LoImageViewController : UIPageViewController
 @property (nonatomic, strong) NSArray *assetList;
-@property (nonatomic) NSInteger index;
+@property (nonatomic) NSInteger initialIndex;
 @end
