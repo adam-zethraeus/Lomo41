@@ -27,8 +27,9 @@
 }
 
 - (void)viewDidLoad {
-//    make UIPageViewController
-    NSLog(@"%@", self.container);
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleToolbarVisibility)];
+    tapGesture.numberOfTapsRequired = 1;
+    [self.container addGestureRecognizer:tapGesture];
 
 }
 
@@ -62,6 +63,31 @@
 - (IBAction)doShare:(id)sender {
     NSLog(@"share");
 }
+
+-(void)toggleToolbarVisibility {
+    if (self.toolbar.hidden) {
+        [self animateToolbarVisibility: true];
+    } else {
+        [self animateToolbarVisibility: false];
+    }
+
+}
+
+-(void)animateToolbarVisibility: (bool)visible {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.25 animations:^{
+            if (!visible) {
+                self.toolbar.hidden = true;
+            }
+            self.container.backgroundColor = visible ? [UIColor whiteColor] : [UIColor blackColor];
+		} completion:^(BOOL finished) {
+            if (visible) {
+                self.toolbar.hidden = false;
+            }
+        }];
+	});
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"containedPager"]) {
         UIPageViewController *pagerController = (UIPageViewController *)segue.destinationViewController;
