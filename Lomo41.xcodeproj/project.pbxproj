@@ -242,8 +242,8 @@
 		1982E9FF185850A600CC0731 /* Lomo41 */ = {
 			isa = PBXGroup;
 			children = (
-				1962A94618BEC97B0068E36B /* Actions */,
 				194EC4901888F26F009BC1CD /* Interface Files */,
+				1962A94618BEC97B0068E36B /* Actions */,
 				194EC4921888F2C0009BC1CD /* Models */,
 				194EC4911888F294009BC1CD /* Album View */,
 				194EC48D1888F254009BC1CD /* Capture View */,

@@ -12,7 +12,12 @@
 
 #import "PhotoViewController.h"
 
-@interface LoImageViewController()<UIPageViewControllerDataSource, UIViewControllerTransitioningDelegate>
+@interface LoImageViewController()<UIPageViewControllerDataSource>
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (strong, nonatomic) IBOutlet UIView *container;
+- (IBAction)doBack:(id)sender;
+- (IBAction)doTrash:(id)sender;
+- (IBAction)doShare:(id)sender;
 @end
 
 @implementation LoImageViewController
@@ -22,16 +27,9 @@
 }
 
 - (void)viewDidLoad {
-    UIImage *initialImage = [self imageForIndex:self.initialIndex];
-    self.dataSource = self;
-    PhotoViewController *initialPage = [PhotoViewController photoViewControllerForIndex:self.initialIndex andImage:initialImage];
-    [self setTransitioningDelegate:self];
-    if (initialPage != nil) {
-        [self setViewControllers:@[initialPage]
-                       direction:UIPageViewControllerNavigationDirectionForward
-                        animated:NO
-                      completion:NULL];
-    }
+//    make UIPageViewController
+    NSLog(@"%@", self.container);
+
 }
 
 - (UIImage *)imageForIndex:(NSInteger)index {
@@ -52,5 +50,30 @@
        viewControllerAfterViewController:(PhotoViewController *)vc {
     NSUInteger index = vc.index - 1;
     return [PhotoViewController photoViewControllerForIndex:index andImage:[self imageForIndex:index]];
+}
+- (IBAction)doBack:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)doTrash:(id)sender {
+    NSLog(@"trash");
+}
+
+- (IBAction)doShare:(id)sender {
+    NSLog(@"share");
+}
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"containedPager"]) {
+        UIPageViewController *pagerController = (UIPageViewController *)segue.destinationViewController;
+        UIImage *initialImage = [self imageForIndex:self.initialIndex];
+        pagerController.dataSource = self;
+        PhotoViewController *initialPage = [PhotoViewController photoViewControllerForIndex:self.initialIndex andImage:initialImage];
+        if (initialPage != nil) {
+            [pagerController setViewControllers:@[initialPage]
+                           direction:UIPageViewControllerNavigationDirectionForward
+                            animated:NO
+                          completion:NULL];
+        }
+    }
 }
 @end

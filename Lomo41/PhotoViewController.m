@@ -31,14 +31,6 @@
     [scrollView displayImage: self.image];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view = scrollView;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doClose)];
-    tapGesture.numberOfTapsRequired = 1;
-    self.view.userInteractionEnabled = YES;
-    [self.view addGestureRecognizer:tapGesture];
-}
-
-- (void)doClose {
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
