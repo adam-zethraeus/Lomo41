@@ -4,6 +4,7 @@
 * outside tap after flipping a thumbnail opens other picture, instead of unrotating
 * can't share or delete full screen images
 * can't mass-delete images
+* model in gallery is gross
 
 # Ideas
 * randomize filter effects within bounds

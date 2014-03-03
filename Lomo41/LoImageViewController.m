@@ -12,12 +12,15 @@
 
 #import "PhotoViewController.h"
 
-@interface LoImageViewController()<UIPageViewControllerDataSource>
+@interface LoImageViewController()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (strong, nonatomic) IBOutlet UIView *container;
+@property (nonatomic) NSInteger currentIndex;
+@property (nonatomic) NSInteger potentialNextIndex;
 - (IBAction)doBack:(id)sender;
 - (IBAction)doTrash:(id)sender;
 - (IBAction)doShare:(id)sender;
+@property (strong, nonatomic) UIPageViewController *pagerController;
 @end
 
 @implementation LoImageViewController
@@ -29,6 +32,8 @@
 - (void)viewDidLoad {
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleToolbarVisibility)];
     tapGesture.numberOfTapsRequired = 1;
+    self.currentIndex = self.initialIndex;
+    self.potentialNextIndex = self.initialIndex;
     [self.container addGestureRecognizer:tapGesture];
 
 }
@@ -52,6 +57,19 @@
     NSUInteger index = vc.index - 1;
     return [PhotoViewController photoViewControllerForIndex:index andImage:[self imageForIndex:index]];
 }
+
+- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers {
+    self.potentialNextIndex = ((PhotoViewController *)pendingViewControllers.lastObject).index;
+}
+
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
+    if (!completed) {
+        return;
+    }
+    self.currentIndex = self.potentialNextIndex;
+    NSLog(@"current index: %lu", self.currentIndex);
+}
+
 - (IBAction)doBack:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -90,12 +108,13 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"containedPager"]) {
-        UIPageViewController *pagerController = (UIPageViewController *)segue.destinationViewController;
+        self.pagerController = (UIPageViewController *)segue.destinationViewController;
         UIImage *initialImage = [self imageForIndex:self.initialIndex];
-        pagerController.dataSource = self;
+        self.pagerController.dataSource = self;
+        self.pagerController.delegate = self;
         PhotoViewController *initialPage = [PhotoViewController photoViewControllerForIndex:self.initialIndex andImage:initialImage];
         if (initialPage != nil) {
-            [pagerController setViewControllers:@[initialPage]
+            [self.pagerController setViewControllers:@[initialPage]
                            direction:UIPageViewControllerNavigationDirectionForward
                             animated:NO
                           completion:NULL];
