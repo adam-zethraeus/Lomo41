@@ -26,7 +26,6 @@
 @property (strong, nonatomic) UIPageViewController *pagerController;
 @property (weak, nonatomic) LoAppDelegate *appDelegate;
 @property (nonatomic) dispatch_queue_t sessionQueue;
-@property BOOL registeredForKVO;
 @end
 
 static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
@@ -39,7 +38,6 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     self.appDelegate = [[UIApplication sharedApplication] delegate];
     self.sessionQueue = dispatch_queue_create("collection view proxy queue", DISPATCH_QUEUE_SERIAL);
     self.deleteIndex = -1;
-    self.registeredForKVO = NO;
     self.currentIndex = self.initialIndex;
     self.potentialNextIndex = self.initialIndex;
     UIImage *initialImage = [self imageForIndex:self.initialIndex];
@@ -57,29 +55,6 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     [self.container addGestureRecognizer:tapGesture];
 }
 
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    dispatch_async(self.sessionQueue, ^{
-        // This hack is present because when activating doShare UIActivityViewController
-        // viewWillDisappear is not called. But viewWillAppear is called when exiting it.
-        if (!self.registeredForKVO) {
-            [self.appDelegate.album addObserver:self forKeyPath:@"assets" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:AlbumAssetsRefreshContext];
-            self.registeredForKVO = YES;
-        }
-    });
-}
-
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    dispatch_async(self.sessionQueue, ^{
-        // See note in viewWillAppear.
-        if(self.registeredForKVO) {
-            [self.appDelegate.album removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
-            self.registeredForKVO = NO;
-        }
-    });
-}
-
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
@@ -89,10 +64,19 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
                         change:(NSDictionary *)change
                        context:(void *)context {
 	if (context == AlbumAssetsRefreshContext) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"refresh?");
-        });
 	}
+}
+
+-(void)refreshToIndex: (NSInteger)index {
+    NSLog(@"refesh to: %lu", index);
+    self.currentIndex = index;
+    PhotoViewController *currentPage = [PhotoViewController photoViewControllerForIndex:index andImage:[self imageForIndex:index]];
+    if (currentPage != nil) {
+        [self.pagerController setViewControllers:@[currentPage]
+                                       direction:UIPageViewControllerNavigationDirectionForward
+                                        animated:NO
+                                      completion:NULL];
+    }
 }
 
 - (UIImage *)imageForIndex:(NSInteger)index {
@@ -124,7 +108,6 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
         return;
     }
     self.currentIndex = self.potentialNextIndex;
-    NSLog(@"current index: %lu", self.currentIndex);
 }
 
 - (IBAction)doBack:(id)sender {
@@ -143,9 +126,18 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    // Deletion accepted.
     if (buttonIndex == 1) {
-        NSAssert(self.deleteIndex >= 0, @"index for action was not set");
-        [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex];
+        NSAssert(self.deleteIndex >= 0, @"index for deletion was not set");
+        if (self.appDelegate.album.assets.count > 1) {
+            NSInteger newIndex = self.currentIndex - 1;
+            [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex];
+            [self refreshToIndex: newIndex < 0 ? 0 : newIndex];
+        } else {
+            // We're about to empty the album. Exit after.
+            [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
     }
 }
 
