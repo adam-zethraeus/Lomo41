@@ -135,16 +135,20 @@ typedef enum AlbumState {
     self.state = FLIPPED_CELL;
     if (!cell.frontView.isHidden) {
         [self flipAllCellsToFrontInDirection: direction];
-        [LoUICollectionViewController flipToBackOfCell:cell inDirection:direction];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [LoUICollectionViewController flipToBackOfCell:cell inDirection:direction];
+        });
     } else {
         [self flipAllCellsToFrontInDirection: direction];
     }
 }
 
 - (void)flipAllCellsToFrontInDirection: (UIViewAnimationOptions) direction {
-    for (LoImagePreviewCell *cell in self.collectionView.visibleCells) {
-        [LoUICollectionViewController flipToFrontOfCell:cell inDirection:direction];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for (LoImagePreviewCell *cell in self.collectionView.visibleCells) {
+            [LoUICollectionViewController flipToFrontOfCell:cell inDirection:direction];
+        }
+    });
 }
 
 + (void)flipToFrontOfCell: (LoImagePreviewCell *)cell inDirection: (UIViewAnimationOptions) direction {
@@ -234,6 +238,7 @@ typedef enum AlbumState {
                        context:(void *)context {
 	if (context == AlbumAssetsRefreshContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self resetState];
             [self.collectionView reloadData];
         });
 	}
