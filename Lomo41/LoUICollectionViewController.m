@@ -29,6 +29,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 @property (nonatomic) NSUInteger deleteIndex;
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (strong, nonatomic) LoAppDelegate *appDelegate;
+@property (nonatomic) bool flippedCellState;
 @end
 
 @implementation LoUICollectionViewController
@@ -48,6 +49,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     [super viewWillAppear:animated];
     self.deleteIndex = -1;
     [self.collectionView reloadData];
+    self.flippedCellState = NO;
     dispatch_async(self.sessionQueue, ^{
         [self.appDelegate.album addObserver:self forKeyPath:@"assets" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:AlbumAssetsRefreshContext];
     });
@@ -113,6 +115,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
         direction = UIViewAnimationOptionTransitionFlipFromRight;
     }
+    self.flippedCellState = YES;
     if (!cell.frontView.isHidden) {
         [self flipAllCellsToFrontInDirection: direction];
         [LoUICollectionViewController flipToBackOfCell:cell inDirection:direction];
@@ -170,7 +173,12 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 }
 
 - (IBAction)doShow:(id)sender {
-    [self performSegueWithIdentifier: @"viewImage" sender: ((UIView *)sender).superview.superview.superview];
+    if (self.flippedCellState) {
+        [self flipAllCellsToFrontInDirection:UIViewAnimationOptionTransitionFlipFromLeft];
+        self.flippedCellState = NO;
+    } else {
+        [self performSegueWithIdentifier: @"viewImage" sender: ((UIView *)sender).superview.superview.superview];
+    }
 }
 
 - (IBAction)doToggleSelect:(UIBarButtonItem *)sender {
