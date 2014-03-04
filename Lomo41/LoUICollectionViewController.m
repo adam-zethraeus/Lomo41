@@ -54,12 +54,14 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     dispatch_async(self.sessionQueue, ^{
         [self.appDelegate.album updateAssets];
     });
 }
 
 - (void)viewWillDisappear: (BOOL)animated {
+    [super viewWillDisappear:animated];
     dispatch_async(self.sessionQueue, ^{
         [self.appDelegate.album removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
     });

@@ -138,6 +138,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningCameraPermissionContext];
 		__weak LoCaptureViewController *weakSelf = self;
@@ -158,6 +159,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     if (self.timer) {
         [self.timer invalidate];
         self.timer = nil;
@@ -168,6 +170,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
 	dispatch_async(self.sessionQueue, ^{
 		[self.captureSession stopRunning];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[[self videoDeviceInput] device]];

@@ -32,6 +32,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 @implementation LoImageViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     NSAssert(self.pagerController != nil, @"pagerController should have been set in prepareForSegue");
     self.appDelegate = [[UIApplication sharedApplication] delegate];
     self.sessionQueue = dispatch_queue_create("collection view proxy queue", DISPATCH_QUEUE_SERIAL);
@@ -41,6 +42,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     self.currentIndex = self.initialIndex;
     self.potentialNextIndex = self.initialIndex;
     UIImage *initialImage = [self imageForIndex:self.initialIndex];
@@ -59,6 +61,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     dispatch_async(self.sessionQueue, ^{
         [self.appDelegate.album removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
     });
