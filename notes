@@ -1,11 +1,8 @@
 #Known Issues
 * possible underuse of GPUImage.
 * Images are not set with proper rotation information
-* outside tap after flipping a thumbnail opens other picture, instead of unrotating
-* can't share or delete full screen images
-* can't mass-delete images
-* model in gallery is gross
-* saw a crash due to shotset state not being taken care of on early view swap
+* multitrash and multishare are not hooked up
+* deletion of final image in gallery does not refresh right
 
 # Ideas
 * randomize filter effects within bounds

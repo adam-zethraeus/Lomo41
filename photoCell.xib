@@ -13,40 +13,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="147" height="98"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mNu-p4-yDX">
-                        <rect key="frame" x="0.0" y="0.0" width="147" height="98"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khd-Su-AVW" userLabel="Trash Button">
-                                <rect key="frame" x="22" y="27" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" none="YES" button="YES" image="YES"/>
-                                </accessibility>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="tintColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
-                                <state key="normal" image="garbage"/>
-                                <state key="highlighted" image="garbage"/>
-                                <connections>
-                                    <action selector="doDelete:" destination="-2" eventType="touchUpInside" id="fLb-Lk-VZL"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ni3-Vb-rQR" userLabel="Share Button">
-                                <rect key="frame" x="87" y="27" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" none="YES" button="YES" image="YES"/>
-                                </accessibility>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="tintColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
-                                <state key="normal" image="share"/>
-                                <connections>
-                                    <action selector="doShare:" destination="-2" eventType="touchUpInside" id="juE-sY-ASn"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.95575747280000001" green="0.95575747280000001" blue="0.95575747280000001" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
                     <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0h5-3m-cpk">
                         <rect key="frame" x="0.0" y="0.0" width="147" height="98"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -75,15 +41,9 @@
             </view>
             <size key="customSize" width="255" height="166"/>
             <connections>
-                <outlet property="backView" destination="mNu-p4-yDX" id="CaU-jZ-TTH"/>
                 <outlet property="button" destination="PAE-Pd-AhW" id="I5s-FC-YJG"/>
-                <outlet property="frontView" destination="0h5-3m-cpk" id="ogA-Iv-oGF"/>
                 <outlet property="imageView" destination="WRJ-NZ-Yhm" id="P6X-6k-GiX"/>
             </connections>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="garbage" width="21" height="28"/>
-        <image name="share" width="21" height="28"/>
-    </resources>
 </document>
