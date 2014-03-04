@@ -59,7 +59,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="doShow:" destination="-2" eventType="touchUpInside" id="lFD-dJ-tVd"/>
+                                    <action selector="doCellAction:" destination="-2" eventType="touchUpInside" id="ecw-ym-8jN"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WRJ-NZ-Yhm">

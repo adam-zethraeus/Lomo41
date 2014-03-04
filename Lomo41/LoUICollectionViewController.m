@@ -18,18 +18,26 @@
 
 static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 
+typedef enum AlbumState {
+    DEFAULT,
+    FLIPPED_CELL,
+    SELECTION_ENABLED
+} AlbumState;
+
 @interface LoUICollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 - (IBAction)doDelete:(id)sender;
+- (IBAction)doDeleteSelection:(id)sender;
 - (IBAction)doShare:(id)sender;
-- (IBAction)doShow:(id)sender;
+- (IBAction)doCellAction:(id)sender;
 - (IBAction)doToggleSelect:(UIBarButtonItem *)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *doDeleteSelection;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *selectButton;
+
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic) NSUInteger deleteIndex;
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (strong, nonatomic) LoAppDelegate *appDelegate;
-@property (nonatomic) bool flippedCellState;
+@property (nonatomic) AlbumState state;
 @end
 
 @implementation LoUICollectionViewController
@@ -49,7 +57,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     [super viewWillAppear:animated];
     self.deleteIndex = -1;
     [self.collectionView reloadData];
-    self.flippedCellState = NO;
+    self.state = DEFAULT;
     dispatch_async(self.sessionQueue, ^{
         [self.appDelegate.album addObserver:self forKeyPath:@"assets" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:AlbumAssetsRefreshContext];
     });
@@ -69,8 +77,14 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     });
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+- (void)resetState {
+    if (self.state == FLIPPED_CELL) {
+        [self flipAllCellsToFrontInDirection:UIViewAnimationOptionTransitionFlipFromLeft];
+    } else if (self.state == SELECTION_ENABLED) {
+        self.deleteButton.enabled = false;
+        self.selectButton.title = @"Select";
+    }
+    self.state = DEFAULT;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
@@ -110,12 +124,15 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 }
 
 - (void)didSwipe: (UISwipeGestureRecognizer *)recognizer {
+    if (self.state != DEFAULT && self.state != FLIPPED_CELL) {
+        return;
+    }
     LoImagePreviewCell *cell = (LoImagePreviewCell *)recognizer.view;
     UIViewAnimationOptions direction = UIViewAnimationOptionTransitionFlipFromLeft;
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
         direction = UIViewAnimationOptionTransitionFlipFromRight;
     }
-    self.flippedCellState = YES;
+    self.state = FLIPPED_CELL;
     if (!cell.frontView.isHidden) {
         [self flipAllCellsToFrontInDirection: direction];
         [LoUICollectionViewController flipToBackOfCell:cell inDirection:direction];
@@ -166,28 +183,33 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     [alert show];
 }
 
+- (IBAction)doDeleteSelection:(id)sender {
+}
+
 - (IBAction)doShare:(id)sender {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)((UIView *)sender).superview.superview.superview];
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self.appDelegate.album.assets[self.appDelegate.album.assets.count - 1 - indexPath.row]] applicationActivities:nil];
     [self presentViewController:activityController animated:YES completion:nil];
 }
 
-- (IBAction)doShow:(id)sender {
-    if (self.flippedCellState) {
-        [self flipAllCellsToFrontInDirection:UIViewAnimationOptionTransitionFlipFromLeft];
-        self.flippedCellState = NO;
+- (IBAction)doCellAction:(id)sender {
+    if (self.state == FLIPPED_CELL) {
+        [self resetState];
+    } else if (self.state == SELECTION_ENABLED){
     } else {
         [self performSegueWithIdentifier: @"viewImage" sender: ((UIView *)sender).superview.superview.superview];
     }
 }
 
 - (IBAction)doToggleSelect:(UIBarButtonItem *)sender {
-    if (self.deleteButton.enabled) {
-        self.deleteButton.enabled = false;
-        sender.title = @"Select";
+    NSAssert(sender == self.selectButton, @"select toggle sender was not known select button");
+    if (self.state == SELECTION_ENABLED) {
+        [self resetState];
     } else {
+        self.state = SELECTION_ENABLED;
+        [self flipAllCellsToFrontInDirection:UIViewAnimationOptionTransitionFlipFromLeft];
         self.deleteButton.enabled = true;
-        sender.title = @"Deselect";
+        self.selectButton.title = @"Cancel";
     }
 }
 
