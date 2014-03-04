@@ -85,7 +85,7 @@
                 }];
 }
 
-- (void)deleteAssetList: (NSMutableArray *)list {
+- (void)deleteAssetList: (NSMutableArray *)list withCompletionBlock: (void(^)())block {
     ALAsset *singleAsset = [list lastObject];
     [list removeLastObject];
     [singleAsset setImageData:nil
@@ -93,11 +93,13 @@
                 completionBlock:^(NSURL *assetURL, NSError *error) {
                     if (error) {
                         NSLog(@"deleteAssetList error: %@", error);
+                        if (block) block();
                     } else if (list.count > 0) {
-                        [self deleteAssetList:list];
+                        [self deleteAssetList:list withCompletionBlock:block];
                     } else {
                         // All assets in list are gone. Refresh!
                         [self updateAssets];
+                        if (block) block();
                     }
                 }];
 }

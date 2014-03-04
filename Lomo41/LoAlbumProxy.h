@@ -16,6 +16,6 @@
 - (void)addImage: (UIImage *)image;
 - (void)deleteAssetAtIndex: (NSUInteger)index;
 - (void)updateAssets;
-- (void)deleteAssetList: (NSMutableArray *)list;
+- (void)deleteAssetList: (NSMutableArray *)list withCompletionBlock: (void(^)())block;
 
 @end

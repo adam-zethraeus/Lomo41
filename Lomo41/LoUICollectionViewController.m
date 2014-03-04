@@ -21,7 +21,8 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 typedef enum AlbumState {
     DEFAULT,
     FLIPPED_CELL,
-    SELECTION_ENABLED
+    SELECTION_ENABLED,
+    DELETION_IN_PROGRESS
 } AlbumState;
 
 @interface LoUICollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
@@ -205,6 +206,9 @@ typedef enum AlbumState {
 }
 
 - (IBAction)doDeleteSelection:(id)sender {
+    if (self.selectedAssets.count < 1) {
+        return;
+    }
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Pictures"
                                                     message:@"Would you like to delete the selected pictures?"
                                                    delegate:self
@@ -271,7 +275,22 @@ typedef enum AlbumState {
             [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex];
         } else if (self.state == SELECTION_ENABLED) {
             NSAssert(self.selectedAssets != nil, @"selectedAssets set must exist for deletion in SELECTION_ENABLED state.");
-            [self.appDelegate.album deleteAssetList: [NSMutableArray arrayWithArray:[self.selectedAssets allObjects]]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Deletion in progress"
+                                                                message:@"brb"
+                                                               delegate:self
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:nil];
+                [alert show];
+                dispatch_async(self.sessionQueue, ^(){
+                    [self.appDelegate.album deleteAssetList: [NSMutableArray arrayWithArray:[self.selectedAssets allObjects]]
+                                        withCompletionBlock:^(){
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                [alert dismissWithClickedButtonIndex:0 animated:YES];
+                                            });
+                                        }];
+                });
+            });
         }
     }
 }

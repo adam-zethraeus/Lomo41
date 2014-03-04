@@ -259,6 +259,11 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (void)processShotSet {
+    if (self.currentShots.count != 4) {
+        [self.currentShots purge];
+        self.shotCount = 0;
+        return;
+    }
     dispatch_async(self.sessionQueue, ^{
         Lo41ShotProcessor* processor = [[Lo41ShotProcessor alloc] initWithShotSet:self.currentShots];
         [processor processIndividualShots];
