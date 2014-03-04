@@ -174,11 +174,6 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="ZVc-23-6hj">
-                        <barButtonItem key="leftBarButtonItem" enabled="NO" title="Delete" id="Ir7-B8-YQQ">
-                            <connections>
-                                <action selector="doDeleteSelection:" destination="88M-O3-Wt7" id="LnE-WU-zTq"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Select" id="jvP-Gn-UlO">
                             <connections>
                                 <action selector="doToggleSelect:" destination="88M-O3-Wt7" id="cwT-XM-8kX"/>
@@ -187,7 +182,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="aLy-fS-nud" id="Hwk-Xj-AGd"/>
-                        <outlet property="deleteButton" destination="Ir7-B8-YQQ" id="cqf-x7-wd6"/>
                         <outlet property="selectButton" destination="jvP-Gn-UlO" id="f2W-si-aBG"/>
                         <segue destination="Ks1-18-egf" kind="modal" identifier="viewImage" modalTransitionStyle="crossDissolve" id="LU6-lt-E0b"/>
                     </connections>
@@ -231,7 +225,7 @@
                                             <action selector="doTrash:" destination="Ks1-18-egf" id="JeR-Ws-Hof"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="TuC-48-WKd"/>
+                                    <barButtonItem width="30" style="plain" systemItem="fixedSpace" id="TuC-48-WKd"/>
                                     <barButtonItem image="share" id="kvm-dq-dKI">
                                         <connections>
                                             <action selector="doShare:" destination="Ks1-18-egf" id="kpk-LI-ho8"/>

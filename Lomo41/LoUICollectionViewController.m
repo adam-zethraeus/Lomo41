@@ -52,6 +52,33 @@ typedef enum AlbumState {
     self.sessionQueue = dispatch_queue_create("collection view proxy queue", DISPATCH_QUEUE_SERIAL);
     self.appDelegate = [[UIApplication sharedApplication] delegate];
     NSAssert(self.appDelegate.album != nil, @"album should have been set on AppDelegate");
+
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    flex.width = 30;
+
+    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button1 setFrame:CGRectMake(0, 0, 21, 28)];
+
+    button1.tintColor = self.navigationController.view.window.tintColor;
+
+    UIImage *image = [[UIImage imageNamed:@"garbage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    [button1 setBackgroundImage:image forState:UIControlStateNormal];
+
+    UIBarButtonItem *bar1 = [[UIBarButtonItem alloc]initWithCustomView:button1];
+
+    UIButton *button2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button2 setFrame:CGRectMake(0, 0, 21, 28)];
+
+    button2.tintColor = self.navigationController.view.window.tintColor;
+
+    UIImage *image2 = [[UIImage imageNamed:@"share.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    [button2 setBackgroundImage:image2 forState:UIControlStateNormal];
+
+    UIBarButtonItem *bar2 = [[UIBarButtonItem alloc]initWithCustomView:button2];
+
+    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:bar1,flex,bar2, nil];
 }
 
 - (void)viewWillAppear: (BOOL)animated {

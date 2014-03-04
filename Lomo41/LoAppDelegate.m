@@ -15,7 +15,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.album = [[LoAlbumProxy alloc] initForAlbum:@"Lomo42"];
-    [[[UIApplication sharedApplication] delegate] window].tintColor = [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.402 alpha:1.0];
+    self.window.tintColor = [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.402 alpha:1.0];
     return YES;
 }
 							
