@@ -24,12 +24,20 @@
 - (IBAction)doShare:(id)sender;
 @property (strong, nonatomic) UIPageViewController *pagerController;
 @property (weak, nonatomic) LoAppDelegate *appDelegate;
+@property (nonatomic) dispatch_queue_t sessionQueue;
 @end
+
+static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 
 @implementation LoImageViewController
 
-- (BOOL)prefersStatusBarHidden {
-    return YES;
+- (void)viewDidLoad {
+    NSAssert(self.pagerController != nil, @"pagerController should have been set in prepareForSegue");
+    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    self.sessionQueue = dispatch_queue_create("collection view proxy queue", DISPATCH_QUEUE_SERIAL);
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleToolbarVisibility)];
+    tapGesture.numberOfTapsRequired = 1;
+    [self.container addGestureRecognizer:tapGesture];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -45,14 +53,30 @@
                                         animated:NO
                                       completion:NULL];
     }
+    dispatch_async(self.sessionQueue, ^{
+        [self.appDelegate.album addObserver:self forKeyPath:@"assets" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:AlbumAssetsRefreshContext];
+    });
 }
 
-- (void)viewDidLoad {
-    NSAssert(self.pagerController != nil, @"pagerController should have been set in prepareForSegue");
-    self.appDelegate = [[UIApplication sharedApplication] delegate];
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleToolbarVisibility)];
-    tapGesture.numberOfTapsRequired = 1;
-    [self.container addGestureRecognizer:tapGesture];
+-(void)viewWillDisappear:(BOOL)animated {
+    dispatch_async(self.sessionQueue, ^{
+        [self.appDelegate.album removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
+    });
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+	if (context == AlbumAssetsRefreshContext) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Do a full refresh
+        });
+	}
 }
 
 - (UIImage *)imageForIndex:(NSInteger)index {
