@@ -71,9 +71,9 @@
 }
 
 - (void)deleteAssetAtIndex: (NSUInteger)index {
-    ALAsset* assetToDelete = self.assets[index];
-    // Immediately remove from proxy.
-    [self.assets removeObjectAtIndex:index];
+    ALAsset *assetToDelete = self.assets[index];
+//    // Immediately remove from proxy.
+//    [self.assets removeObjectAtIndex:index];
     // Trigger library deletion and proxy update.
     [assetToDelete setImageData:nil
                        metadata:nil
@@ -82,6 +82,23 @@
                         NSLog(@"deleteAssetAtIndex error: %@", error);
                     }
                     [self updateAssets];
+                }];
+}
+
+- (void)deleteAssetList: (NSMutableArray *)list {
+    ALAsset *singleAsset = [list lastObject];
+    [list removeLastObject];
+    [singleAsset setImageData:nil
+                       metadata:nil
+                completionBlock:^(NSURL *assetURL, NSError *error) {
+                    if (error) {
+                        NSLog(@"deleteAssetList error: %@", error);
+                    } else if (list.count > 0) {
+                        [self deleteAssetList:list];
+                    } else {
+                        // All assets in list are gone. Refresh!
+                        [self updateAssets];
+                    }
                 }];
 }
 

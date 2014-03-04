@@ -32,11 +32,11 @@ typedef enum AlbumState {
 - (IBAction)doToggleSelect:(UIBarButtonItem *)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *selectButton;
-
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic) NSUInteger deleteIndex;
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (strong, nonatomic) LoAppDelegate *appDelegate;
+@property (strong, nonatomic) NSMutableSet *selectedAssets;
 @property (nonatomic) AlbumState state;
 @end
 
@@ -72,6 +72,7 @@ typedef enum AlbumState {
 
 - (void)viewWillDisappear: (BOOL)animated {
     [super viewWillDisappear:animated];
+    [self resetState];
     dispatch_async(self.sessionQueue, ^{
         [self.appDelegate.album removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
     });
@@ -83,7 +84,11 @@ typedef enum AlbumState {
     } else if (self.state == SELECTION_ENABLED) {
         self.deleteButton.enabled = false;
         self.selectButton.title = @"Select";
+        self.selectedAssets = nil;
     }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.collectionView reloadData];
+    });
     self.state = DEFAULT;
 }
 
@@ -107,6 +112,18 @@ typedef enum AlbumState {
     cell.imageView.image = thumbnail;
     cell.frontView.hidden = NO;
     cell.backView.hidden = YES;
+
+    if (self.state == SELECTION_ENABLED) {
+        NSAssert(self.selectedAssets != nil, @"selectedAssets list must be available when state is SELECTION_ENABLED");
+        if ([self.selectedAssets containsObject:asset]){
+            cell.layer.borderColor = [self.navigationController.view.window.tintColor CGColor];
+            cell.layer.borderWidth = 5.0;
+        } else {
+            cell.layer.borderWidth = 0;
+        }
+    } else {
+        cell.layer.borderWidth = 0;
+    }
 
     UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
     swipeRight.delegate = self;
@@ -188,6 +205,13 @@ typedef enum AlbumState {
 }
 
 - (IBAction)doDeleteSelection:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Pictures"
+                                                    message:@"Would you like to delete the selected pictures?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:nil];
+    [alert addButtonWithTitle:@"Delete"];
+    [alert show];
 }
 
 - (IBAction)doShare:(id)sender {
@@ -200,6 +224,17 @@ typedef enum AlbumState {
     if (self.state == FLIPPED_CELL) {
         [self resetState];
     } else if (self.state == SELECTION_ENABLED){
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell: (UICollectionViewCell *)((UIView *)sender).superview.superview.superview];
+        NSInteger index = self.appDelegate.album.assets.count - 1 - indexPath.row;
+        ALAsset *asset = self.appDelegate.album.assets[index];
+        if ([self.selectedAssets containsObject:asset]) {
+            [self.selectedAssets removeObject:asset];
+        } else {
+            [self.selectedAssets addObject:asset];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView reloadData];
+        });
     } else {
         [self performSegueWithIdentifier: @"viewImage" sender: ((UIView *)sender).superview.superview.superview];
     }
@@ -214,6 +249,10 @@ typedef enum AlbumState {
         [self flipAllCellsToFrontInDirection:UIViewAnimationOptionTransitionFlipFromLeft];
         self.deleteButton.enabled = true;
         self.selectButton.title = @"Cancel";
+        self.selectedAssets = [[NSMutableSet alloc] init];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView reloadData];
+        });
     }
 }
 
@@ -227,8 +266,13 @@ typedef enum AlbumState {
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        NSAssert(self.deleteIndex >= 0, @"index for action was not set");
-        [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex];
+        if (self.state == FLIPPED_CELL) {
+            NSAssert(self.deleteIndex >= 0, @"index for delete action most be set for deletion in FLIPPED_CELL state.");
+            [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex];
+        } else if (self.state == SELECTION_ENABLED) {
+            NSAssert(self.selectedAssets != nil, @"selectedAssets set must exist for deletion in SELECTION_ENABLED state.");
+            [self.appDelegate.album deleteAssetList: [NSMutableArray arrayWithArray:[self.selectedAssets allObjects]]];
+        }
     }
 }
 
@@ -239,7 +283,6 @@ typedef enum AlbumState {
 	if (context == AlbumAssetsRefreshContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self resetState];
-            [self.collectionView reloadData];
         });
 	}
 }

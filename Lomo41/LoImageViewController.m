@@ -68,7 +68,6 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 }
 
 -(void)refreshToIndex: (NSInteger)index {
-    NSLog(@"refesh to: %lu", index);
     self.currentIndex = index;
     PhotoViewController *currentPage = [PhotoViewController photoViewControllerForIndex:index andImage:[self imageForIndex:index]];
     if (currentPage != nil) {
