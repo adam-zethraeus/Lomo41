@@ -13,8 +13,8 @@
 #import "ALAssetsLibrary+PhotoAlbumFunctionality.h"
 
 @interface LoAlbumProxy ()
-@property (nonatomic) NSString* albumName;
-@property (nonatomic) ALAssetsLibrary* library;
+@property (nonatomic, strong) NSString* albumName;
+@property (nonatomic, strong) ALAssetsLibrary* library;
 @end
 
 @implementation LoAlbumProxy

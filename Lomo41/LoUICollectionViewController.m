@@ -28,7 +28,7 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic) NSUInteger deleteIndex;
 @property (nonatomic) dispatch_queue_t sessionQueue;
-@property (weak, nonatomic) LoAppDelegate *appDelegate;
+@property (strong, nonatomic) LoAppDelegate *appDelegate;
 @end
 
 @implementation LoUICollectionViewController

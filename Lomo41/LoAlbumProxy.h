@@ -10,7 +10,7 @@
 
 @interface LoAlbumProxy : NSObject
 
-@property (nonatomic) NSMutableArray *assets;
+@property (nonatomic, strong) NSMutableArray *assets;
 
 - (id)initForAlbum: (NSString *)albumName;
 - (void)addImage: (UIImage *)image;
