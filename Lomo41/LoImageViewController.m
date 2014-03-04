@@ -10,6 +10,8 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "LoAppDelegate.h"
+#import "LoAlbumProxy.h"
 #import "PhotoViewController.h"
 
 @interface LoImageViewController()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
@@ -21,6 +23,7 @@
 - (IBAction)doTrash:(id)sender;
 - (IBAction)doShare:(id)sender;
 @property (strong, nonatomic) UIPageViewController *pagerController;
+@property (weak, nonatomic) LoAppDelegate *appDelegate;
 @end
 
 @implementation LoImageViewController
@@ -29,20 +32,34 @@
     return YES;
 }
 
-- (void)viewDidLoad {
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleToolbarVisibility)];
-    tapGesture.numberOfTapsRequired = 1;
+-(void)viewWillAppear:(BOOL)animated {
     self.currentIndex = self.initialIndex;
     self.potentialNextIndex = self.initialIndex;
-    [self.container addGestureRecognizer:tapGesture];
+    UIImage *initialImage = [self imageForIndex:self.initialIndex];
+    self.pagerController.dataSource = self;
+    self.pagerController.delegate = self;
+    PhotoViewController *initialPage = [PhotoViewController photoViewControllerForIndex:self.initialIndex andImage:initialImage];
+    if (initialPage != nil) {
+        [self.pagerController setViewControllers:@[initialPage]
+                                       direction:UIPageViewControllerNavigationDirectionForward
+                                        animated:NO
+                                      completion:NULL];
+    }
+}
 
+- (void)viewDidLoad {
+    NSAssert(self.pagerController != nil, @"pagerController should have been set in prepareForSegue");
+    self.appDelegate = [[UIApplication sharedApplication] delegate];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleToolbarVisibility)];
+    tapGesture.numberOfTapsRequired = 1;
+    [self.container addGestureRecognizer:tapGesture];
 }
 
 - (UIImage *)imageForIndex:(NSInteger)index {
-    if (index < 0 || index >= self.assetList.count) {
+    if (index < 0 || index >= self.appDelegate.album.assets.count) {
         return nil;
     }
-    CGImageRef imageRef = [[self.assetList[index] defaultRepresentation] fullResolutionImage];
+    CGImageRef imageRef = [[self.appDelegate.album.assets[index] defaultRepresentation] fullResolutionImage];
     return [UIImage imageWithCGImage:imageRef scale:1.0f orientation:UIImageOrientationRight];
 }
 
@@ -109,16 +126,6 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"containedPager"]) {
         self.pagerController = (UIPageViewController *)segue.destinationViewController;
-        UIImage *initialImage = [self imageForIndex:self.initialIndex];
-        self.pagerController.dataSource = self;
-        self.pagerController.delegate = self;
-        PhotoViewController *initialPage = [PhotoViewController photoViewControllerForIndex:self.initialIndex andImage:initialImage];
-        if (initialPage != nil) {
-            [self.pagerController setViewControllers:@[initialPage]
-                           direction:UIPageViewControllerNavigationDirectionForward
-                            animated:NO
-                          completion:NULL];
-        }
     }
 }
 @end

@@ -185,8 +185,6 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     if ([segue.identifier isEqualToString:@"viewImage"]) {
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)sender];
         LoImageViewController *destViewController = segue.destinationViewController;
-        // Pass an immutable copy in case assets updates after segue is sent.
-        destViewController.assetList = [[NSArray alloc] initWithArray:self.appDelegate.album.assets];
         destViewController.initialIndex = self.appDelegate.album.assets.count - 1 - indexPath.row;
     }
 }
