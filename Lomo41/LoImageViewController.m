@@ -28,8 +28,6 @@
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @end
 
-static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
-
 @implementation LoImageViewController
 
 - (void)viewDidLoad {
@@ -57,14 +55,6 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 
 - (BOOL)prefersStatusBarHidden {
     return YES;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-	if (context == AlbumAssetsRefreshContext) {
-	}
 }
 
 -(void)refreshToIndex: (NSInteger)index {

@@ -3,7 +3,7 @@
 
 @interface PhotoViewController ()
 
-@property (nonatomic, weak) UIImage *image;
+@property (nonatomic, strong) UIImage *image;
 @property (nonatomic) NSInteger index;
 @end
 
