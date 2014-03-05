@@ -25,8 +25,6 @@ typedef enum AlbumState {
 } AlbumState;
 
 @interface LoUICollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
-- (IBAction)doDeleteSelection:(id)sender;
-- (IBAction)doShare:(id)sender;
 - (IBAction)doCellAction:(id)sender;
 - (IBAction)doToggleSelect:(UIBarButtonItem *)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *selectButton;
@@ -61,6 +59,7 @@ typedef enum AlbumState {
     [self.deleteButton setBackgroundImage:image forState:UIControlStateNormal];
     UIBarButtonItem *bar1 = [[UIBarButtonItem alloc]initWithCustomView:self.deleteButton];
     self.deleteButton.enabled = false;
+    [self.deleteButton addTarget:self action:@selector(doDeleteSelection) forControlEvents:UIControlEventTouchUpInside];
 
     self.shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.shareButton setFrame:CGRectMake(0, 0, 21, 28)];
@@ -69,6 +68,7 @@ typedef enum AlbumState {
     [self.shareButton setBackgroundImage:image2 forState:UIControlStateNormal];
     UIBarButtonItem *bar2 = [[UIBarButtonItem alloc]initWithCustomView:self.shareButton];
     self.shareButton.enabled = false;
+    [self.shareButton addTarget:self action:@selector(doShareSelection) forControlEvents:UIControlEventTouchUpInside];
 
     self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:bar1,flex,bar2, nil];
 }
@@ -140,22 +140,10 @@ typedef enum AlbumState {
         cell.layer.borderWidth = 0;
     }
 
-//    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
-//    swipeRight.delegate = self;
-//    swipeRight.numberOfTouchesRequired = 1;
-//    [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
-//    [cell addGestureRecognizer:swipeRight];
-//
-//    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
-//    swipeLeft.delegate = self;
-//    swipeLeft.numberOfTouchesRequired = 1;
-//    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-//    [cell addGestureRecognizer:swipeLeft];
-
     return cell;
 }
 
-- (IBAction)doDeleteSelection:(id)sender {
+- (void)doDeleteSelection {
     if (self.selectedAssets.count < 1) {
         return;
     }
@@ -168,9 +156,12 @@ typedef enum AlbumState {
     [alert show];
 }
 
-- (IBAction)doShare:(id)sender {
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)((UIView *)sender).superview.superview.superview];
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self.appDelegate.album.assets[self.appDelegate.album.assets.count - 1 - indexPath.row]] applicationActivities:nil];
+- (void)doShareSelection {
+    NSAssert(self.selectedAssets != nil, @"selectedAssets set must exist for share.");
+    if (self.selectedAssets.count < 1) {
+        return;
+    }
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:[self.selectedAssets allObjects] applicationActivities:nil];
     [self presentViewController:activityController animated:YES completion:nil];
 }
 
