@@ -51,16 +51,22 @@
 }
 
 - (void)updateAssets {
+    [self updateAssetsWithCompletionBlock:nil];
+}
+
+- (void)updateAssetsWithCompletionBlock:(void(^)())block {
     [self.library getAssetListForAlbum:self.albumName
                       withSuccessBlock:^(NSMutableArray *assets) {
                           self.assets = assets;
+                          if (block) block();
                       }
-                     withFailureBlock:^(NSError *error) {
-                         NSLog(@"updateAssets error: %@", error);
-                     }];
+                      withFailureBlock:^(NSError *error) {
+                          NSLog(@"updateAssets error: %@", error);
+                          if (block) block();
+                      }];
 }
 
-- (void)addImage: (UIImage *)image {
+- (void)addImage:(UIImage *)image {
     [self.library saveImage:image
                     toAlbum:self.albumName
            withSuccessBlock:^(NSURL *assetURL) {
@@ -70,7 +76,7 @@
            }];
 }
 
-- (void)deleteAssetAtIndex: (NSUInteger)index {
+- (void)deleteAssetAtIndex:(NSUInteger)index withCompletionBlock:(void(^)())block{
     ALAsset *assetToDelete = self.assets[index];
 //    // Immediately remove from proxy.
 //    [self.assets removeObjectAtIndex:index];
@@ -81,7 +87,7 @@
                     if (error) {
                         NSLog(@"deleteAssetAtIndex error: %@", error);
                     }
-                    [self updateAssets];
+                    [self updateAssetsWithCompletionBlock:block];
                 }];
 }
 

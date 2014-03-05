@@ -129,13 +129,19 @@ static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
     if (buttonIndex == 1) {
         NSAssert(self.deleteIndex >= 0, @"index for deletion was not set");
         if (self.appDelegate.album.assets.count > 1) {
-            NSInteger newIndex = self.currentIndex - 1;
-            [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex];
-            [self refreshToIndex: newIndex < 0 ? 0 : newIndex];
+            NSInteger newIndex = self.currentIndex < self.appDelegate.album.assets.count - 1 ? self.currentIndex : self.currentIndex - 1;
+            __weak LoImageViewController *weakSelf = self;
+            [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex withCompletionBlock:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf refreshToIndex: newIndex];
+                });
+            }];
         } else {
             // We're about to empty the album. Exit after.
-            [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            __weak LoImageViewController *weakSelf = self;
+            [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex withCompletionBlock:^{
+                [weakSelf dismissViewControllerAnimated:YES completion:nil];
+            }];
         }
     }
 }

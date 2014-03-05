@@ -1,8 +1,7 @@
 #Known Issues
 * possible underuse of GPUImage.
-* Images are not set with proper rotation information
-* multitrash and multishare are not hooked up
-* deletion of final image in gallery does not refresh right
+* Images are not set (or at least shared) with proper rotation information
+* entering gallery page allocates - and does not deallocate once leaving - a lot of memory
 
 # Ideas
 * randomize filter effects within bounds

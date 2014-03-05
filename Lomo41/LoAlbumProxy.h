@@ -14,8 +14,9 @@
 
 - (id)initForAlbum: (NSString *)albumName;
 - (void)addImage: (UIImage *)image;
-- (void)deleteAssetAtIndex: (NSUInteger)index;
+- (void)deleteAssetAtIndex:(NSUInteger)index withCompletionBlock:(void(^)())block;
 - (void)updateAssets;
-- (void)deleteAssetList: (NSMutableArray *)list withCompletionBlock: (void(^)())block;
+- (void)updateAssetsWithCompletionBlock:(void(^)())block;
+- (void)deleteAssetList:(NSMutableArray *)list withCompletionBlock:(void(^)())block;
 
 @end

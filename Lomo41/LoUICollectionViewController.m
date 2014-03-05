@@ -212,8 +212,8 @@ typedef enum AlbumState {
         if (self.state == SELECTION_ENABLED) {
             NSAssert(self.selectedAssets != nil, @"selectedAssets set must exist for deletion in SELECTION_ENABLED state.");
             dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Deletion in progress"
-                                                                message:@"brb"
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please wait"
+                                                                message:@"Deletion is in progress."
                                                                delegate:self
                                                       cancelButtonTitle:nil
                                                       otherButtonTitles:nil];
