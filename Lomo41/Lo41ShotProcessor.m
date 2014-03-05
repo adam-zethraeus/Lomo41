@@ -40,15 +40,15 @@ const static float clipSpan = 0.4f;
 - (id)initWithShotSet: (LoShotSet*) set {
     self = [super init];
     if (self) {
-#ifdef DEBUG
         if (set.count != 4) {
+#ifdef DEBUG
             NSLog(@"shot set size was: %lu", (long)set.count);
             @throw [NSException exceptionWithName:@"IllegalStateException" reason:@"Lo41ShotProcessor needs a LoShotSet of size 4." userInfo:nil];
+#else
+            return nil;
+#endif
         }
         self.shotSet = set;
-#else
-        return nil;
-#endif
     }
     return self;
 }
