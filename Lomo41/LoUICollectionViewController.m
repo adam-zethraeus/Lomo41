@@ -34,6 +34,7 @@ typedef enum AlbumState {
 @property (strong, nonatomic) NSMutableSet *selectedAssets;
 @property (strong, nonatomic) UIButton *deleteButton;
 @property (strong, nonatomic) UIButton *shareButton;
+
 @property (nonatomic) AlbumState state;
 @end
 

@@ -20,12 +20,11 @@
 @property (nonatomic) NSInteger currentIndex;
 @property (nonatomic) NSInteger potentialNextIndex;
 @property (nonatomic) NSInteger deleteIndex;
-- (IBAction)doBack:(id)sender;
-- (IBAction)doTrash:(id)sender;
-- (IBAction)doShare:(id)sender;
 @property (strong, nonatomic) UIPageViewController *pagerController;
 @property (weak, nonatomic) LoAppDelegate *appDelegate;
 @property (nonatomic) dispatch_queue_t sessionQueue;
+@property (strong, nonatomic) UIButton *deleteButton;
+@property (strong, nonatomic) UIButton *shareButton;
 @end
 
 @implementation LoImageViewController
@@ -51,6 +50,26 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleToolbarVisibility)];
     tapGesture.numberOfTapsRequired = 1;
     [self.container addGestureRecognizer:tapGesture];
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    flex.width = 30;
+    
+    self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.deleteButton setFrame:CGRectMake(0, 0, 21, 28)];
+    self.deleteButton.tintColor = self.navigationController.view.window.tintColor;
+    UIImage *image = [[UIImage imageNamed:@"garbage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.deleteButton setBackgroundImage:image forState:UIControlStateNormal];
+    UIBarButtonItem *bar1 = [[UIBarButtonItem alloc]initWithCustomView:self.deleteButton];
+    [self.deleteButton addTarget:self action:@selector(doTrash) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.shareButton setFrame:CGRectMake(0, 0, 21, 28)];
+    self.shareButton.tintColor = self.navigationController.view.window.tintColor;
+    UIImage *image2 = [[UIImage imageNamed:@"share.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.shareButton setBackgroundImage:image2 forState:UIControlStateNormal];
+    UIBarButtonItem *bar2 = [[UIBarButtonItem alloc]initWithCustomView:self.shareButton];
+    [self.shareButton addTarget:self action:@selector(doShare) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:bar1,flex,bar2, nil];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -99,11 +118,7 @@
     self.currentIndex = self.potentialNextIndex;
 }
 
-- (IBAction)doBack:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)doTrash:(id)sender {
+- (void)doTrash {
     self.deleteIndex = self.currentIndex;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Picture"
                                                     message:@"Would you like to delete the picture?"
@@ -112,6 +127,12 @@
                                           otherButtonTitles:nil];
     [alert addButtonWithTitle:@"Delete"];
     [alert show];
+}
+
+- (void)doShare {
+    ALAsset* assetToShare = self.appDelegate.album.assets[self.currentIndex];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[assetToShare] applicationActivities:nil];
+    [self presentViewController:activityController animated:YES completion:nil];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -135,14 +156,8 @@
     }
 }
 
-- (IBAction)doShare:(id)sender {
-    ALAsset* assetToShare = self.appDelegate.album.assets[self.currentIndex];
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[assetToShare] applicationActivities:nil];
-    [self presentViewController:activityController animated:YES completion:nil];
-}
-
 -(void)toggleToolbarVisibility {
-    if (self.toolbar.hidden) {
+    if (self.navigationController.navigationBarHidden) {
         [self animateToolbarVisibility: true];
     } else {
         [self animateToolbarVisibility: false];
@@ -152,16 +167,10 @@
 
 -(void)animateToolbarVisibility: (bool)visible {
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController setNavigationBarHidden:!visible animated:YES];
         [UIView animateWithDuration:0.25 animations:^{
-            if (!visible) {
-                self.toolbar.hidden = true;
-            }
             self.container.backgroundColor = visible ? [UIColor whiteColor] : [UIColor blackColor];
-		} completion:^(BOOL finished) {
-            if (visible) {
-                self.toolbar.hidden = false;
-            }
-        }];
+		}];
 	});
 }
 

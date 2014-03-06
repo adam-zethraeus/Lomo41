@@ -183,7 +183,7 @@
                     <connections>
                         <outlet property="collectionView" destination="aLy-fS-nud" id="Hwk-Xj-AGd"/>
                         <outlet property="selectButton" destination="jvP-Gn-UlO" id="f2W-si-aBG"/>
-                        <segue destination="Ks1-18-egf" kind="modal" identifier="viewImage" modalTransitionStyle="crossDissolve" id="LU6-lt-E0b"/>
+                        <segue destination="Ks1-18-egf" kind="push" identifier="viewImage" id="LU6-lt-E0b"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yFE-PD-1pE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -193,7 +193,7 @@
         <!--Lo Image View Controller-->
         <scene sceneID="jPu-BX-qey">
             <objects>
-                <viewController id="Ks1-18-egf" customClass="LoImageViewController" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="Ks1-18-egf" customClass="LoImageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1jH-EI-eib"/>
                         <viewControllerLayoutGuide type="bottom" id="L2R-zc-jgS"/>
@@ -210,36 +210,11 @@
                                     <segue destination="Ips-Iq-Z66" kind="embed" identifier="containedPager" id="U5Q-DV-ack"/>
                                 </connections>
                             </containerView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wWz-Zh-Rk2">
-                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <items>
-                                    <barButtonItem image="arrow-left" id="NVp-lO-blh">
-                                        <connections>
-                                            <action selector="doBack:" destination="Ks1-18-egf" id="kyt-8s-xjU"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="2ss-yz-MFb"/>
-                                    <barButtonItem image="garbage" id="Utw-8n-4l2">
-                                        <connections>
-                                            <action selector="doTrash:" destination="Ks1-18-egf" id="JeR-Ws-Hof"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem width="30" style="plain" systemItem="fixedSpace" id="TuC-48-WKd"/>
-                                    <barButtonItem image="share" id="kvm-dq-dKI">
-                                        <connections>
-                                            <action selector="doShare:" destination="Ks1-18-egf" id="kpk-LI-ho8"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                                <color key="tintColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="container" destination="8wr-5K-unM" id="0y0-Wz-HwR"/>
-                        <outlet property="toolbar" destination="wWz-Zh-Rk2" id="aS4-hW-Hx8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QqR-Ri-Xc0" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -249,7 +224,7 @@
         <!--Page View Controller-->
         <scene sceneID="NXY-sk-oNH">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" pageSpacing="12" navigationOrientation="horizontal" spineLocation="none" id="Ips-Iq-Z66" sceneMemberID="viewController"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" extendedLayoutIncludesOpaqueBars="YES" transitionStyle="scroll" pageSpacing="12" navigationOrientation="horizontal" spineLocation="none" id="Ips-Iq-Z66" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8qk-pk-mfh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2041" y="465"/>
@@ -275,11 +250,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow-left" width="14" height="28"/>
         <image name="camera" width="28" height="21"/>
         <image name="gallery" width="28" height="22"/>
-        <image name="garbage" width="21" height="28"/>
-        <image name="share" width="21" height="28"/>
         <image name="shutter_narrow" width="80" height="80"/>
         <image name="shutter_wide" width="80" height="80"/>
     </resources>
