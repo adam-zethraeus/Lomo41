@@ -129,9 +129,8 @@
         } else {
             // We're about to empty the album. Exit after.
             __weak LoImageViewController *weakSelf = self;
-            [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex withCompletionBlock:^{
-                [weakSelf dismissViewControllerAnimated:YES completion:nil];
-            }];
+            [self.appDelegate.album deleteAssetAtIndex:self.deleteIndex withCompletionBlock:nil];
+            [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
     }
 }
