@@ -95,10 +95,10 @@ const static float clipSpan = 0.4f;
         return;
 #endif
     }
-    [self calculateOutputSizesFromImage:[self.shotSet.getShotsArray objectAtIndex:0]];
+    [self calculateOutputSizesFromImage:[self.shotSet.shotsArray objectAtIndex:0]];
     self.postProcessedIndividualShots = [NSMutableArray arrayWithCapacity:4];
     for (int i = 0; i < 4; i++){
-        GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:[self.shotSet.getShotsArray objectAtIndex:i]];
+        GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:[self.shotSet.shotsArray objectAtIndex:i]];
 
         CGRect cropRect;
         cropRect.origin.x = self.clipStartPoint + (self.clipPointIncrements * (float) i);
