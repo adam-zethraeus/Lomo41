@@ -92,7 +92,6 @@ typedef enum AlbumState {
 
 - (void)viewWillDisappear: (BOOL)animated {
     [super viewWillDisappear:animated];
-    [self resetState];
     dispatch_async(self.sessionQueue, ^{
         [self.appDelegate.album removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
     });
