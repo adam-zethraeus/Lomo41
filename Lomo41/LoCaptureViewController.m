@@ -249,7 +249,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             if (imageDataSampleBuffer) {
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                 [self.currentShots addShot:[[UIImage alloc] initWithData:imageData]];
-            CFRelease(imageDataSampleBuffer);
+                CFRelease(imageDataSampleBuffer);
             }
             if (final) {
                 [self processShotSet];

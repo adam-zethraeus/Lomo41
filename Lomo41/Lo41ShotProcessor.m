@@ -158,7 +158,27 @@ const static float clipSpan = 0.4f;
         CGContextDrawImage(context, drawRect, image.CGImage);
         CGContextRestoreGState(context);
     }
-    self.groupedImage = [[UIImage alloc] initWithCGImage:CGBitmapContextCreateImage(UIGraphicsGetCurrentContext()) scale:1.0f orientation:((UIImage *)self.shotSet.getShotsArray[0]).imageOrientation];
+
+    UIImageOrientation orientation = UIImageOrientationUp;
+
+    switch ([[UIDevice currentDevice]orientation]) {
+        case UIDeviceOrientationPortrait:
+            orientation = UIImageOrientationRight;
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            orientation = UIImageOrientationLeft;
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            orientation = UIImageOrientationUp;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            orientation = UIImageOrientationDown;
+            break;
+        default:
+            break;
+    }
+
+    self.groupedImage = [[UIImage alloc] initWithCGImage:CGBitmapContextCreateImage(UIGraphicsGetCurrentContext()) scale:1.0f orientation:orientation];
     UIGraphicsEndImageContext();
 }
 
