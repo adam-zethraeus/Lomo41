@@ -15,6 +15,7 @@
 #import "LoImageViewController.h"
 #import "LoAlbumProxy.h"
 #import "LoAppDelegate.h"
+#import "UIImage+RotationFunctionality.h"
 
 static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
 
@@ -126,7 +127,8 @@ typedef enum AlbumState {
     }
     LoImagePreviewCell *cell = (LoImagePreviewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
 
-    UIImage *thumbnail = [UIImage imageWithCGImage:thumbnailImageRef];
+    UIImage *thumbnail = [UIImage landscapeVersionOfImage:[UIImage imageWithCGImage:thumbnailImageRef]];
+
     cell.imageView.image = thumbnail;
 
     if (self.state == SELECTION_ENABLED) {

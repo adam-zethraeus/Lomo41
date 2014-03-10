@@ -38,6 +38,7 @@
 		1982EA851865948800CC0731 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982EA841865948800CC0731 /* AVFoundation.framework */; };
 		1982EA881868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */; };
 		1982EA8E186D2DCF00CC0731 /* LoUICollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */; };
+		1994C6C418CD968C0055AC37 /* UIImage+RotationFunctionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 1994C6C318CD968C0055AC37 /* UIImage+RotationFunctionality.m */; };
 		92CD813D8BC047F6A09088D1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF23387409D4C31A9CDD15A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -99,6 +100,8 @@
 		1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsLibrary+PhotoAlbumFunctionality.m"; sourceTree = "<group>"; };
 		1982EA8C186D2DCF00CC0731 /* LoUICollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoUICollectionViewController.h; sourceTree = "<group>"; };
 		1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoUICollectionViewController.m; sourceTree = "<group>"; };
+		1994C6C218CD968C0055AC37 /* UIImage+RotationFunctionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RotationFunctionality.h"; sourceTree = "<group>"; };
+		1994C6C318CD968C0055AC37 /* UIImage+RotationFunctionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RotationFunctionality.m"; sourceTree = "<group>"; };
 		4FF23387409D4C31A9CDD15A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F3FE8CC644437592B2EEE6 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -172,6 +175,8 @@
 				19478216188237B40023DD0F /* LoAlbumProxy.m */,
 				1982EA861868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.h */,
 				1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */,
+				1994C6C218CD968C0055AC37 /* UIImage+RotationFunctionality.h */,
+				1994C6C318CD968C0055AC37 /* UIImage+RotationFunctionality.m */,
 				1982EA2E1864E79A00CC0731 /* LoShotSet.h */,
 				1982EA2F1864E79A00CC0731 /* LoShotSet.m */,
 			);
@@ -425,6 +430,7 @@
 				19478217188237B40023DD0F /* LoAlbumProxy.m in Sources */,
 				1982EA331865487600CC0731 /* Lo41ShotProcessor.m in Sources */,
 				1982EA301864E79A00CC0731 /* LoShotSet.m in Sources */,
+				1994C6C418CD968C0055AC37 /* UIImage+RotationFunctionality.m in Sources */,
 				1979A33018C2AA3700A64834 /* ImageScrollView.m in Sources */,
 				1979A32F18C2AA3700A64834 /* PhotoViewController.m in Sources */,
 				1982EA881868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m in Sources */,

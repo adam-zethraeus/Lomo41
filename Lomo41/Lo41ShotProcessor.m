@@ -158,7 +158,7 @@ const static float clipSpan = 0.4f;
         CGContextDrawImage(context, drawRect, image.CGImage);
         CGContextRestoreGState(context);
     }
-    self.groupedImage = UIGraphicsGetImageFromCurrentImageContext();
+    self.groupedImage = [[UIImage alloc] initWithCGImage:CGBitmapContextCreateImage(UIGraphicsGetCurrentContext()) scale:1.0f orientation:((UIImage *)self.shotSet.getShotsArray[0]).imageOrientation];
     UIGraphicsEndImageContext();
 }
 
