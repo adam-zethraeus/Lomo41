@@ -91,8 +91,9 @@
     if (index < 0 || index >= self.appDelegate.album.assets.count) {
         return nil;
     }
-    CGImageRef imageRef = [[self.appDelegate.album.assets[index] defaultRepresentation] fullResolutionImage];
-    return [UIImage imageWithCGImage:imageRef scale:1.0f orientation:UIImageOrientationRight];
+    ALAsset *asset = self.appDelegate.album.assets[index];
+    CGImageRef imageRef = [asset.defaultRepresentation fullResolutionImage];
+    return [UIImage imageWithCGImage:imageRef scale:asset.defaultRepresentation.scale orientation:(UIImageOrientation)asset.defaultRepresentation.orientation];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pvc
