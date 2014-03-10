@@ -130,8 +130,9 @@
 }
 
 - (void)doShare {
-    ALAsset* assetToShare = self.appDelegate.album.assets[self.currentIndex];
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[assetToShare] applicationActivities:nil];
+    ALAsset *assetToShare = self.appDelegate.album.assets[self.currentIndex];
+    UIImage *image = [UIImage imageWithCGImage:[[assetToShare defaultRepresentation] fullResolutionImage] scale:assetToShare.defaultRepresentation.scale orientation:(UIImageOrientation)assetToShare.defaultRepresentation.orientation];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[image] applicationActivities:nil];
     [self presentViewController:activityController animated:YES completion:nil];
 }
 

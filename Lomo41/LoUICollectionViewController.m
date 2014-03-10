@@ -163,7 +163,15 @@ typedef enum AlbumState {
     if (self.selectedAssets.count < 1) {
         return;
     }
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:[self.selectedAssets allObjects] applicationActivities:nil];
+    NSMutableArray *images = [[NSMutableArray alloc] initWithCapacity:self.selectedAssets.count];
+    NSEnumerator *assetsEnumerator = self.selectedAssets.objectEnumerator;
+    ALAsset *asset;
+    int i = 0;
+    while ((asset = (ALAsset *)[assetsEnumerator nextObject])) {
+        images[i] = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage] scale:asset.defaultRepresentation.scale orientation:(UIImageOrientation)asset.defaultRepresentation.orientation];
+        i++;
+    }
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:images applicationActivities:nil];
     [self presentViewController:activityController animated:YES completion:nil];
 }
 
