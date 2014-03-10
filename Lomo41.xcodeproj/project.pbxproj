@@ -12,7 +12,6 @@
 		1962A94918BEC9F60068E36B /* LoDefaultFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1962A94818BEC9F60068E36B /* LoDefaultFilter.m */; };
 		1973BA13187A74640026BC67 /* LoCameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1973BA12187A74640026BC67 /* LoCameraPreviewView.m */; };
 		1973BA19187B42780026BC67 /* photoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1973BA18187B42780026BC67 /* photoCell.xib */; };
-		1973BA1C187B465D0026BC67 /* LoImagePreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1973BA1B187B465D0026BC67 /* LoImagePreviewCell.m */; };
 		1979A32F18C2AA3700A64834 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1979A32C18C2AA3700A64834 /* PhotoViewController.m */; };
 		1979A33018C2AA3700A64834 /* ImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1979A32E18C2AA3700A64834 /* ImageScrollView.m */; };
 		1982E9FA185850A600CC0731 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1982E9F9185850A600CC0731 /* Foundation.framework */; };
@@ -39,6 +38,7 @@
 		1982EA881868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA871868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m */; };
 		1982EA8E186D2DCF00CC0731 /* LoUICollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */; };
 		1994C6C418CD968C0055AC37 /* UIImage+RotationFunctionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 1994C6C318CD968C0055AC37 /* UIImage+RotationFunctionality.m */; };
+		1994C6C718CE58280055AC37 /* LoImagePreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1994C6C618CE58280055AC37 /* LoImagePreviewCell.m */; };
 		92CD813D8BC047F6A09088D1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF23387409D4C31A9CDD15A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -62,8 +62,6 @@
 		1973BA11187A74640026BC67 /* LoCameraPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoCameraPreviewView.h; sourceTree = "<group>"; };
 		1973BA12187A74640026BC67 /* LoCameraPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoCameraPreviewView.m; sourceTree = "<group>"; };
 		1973BA18187B42780026BC67 /* photoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = photoCell.xib; path = ../photoCell.xib; sourceTree = "<group>"; };
-		1973BA1A187B465D0026BC67 /* LoImagePreviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoImagePreviewCell.h; path = ../LoImagePreviewCell.h; sourceTree = "<group>"; };
-		1973BA1B187B465D0026BC67 /* LoImagePreviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoImagePreviewCell.m; path = ../LoImagePreviewCell.m; sourceTree = "<group>"; };
 		1979A32B18C2AA3700A64834 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		1979A32C18C2AA3700A64834 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		1979A32D18C2AA3700A64834 /* ImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageScrollView.h; sourceTree = "<group>"; };
@@ -102,6 +100,8 @@
 		1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoUICollectionViewController.m; sourceTree = "<group>"; };
 		1994C6C218CD968C0055AC37 /* UIImage+RotationFunctionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RotationFunctionality.h"; sourceTree = "<group>"; };
 		1994C6C318CD968C0055AC37 /* UIImage+RotationFunctionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RotationFunctionality.m"; sourceTree = "<group>"; };
+		1994C6C518CE58280055AC37 /* LoImagePreviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoImagePreviewCell.h; sourceTree = "<group>"; };
+		1994C6C618CE58280055AC37 /* LoImagePreviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoImagePreviewCell.m; sourceTree = "<group>"; };
 		4FF23387409D4C31A9CDD15A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F3FE8CC644437592B2EEE6 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -160,8 +160,8 @@
 		194EC4911888F294009BC1CD /* Album View */ = {
 			isa = PBXGroup;
 			children = (
-				1973BA1A187B465D0026BC67 /* LoImagePreviewCell.h */,
-				1973BA1B187B465D0026BC67 /* LoImagePreviewCell.m */,
+				1994C6C518CE58280055AC37 /* LoImagePreviewCell.h */,
+				1994C6C618CE58280055AC37 /* LoImagePreviewCell.m */,
 				1982EA8C186D2DCF00CC0731 /* LoUICollectionViewController.h */,
 				1982EA8D186D2DCF00CC0731 /* LoUICollectionViewController.m */,
 			);
@@ -434,10 +434,10 @@
 				1979A33018C2AA3700A64834 /* ImageScrollView.m in Sources */,
 				1979A32F18C2AA3700A64834 /* PhotoViewController.m in Sources */,
 				1982EA881868050400CC0731 /* ALAssetsLibrary+PhotoAlbumFunctionality.m in Sources */,
-				1973BA1C187B465D0026BC67 /* LoImagePreviewCell.m in Sources */,
 				1982EA8E186D2DCF00CC0731 /* LoUICollectionViewController.m in Sources */,
 				1962A94918BEC9F60068E36B /* LoDefaultFilter.m in Sources */,
 				191B1565186F895200357698 /* LoImageViewController.m in Sources */,
+				1994C6C718CE58280055AC37 /* LoImagePreviewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
