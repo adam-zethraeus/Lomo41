@@ -1,23 +1,14 @@
-//
-//  LoViewController.m
-//  Lomo41
-//
-//  Created by Adam Zethraeus on 12/10/13.
-//  Copyright (c) 2013 Very Nice Co. All rights reserved.
-//
-
 #import "LoCaptureViewController.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
-
 #import "ALAssetsLibrary+PhotoAlbumFunctionality.h"
-#import "LoCameraPreviewView.h"
 #import "Lo41ShotProcessor.h"
-#import "LoShotSet.h"
 #import "LoAlbumProxy.h"
-#import "LoUICollectionViewController.h"
 #import "LoAppDelegate.h"
+#import "LoCameraPreviewView.h"
+#import "LoShotSet.h"
+#import "LoUICollectionViewController.h"
 
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
 

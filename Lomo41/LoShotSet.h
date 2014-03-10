@@ -1,11 +1,3 @@
-//
-//  LoShotSet.h
-//  Lomo41
-//
-//  Created by Adam Zethraeus on 12/20/13.
-//  Copyright (c) 2013 Very Nice Co. All rights reserved.
-//
-
 @interface LoShotSet : NSObject
 
 @property (nonatomic, readonly, getter = getCount) NSUInteger count;

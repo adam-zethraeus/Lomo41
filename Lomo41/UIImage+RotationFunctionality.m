@@ -1,11 +1,3 @@
-//
-//  UIImage+RotationFunctionality.m
-//  Lomo41
-//
-//  Created by Adam Zethraeus on 3/9/14.
-//  Copyright (c) 2014 Very Nice Co. All rights reserved.
-//
-
 #import "UIImage+RotationFunctionality.h"
 
 @implementation UIImage (RotationFunctionality)

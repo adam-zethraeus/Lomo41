@@ -1,14 +1,7 @@
-//
-//  LoDefaultFilter.m
-//  Lomo41
-//
-//  Created by Adam Zethraeus on 2/26/14.
-//  Copyright (c) 2014 Very Nice Co. All rights reserved.
-//
-
 #import "LoDefaultFilter.h"
-#import "GPUImagePicture.h"
+
 #import "GPUImageLookupFilter.h"
+#import "GPUImagePicture.h"
 
 @implementation LoDefaultFilter
 

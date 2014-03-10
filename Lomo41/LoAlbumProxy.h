@@ -1,11 +1,3 @@
-//
-//  LoAlbumProxy.h
-//  Lomo41
-//
-//  Created by Adam Zethraeus on 1/11/14.
-//  Copyright (c) 2014 Very Nice Co. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 @interface LoAlbumProxy : NSObject

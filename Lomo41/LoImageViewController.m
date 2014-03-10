@@ -1,11 +1,3 @@
-//
-//  LoImageViewController.m
-//  Lomo41
-//
-//  Created by Adam Zethraeus on 12/28/13.
-//  Copyright (c) 2013 Very Nice Co. All rights reserved.
-//
-
 #import "LoImageViewController.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -76,7 +68,7 @@
     return YES;
 }
 
--(void)refreshToIndex: (NSInteger)index {
+- (void)refreshToIndex: (NSInteger)index {
     self.currentIndex = index;
     PhotoViewController *currentPage = [PhotoViewController photoViewControllerForIndex:index andImage:[self imageForIndex:index]];
     if (currentPage != nil) {
@@ -158,7 +150,7 @@
     }
 }
 
--(void)toggleToolbarVisibility {
+- (void)toggleToolbarVisibility {
     if (self.navigationController.navigationBarHidden) {
         [self animateToolbarVisibility: true];
     } else {
@@ -167,7 +159,7 @@
 
 }
 
--(void)animateToolbarVisibility: (bool)visible {
+- (void)animateToolbarVisibility: (bool)visible {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController setNavigationBarHidden:!visible animated:YES];
         [UIView animateWithDuration:0.25 animations:^{

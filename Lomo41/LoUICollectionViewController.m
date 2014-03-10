@@ -1,20 +1,11 @@
-//
-//  LoUICollectionViewController.m
-//  Lomo41
-//
-//  Created by Adam Zethraeus on 12/26/13.
-//  Copyright (c) 2013 Very Nice Co. All rights reserved.
-//
-
 #import "LoUICollectionViewController.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
-
 #import "ALAssetsLibrary+PhotoAlbumFunctionality.h"
-#import "LoImagePreviewCell.h"
-#import "LoImageViewController.h"
 #import "LoAlbumProxy.h"
 #import "LoAppDelegate.h"
+#import "LoImagePreviewCell.h"
+#import "LoImageViewController.h"
 #import "UIImage+RotationFunctionality.h"
 
 static void * AlbumAssetsRefreshContext = &AlbumAssetsRefreshContext;
@@ -26,6 +17,7 @@ typedef enum AlbumState {
 } AlbumState;
 
 @interface LoUICollectionViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
+
 - (IBAction)doCellAction:(id)sender;
 - (IBAction)doToggleSelect:(UIBarButtonItem *)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *selectButton;

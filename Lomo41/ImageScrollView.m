@@ -5,8 +5,7 @@
 
 #pragma mark -
 
-@interface ImageScrollView () <UIScrollViewDelegate>
-{
+@interface ImageScrollView () <UIScrollViewDelegate> {
     UIImageView *_zoomView;  // contains the full image.
     CGSize _imageSize;
         
@@ -18,8 +17,7 @@
 
 @implementation ImageScrollView
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self)
     {
@@ -32,8 +30,7 @@
     return self;
 }
 
-- (void)layoutSubviews 
-{
+- (void)layoutSubviews  {
     [super layoutSubviews];
     
     // center the zoom view as it becomes smaller than the size of the screen
@@ -55,8 +52,7 @@
     _zoomView.frame = frameToCenter;
 }
 
-- (void)setFrame:(CGRect)frame
-{
+- (void)setFrame:(CGRect)frame {
     BOOL sizeChanging = !CGSizeEqualToSize(frame.size, self.frame.size);
     
     if (sizeChanging) {
@@ -73,8 +69,7 @@
 
 #pragma mark - UIScrollViewDelegate
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return _zoomView;
 }
 
@@ -82,8 +77,7 @@
 #pragma mark - Configure scrollView to display new image
 
 
-- (void)displayImage:(UIImage *)image
-{
+- (void)displayImage:(UIImage *)image {
     // clear the previous image
     [_zoomView removeFromSuperview];
     _zoomView = nil;
@@ -98,16 +92,14 @@
     [self configureForImageSize:image.size];
 }
 
-- (void)configureForImageSize:(CGSize)imageSize
-{
+- (void)configureForImageSize:(CGSize)imageSize {
     _imageSize = imageSize;
     self.contentSize = imageSize;
     [self setMaxMinZoomScalesForCurrentBounds];
     self.zoomScale = self.minimumZoomScale;
 }
 
-- (void)setMaxMinZoomScalesForCurrentBounds
-{
+- (void)setMaxMinZoomScalesForCurrentBounds {
     CGSize boundsSize = self.bounds.size;
                 
     // calculate min/max zoomscale
@@ -137,8 +129,7 @@
 
 #pragma mark - Rotation support
 
-- (void)prepareToResize
-{
+- (void)prepareToResize {
     CGPoint boundsCenter = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _pointToCenterAfterResize = [self convertPoint:boundsCenter toView:_zoomView];
 
@@ -150,8 +141,7 @@
         _scaleToRestoreAfterResize = 0;
 }
 
-- (void)recoverFromResizing
-{
+- (void)recoverFromResizing {
     [self setMaxMinZoomScalesForCurrentBounds];
     
     // Step 1: restore zoom scale, first making sure it is within the allowable range.
@@ -180,15 +170,13 @@
     self.contentOffset = offset;
 }
 
-- (CGPoint)maximumContentOffset
-{
+- (CGPoint)maximumContentOffset {
     CGSize contentSize = self.contentSize;
     CGSize boundsSize = self.bounds.size;
     return CGPointMake(contentSize.width - boundsSize.width, contentSize.height - boundsSize.height);
 }
 
-- (CGPoint)minimumContentOffset
-{
+- (CGPoint)minimumContentOffset {
     return CGPointZero;
 }
 
