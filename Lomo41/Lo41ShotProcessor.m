@@ -7,8 +7,6 @@ const static float paddingToClipRatio = 1.0f/45.0f;
 const static GPUVector3 backgroundColor =  {0.1, 0.1, 0.1};
 const static float vignetteStart = 0.4f;
 const static float vignetteEnd = 1.4f;
-const static float saturationLevel = 1.1f;
-const static float contrastLevel = 1.3f;
 const static float blurExcludeRadius = 0.6f;
 const static float blurSize = 0.3f;
 // Distance across the center than clips can be taken from. Max 1.0.
