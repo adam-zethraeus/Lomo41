@@ -151,7 +151,7 @@ const static float clipSpan = 0.4f;
 
     UIImageOrientation orientation = UIImageOrientationUp;
 
-    switch ([[UIDevice currentDevice]orientation]) {
+    switch (self.shotSet.orientation) {
         case UIDeviceOrientationPortrait:
             orientation = UIImageOrientationRight;
             break;

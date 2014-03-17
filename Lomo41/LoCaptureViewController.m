@@ -84,7 +84,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     self.appDelegate = [[UIApplication sharedApplication] delegate];
     NSAssert(self.appDelegate.album != nil, @"album should have been set on AppDelegate");
     self.captureSession = [[AVCaptureSession alloc] init];
-    self.currentShots = [[LoShotSet alloc] initForSize:4];
+    self.currentShots = nil;
 	[self checkCameraPermissions];
 	self.sessionQueue = dispatch_queue_create("capture session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
@@ -156,7 +156,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         self.timer = nil;
     }
     dispatch_async(self.sessionQueue, ^{
-        [self.currentShots purge];
+        self.currentShots = nil;
     });
 }
 
@@ -196,6 +196,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
 - (IBAction)doShoot:(id)sender {
     if (!self.isShooting) {
+        self.currentShots = [[LoShotSet alloc] initForSize:4];
         [self shootOnce];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
     }
@@ -213,6 +214,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     [self runCaptureAnimation];
     switch (self.shotCount) {
         case 1:
+            self.currentShots.orientation = [[UIDevice currentDevice]orientation];
             [self.paneOne.layer setOpacity: 0.2];
             break;
         case 2:
@@ -251,7 +253,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
 - (void)processShotSet {
     if (self.currentShots.count != 4) {
-        [self.currentShots purge];
+        self.currentShots = nil;
         self.shotCount = 0;
         return;
     }
@@ -263,7 +265,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         if (finalGroupedImage) {
             [self.appDelegate.album addImage:finalGroupedImage];
         }
-        [self.currentShots purge];
+        self.currentShots = nil;
         self.shotCount = 0;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.paneOne.layer setOpacity: 1.0];

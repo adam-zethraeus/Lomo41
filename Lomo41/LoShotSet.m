@@ -34,8 +34,4 @@
     return self.shotsSet.count;
 }
 
-- (void)purge {
-    [self.shotsSet removeAllObjects];
-}
-
 @end
