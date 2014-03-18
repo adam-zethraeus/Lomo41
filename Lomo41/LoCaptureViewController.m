@@ -230,7 +230,9 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             break;
     }
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:[self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-        if (failed) return;
+        if (failed) {
+            return;
+        }
         if (imageDataSampleBuffer) {
             CFRetain(imageDataSampleBuffer);
         } else {
