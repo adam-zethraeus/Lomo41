@@ -15,6 +15,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @interface LoCaptureViewController ()
 @property (weak, nonatomic) IBOutlet UIView *shootView;
 @property (weak, nonatomic) IBOutlet UIButton *shootButton;
+@property (weak, nonatomic) IBOutlet UIButton *cameraToggleButton;
 @property (weak, nonatomic) IBOutlet LoCameraPreviewView *previewView;
 @property (weak, nonatomic) IBOutlet UIView *paneOne;
 @property (weak, nonatomic) IBOutlet UIView *paneTwo;
@@ -33,6 +34,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic, readonly, getter = isCurrentlyShooting) BOOL isShooting;
 @property (weak, nonatomic) LoAppDelegate *appDelegate;
 - (IBAction)doShoot:(id)sender;
+- (IBAction)toggleCamera:(id)sender;
 @end
 
 @implementation LoCaptureViewController
@@ -133,6 +135,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     [super viewWillAppear:animated];
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningCameraPermissionContext];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(subjectAreaDidChange:) name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[self.videoDeviceInput device]];
 		__weak LoCaptureViewController *weakSelf = self;
 		self.runtimeErrorHandlingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self captureSession] queue:nil usingBlock:^(NSNotification *note) {
 			LoCaptureViewController *strongSelf = weakSelf;
@@ -187,12 +190,40 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         BOOL hasPermission = [change[NSKeyValueChangeNewKey] boolValue];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (hasPermission) {
-                [self.shootButton setEnabled:YES];
+                self.shootButton.enabled = YES;
+                self.cameraToggleButton.enabled = YES;
             } else {
-                [self.shootButton setEnabled:NO];
+                self.shootButton.enabled = NO;
+                self.cameraToggleButton.enabled = NO;
             }
         });
     }
+}
+
+- (void)subjectAreaDidChange:(NSNotification *)notification {
+	CGPoint devicePoint = CGPointMake(.5, .5);
+	[self focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:NO];
+}
+
+- (void)focusWithMode:(AVCaptureFocusMode)focusMode exposeWithMode:(AVCaptureExposureMode)exposureMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange {
+	dispatch_async([self sessionQueue], ^{
+		AVCaptureDevice *device = [self.videoDeviceInput device];
+		NSError *error = nil;
+		if ([device lockForConfiguration:&error]) {
+			if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:focusMode]) {
+				[device setFocusMode:focusMode];
+				[device setFocusPointOfInterest:point];
+			}
+			if ([device isExposurePointOfInterestSupported] && [device isExposureModeSupported:exposureMode]) {
+				[device setExposureMode:exposureMode];
+				[device setExposurePointOfInterest:point];
+			}
+			[device setSubjectAreaChangeMonitoringEnabled:monitorSubjectAreaChange];
+			[device unlockForConfiguration];
+		} else {
+			NSLog(@"%@", error);
+		}
+	});
 }
 
 - (IBAction)doShoot:(id)sender {
@@ -201,6 +232,54 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         [self shootOnce];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
     }
+}
+
+- (IBAction)toggleCamera:(id)sender {
+	self.shootButton.enabled = NO;
+	self.cameraToggleButton.enabled = NO;
+	
+	dispatch_async([self sessionQueue], ^{
+		AVCaptureDevice *currentVideoDevice = [self.videoDeviceInput device];
+		AVCaptureDevicePosition preferredPosition = AVCaptureDevicePositionUnspecified;
+		AVCaptureDevicePosition currentPosition = [currentVideoDevice position];
+		
+		switch (currentPosition) {
+			case AVCaptureDevicePositionUnspecified:
+				preferredPosition = AVCaptureDevicePositionBack;
+				break;
+			case AVCaptureDevicePositionBack:
+				preferredPosition = AVCaptureDevicePositionFront;
+				break;
+			case AVCaptureDevicePositionFront:
+				preferredPosition = AVCaptureDevicePositionBack;
+				break;
+		}
+		
+		AVCaptureDevice *videoDevice = [LoCaptureViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:preferredPosition];
+		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:nil];
+		
+		[self.captureSession beginConfiguration];
+		
+		[self.captureSession removeInput:[self videoDeviceInput]];
+		if ([self.captureSession canAddInput:videoDeviceInput]) {
+			[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:currentVideoDevice];
+			
+			[LoCaptureViewController setFlashMode:AVCaptureFlashModeAuto forDevice:videoDevice];
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(subjectAreaDidChange:) name:AVCaptureDeviceSubjectAreaDidChangeNotification object:videoDevice];
+			
+			[self.captureSession addInput:videoDeviceInput];
+			[self setVideoDeviceInput:videoDeviceInput];
+		} else {
+			[self.captureSession addInput:[self videoDeviceInput]];
+		}
+		
+		[self.captureSession commitConfiguration];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+            self.shootButton.enabled = YES;
+            self.cameraToggleButton.enabled = YES;
+		});
+	});
 }
 
 - (void)shootOnce {

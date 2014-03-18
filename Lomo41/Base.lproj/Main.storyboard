@@ -17,11 +17,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Jm-R3-zYW">
-                                <rect key="frame" x="90" y="93" width="140" height="335"/>
+                                <rect key="frame" x="42" y="82" width="237" height="355"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhB-ZX-PJ8">
-                                        <rect key="frame" x="30" y="255" width="80" height="80"/>
+                                        <rect key="frame" x="78" y="265" width="80" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="64"/>
@@ -38,7 +38,7 @@
                                         </connections>
                                     </button>
                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iLO-ji-gRB">
-                                        <rect key="frame" x="30" y="219" width="80" height="10"/>
+                                        <rect key="frame" x="78" y="229" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -47,7 +47,7 @@
                                         </accessibility>
                                     </view>
                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tMi-Ek-JzC">
-                                        <rect key="frame" x="30" y="189" width="80" height="10"/>
+                                        <rect key="frame" x="78" y="199" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -56,7 +56,7 @@
                                         </accessibility>
                                     </view>
                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mHo-aA-XSD">
-                                        <rect key="frame" x="30" y="159" width="80" height="10"/>
+                                        <rect key="frame" x="78" y="169" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.92549019610000005" green="0.1529411765" blue="0.4431372549" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -65,7 +65,7 @@
                                         </accessibility>
                                     </view>
                                     <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZOu-Td-2Hh">
-                                        <rect key="frame" x="30" y="129" width="80" height="10"/>
+                                        <rect key="frame" x="78" y="139" width="80" height="10"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.92549019607843142" green="0.15294117647058825" blue="0.44313725490196076" alpha="1" colorSpace="deviceRGB"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -74,7 +74,7 @@
                                         </accessibility>
                                     </view>
                                     <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="inA-I9-M6V">
-                                        <rect key="frame" x="20" y="0.0" width="100" height="100"/>
+                                        <rect key="frame" x="68" y="10" width="100" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rzb-IX-RKT" customClass="LoCameraPreviewView">
@@ -85,22 +85,31 @@
                                         </subviews>
                                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5un-X1-yzC">
+                                        <rect key="frame" x="172" y="10" width="28" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <rect key="contentStretch" x="0.0" y="0.0" width="0.5" height="0.49999999999999961"/>
+                                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <state key="normal" image="refresh"/>
+                                        <connections>
+                                            <action selector="toggleCamera:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ygp-H3-qQK"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="140" id="Apx-Y8-UEX"/>
-                                    <constraint firstAttribute="height" constant="335" id="cFw-wq-Rag" userLabel="Height - (335) - View"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="0Jm-R3-zYW" secondAttribute="centerY" constant="-0.5" id="6ch-iU-Rv0"/>
-                            <constraint firstAttribute="centerX" secondItem="0Jm-R3-zYW" secondAttribute="centerX" id="xpv-tz-il0"/>
+                            <constraint firstItem="0Jm-R3-zYW" firstAttribute="top" secondItem="7fs-bF-qkm" secondAttribute="bottom" constant="62" id="3ni-O5-Kqz"/>
+                            <constraint firstAttribute="centerX" secondItem="0Jm-R3-zYW" secondAttribute="centerX" constant="-0.5" id="42f-bV-c1I"/>
+                            <constraint firstItem="0Jm-R3-zYW" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="42" id="MUf-o2-gfY"/>
+                            <constraint firstAttribute="centerY" secondItem="0Jm-R3-zYW" secondAttribute="centerY" id="aLR-wl-uJd"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Camera" image="camera" id="wx1-MN-Pi3"/>
                     <connections>
+                        <outlet property="cameraToggleButton" destination="5un-X1-yzC" id="dc2-rQ-Q87"/>
                         <outlet property="paneFour" destination="iLO-ji-gRB" id="Uqy-qp-3dC"/>
                         <outlet property="paneOne" destination="ZOu-Td-2Hh" id="vAB-f7-AUn"/>
                         <outlet property="paneThree" destination="tMi-Ek-JzC" id="fPg-pi-4zq"/>
@@ -249,6 +258,7 @@
     <resources>
         <image name="camera" width="28" height="21"/>
         <image name="gallery" width="28" height="22"/>
+        <image name="refresh" width="28" height="28"/>
         <image name="shutter_narrow" width="80" height="80"/>
         <image name="shutter_wide" width="80" height="80"/>
     </resources>
