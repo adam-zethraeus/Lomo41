@@ -33,6 +33,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) NSInteger shotCount;
 @property (nonatomic, readonly, getter = isCurrentlyShooting) BOOL isShooting;
 @property (weak, nonatomic) LoAppDelegate *appDelegate;
+@property (weak, nonatomic) IBOutlet UILabel *secretText;
 - (IBAction)doShoot:(id)sender;
 - (IBAction)toggleCamera:(id)sender;
 @end
@@ -128,6 +129,18 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 			self.stillImageOutput = stillImageOutput;
 		}
         self.previewView.session = self.captureSession;
+        if ([videoDevice respondsToSelector:@selector(isLowLightBoostSupported)]) {
+            if ([videoDevice lockForConfiguration:nil]) {
+                if (videoDevice.isLowLightBoostSupported) {
+                    videoDevice.automaticallyEnablesLowLightBoostWhenAvailable = YES;
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.secretText.hidden = NO;
+                    });
+                    // this would sure be exciting.
+                }
+                [videoDevice unlockForConfiguration];
+            }
+        }
     });
 }
 
