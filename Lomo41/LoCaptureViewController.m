@@ -84,6 +84,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     self.appDelegate = [[UIApplication sharedApplication] delegate];
     NSAssert(self.appDelegate.album != nil, @"album should have been set on AppDelegate");
     self.captureSession = [[AVCaptureSession alloc] init];
+    self.captureSession.sessionPreset = AVCaptureSessionPresetHigh;
     self.currentShots = nil;
 	[self checkCameraPermissions];
 	self.sessionQueue = dispatch_queue_create("capture session queue", DISPATCH_QUEUE_SERIAL);
