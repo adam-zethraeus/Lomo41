@@ -128,6 +128,14 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 			self.stillImageOutput = stillImageOutput;
 		}
         self.previewView.session = self.captureSession;
+        if ([videoDevice respondsToSelector:@selector(isLowLightBoostSupported)]) {
+            if ([videoDevice lockForConfiguration:nil]) {
+                if (videoDevice.isLowLightBoostSupported) {
+                    videoDevice.automaticallyEnablesLowLightBoostWhenAvailable = YES;
+                }
+                [videoDevice unlockForConfiguration];
+            }
+        }
     });
 }
 
