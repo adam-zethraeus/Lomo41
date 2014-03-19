@@ -31,7 +31,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) BOOL hasCameraPermission;
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSInteger shotCount;
-@property (nonatomic, readonly, getter = isCurrentlyShooting) BOOL isShooting;
 @property (weak, nonatomic) LoAppDelegate *appDelegate;
 - (IBAction)doShoot:(id)sender;
 - (IBAction)toggleCamera:(id)sender;
@@ -234,14 +233,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	});
 }
 
-- (IBAction)doShoot:(id)sender {
-    if (!self.isShooting) {
-        self.currentShots = [[LoShotSet alloc] initForSize:4];
-        [self shootOnce];
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
-    }
-}
-
 - (IBAction)toggleCamera:(id)sender {
 	self.shootButton.enabled = NO;
 	self.cameraToggleButton.enabled = NO;
@@ -288,6 +279,16 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             self.cameraToggleButton.enabled = YES;
 		});
 	});
+}
+
+- (IBAction)doShoot:(id)sender {
+    if (![self isCurrentlyShooting]) {
+        self.currentShots = [[LoShotSet alloc] initForSize:4];
+        self.shootButton.enabled = NO;
+        self.cameraToggleButton.enabled = NO;
+        [self shootOnce];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
+    }
 }
 
 - (void)shootOnce {
@@ -358,6 +359,8 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         self.currentShots = nil;
         self.shotCount = 0;
         dispatch_async(dispatch_get_main_queue(), ^{
+            self.shootButton.enabled = YES;
+            self.cameraToggleButton.enabled = YES;
             [self.paneOne.layer setOpacity: 1.0];
             [self.paneTwo.layer setOpacity: 1.0];
             [self.paneThree.layer setOpacity: 1.0];
