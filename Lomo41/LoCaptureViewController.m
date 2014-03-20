@@ -9,6 +9,7 @@
 #import "LoCameraPreviewView.h"
 #import "LoShotSet.h"
 #import "LoUICollectionViewController.h"
+#import "RBVolumeButtons.h"
 
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
 
@@ -32,6 +33,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) NSInteger shotCount;
 @property (weak, nonatomic) LoAppDelegate *appDelegate;
+@property (nonatomic) RBVolumeButtons *volumeButtonHandler;
 - (IBAction)doShoot:(id)sender;
 - (IBAction)toggleCamera:(id)sender;
 @end
@@ -136,6 +138,18 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             }
         }
     });
+    self.volumeButtonHandler = [[RBVolumeButtons alloc] init];
+    __weak LoCaptureViewController *weakSelf = self;
+    self.volumeButtonHandler.upBlock = ^{
+        if (weakSelf != nil) {
+            [weakSelf doShoot:nil];
+        }
+    };
+    self.volumeButtonHandler.downBlock = ^{
+        if (weakSelf != nil) {
+            [weakSelf doShoot:nil];
+        }
+    };
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -158,6 +172,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     [self.paneTwo.layer setOpacity: 1.0];
     [self.paneThree.layer setOpacity: 1.0];
     [self.paneFour.layer setOpacity: 1.0];
+    [self.volumeButtonHandler startStealingVolumeButtonEvents];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -169,6 +184,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     dispatch_async(self.sessionQueue, ^{
         self.currentShots = nil;
     });
+    [self.volumeButtonHandler stopStealingVolumeButtonEvents];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

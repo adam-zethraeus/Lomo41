@@ -1,10 +1,13 @@
 PODS:
   - GPUImage (0.1.2)
+  - RBVolumeButtons (0.0.1)
 
 DEPENDENCIES:
   - GPUImage (= 0.1.2)
+  - RBVolumeButtons (= 0.0.1)
 
 SPEC CHECKSUMS:
   GPUImage: 007145faa0e27f1ddbcab93e07f026c9776e2fa2
+  RBVolumeButtons: 8fc67cc874d6dfa1808f61c91e9931ccabe52ae0
 
 COCOAPODS: 0.29.0
