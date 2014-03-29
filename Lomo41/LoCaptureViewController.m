@@ -214,7 +214,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (void)focusWithMode:(AVCaptureFocusMode)focusMode exposeWithMode:(AVCaptureExposureMode)exposureMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange {
-	dispatch_async([self sessionQueue], ^{
+	dispatch_async(self.sessionQueue, ^{
 		AVCaptureDevice *device = [self.videoDeviceInput device];
 		NSError *error = nil;
 		if ([device lockForConfiguration:&error]) {
