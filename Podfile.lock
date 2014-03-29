@@ -1,10 +1,13 @@
 PODS:
   - GPUImage (0.1.2)
+  - MotionOrientation@PTEz (1.0.0)
 
 DEPENDENCIES:
   - GPUImage (= 0.1.2)
+  - MotionOrientation@PTEz (= 1.0.0)
 
 SPEC CHECKSUMS:
   GPUImage: 007145faa0e27f1ddbcab93e07f026c9776e2fa2
+  MotionOrientation@PTEz: 0b987d39639b13ce2769f6dc6f96f59783ca8786
 
 COCOAPODS: 0.29.0

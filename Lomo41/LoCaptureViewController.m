@@ -9,6 +9,7 @@
 #import "LoCameraPreviewView.h"
 #import "LoShotSet.h"
 #import "LoUICollectionViewController.h"
+#import "MotionOrientation.h"
 
 static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermissionContext;
 
@@ -91,6 +92,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	[self checkCameraPermissions];
 	self.sessionQueue = dispatch_queue_create("capture session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
+        [MotionOrientation initialize];
 		NSError *error = nil;
 		AVCaptureDevice *videoDevice = [LoCaptureViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
         if ([videoDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
@@ -318,7 +320,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     [self runCaptureAnimation];
     switch (self.shotCount) {
         case 1:
-            self.currentShots.orientation = [[UIDevice currentDevice]orientation];
+            self.currentShots.orientation = [MotionOrientation sharedInstance].deviceOrientation;
             [self.paneOne.layer setOpacity: 0.2];
             break;
         case 2:
