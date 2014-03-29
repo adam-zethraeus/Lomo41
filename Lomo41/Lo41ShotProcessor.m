@@ -159,10 +159,10 @@ const static float clipSpan = 0.4f;
             orientation = UIImageOrientationLeft;
             break;
         case UIDeviceOrientationLandscapeLeft:
-            orientation = UIImageOrientationUp;
+            orientation = self.shotSet.cameraType == BACK_FACING ? UIImageOrientationUp : UIImageOrientationDown;
             break;
         case UIDeviceOrientationLandscapeRight:
-            orientation = UIImageOrientationDown;
+            orientation = self.shotSet.cameraType == FRONT_FACING ? UIImageOrientationUp : UIImageOrientationDown;
             break;
         default:
             break;

@@ -300,6 +300,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     if (![self isCurrentlyShooting]) {
         self.currentShots = [[LoShotSet alloc] initForSize:4];
         self.shootButton.enabled = NO;
+        self.currentShots.cameraType = self.cameraToggleButton.selected ? FRONT_FACING : BACK_FACING;
         [self shootOnce];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
     }
