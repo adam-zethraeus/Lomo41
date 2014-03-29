@@ -85,12 +85,15 @@
                                         </subviews>
                                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5un-X1-yzC">
-                                        <rect key="frame" x="172" y="10" width="28" height="28"/>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5un-X1-yzC">
+                                        <rect key="frame" x="176" y="10" width="26" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.5" height="0.49999999999999961"/>
-                                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                                         <state key="normal" image="refresh"/>
+                                        <state key="disabled" image="refresh"/>
+                                        <state key="selected" image="refresh-white"/>
+                                        <state key="highlighted" image="refresh"/>
                                         <connections>
                                             <action selector="toggleCamera:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ygp-H3-qQK"/>
                                         </connections>
@@ -261,6 +264,7 @@
         <image name="camera" width="28" height="21"/>
         <image name="gallery" width="28" height="22"/>
         <image name="refresh" width="28" height="28"/>
+        <image name="refresh-white" width="28" height="28"/>
         <image name="shutter_narrow" width="80" height="80"/>
         <image name="shutter_wide" width="80" height="80"/>
     </resources>

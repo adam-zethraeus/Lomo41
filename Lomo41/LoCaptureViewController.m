@@ -84,6 +84,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     [super viewDidLoad];
     self.appDelegate = [[UIApplication sharedApplication] delegate];
     NSAssert(self.appDelegate.album != nil, @"album should have been set on AppDelegate");
+    self.cameraToggleButton.layer.cornerRadius = 5;
     self.captureSession = [[AVCaptureSession alloc] init];
     self.captureSession.sessionPreset = AVCaptureSessionPresetHigh;
     self.currentShots = nil;
@@ -198,10 +199,8 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         dispatch_async(dispatch_get_main_queue(), ^{
             if (hasPermission) {
                 self.shootButton.enabled = YES;
-                self.cameraToggleButton.enabled = YES;
             } else {
                 self.shootButton.enabled = NO;
-                self.cameraToggleButton.enabled = NO;
             }
         });
     }
@@ -234,9 +233,17 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 }
 
 - (IBAction)toggleCamera:(id)sender {
+    // Using shootButton as proxy for cameraToggleButton's disabled state.
+    // This prevents button flicker due to state.
+    if (!self.shootButton.enabled) {
+        return;
+    }
 	self.shootButton.enabled = NO;
-	self.cameraToggleButton.enabled = NO;
-	
+    if (self.cameraToggleButton.selected) {
+        [self setToggleButtonSelected:NO];
+    } else {
+        [self setToggleButtonSelected:YES];
+    }
 	dispatch_async([self sessionQueue], ^{
 		AVCaptureDevice *currentVideoDevice = [self.videoDeviceInput device];
 		AVCaptureDevicePosition preferredPosition = AVCaptureDevicePositionUnspecified;
@@ -276,16 +283,23 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
             self.shootButton.enabled = YES;
-            self.cameraToggleButton.enabled = YES;
 		});
 	});
+}
+
+- (void)setToggleButtonSelected:(BOOL)value {
+    self.cameraToggleButton.selected = value;
+    if (value) {
+        self.cameraToggleButton.backgroundColor = self.appDelegate.window.tintColor;
+    } else {
+        self.cameraToggleButton.backgroundColor = [UIColor clearColor];
+    }
 }
 
 - (IBAction)doShoot:(id)sender {
     if (![self isCurrentlyShooting]) {
         self.currentShots = [[LoShotSet alloc] initForSize:4];
         self.shootButton.enabled = NO;
-        self.cameraToggleButton.enabled = NO;
         [self shootOnce];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
     }
@@ -360,7 +374,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         self.shotCount = 0;
         dispatch_async(dispatch_get_main_queue(), ^{
             self.shootButton.enabled = YES;
-            self.cameraToggleButton.enabled = YES;
             [self.paneOne.layer setOpacity: 1.0];
             [self.paneTwo.layer setOpacity: 1.0];
             [self.paneThree.layer setOpacity: 1.0];
