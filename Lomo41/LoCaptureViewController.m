@@ -24,6 +24,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (weak, nonatomic) IBOutlet UIView *paneFour;
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (nonatomic) AVCaptureSession *captureSession;
+@property (nonatomic) AVCaptureDevice *videoDevice;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic) LoShotSet *currentShots;
@@ -64,6 +65,20 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	}
 }
 
++ (void)setFocusMode:(AVCaptureFocusMode)focusMode forDevice:(AVCaptureDevice *)device {
+    NSError *error = nil;
+    if ([device isFocusModeSupported:focusMode]) {
+        if ([device lockForConfiguration:&error]) {
+            CGPoint autofocusPoint = CGPointMake(0.5f, 0.5f);
+            [device setFocusPointOfInterest:autofocusPoint];
+            [device setFocusMode:focusMode];
+            [device unlockForConfiguration];
+        } else {
+            NSLog(@"%@", error);
+        }
+    }
+}
+
 + (NSSet *)keyPathsForValuesAffectingSessionRunningAndHasCameraPermission {
 	return [NSSet setWithObjects:@"captureSession.running", @"hasCameraPermission", nil];
 }
@@ -94,28 +109,19 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	dispatch_async(self.sessionQueue, ^{
         [MotionOrientation initialize];
 		NSError *error = nil;
-		AVCaptureDevice *videoDevice = [LoCaptureViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
-        if ([videoDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
-            if ([videoDevice lockForConfiguration:&error]) {
-                CGPoint autofocusPoint = CGPointMake(0.5f, 0.5f);
-                [videoDevice setFocusPointOfInterest:autofocusPoint];
-                [videoDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
-                [videoDevice unlockForConfiguration];
-            } else {
-                NSLog(@"%@", error);
-            }
-        }
-        if ([videoDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
-            if ([videoDevice lockForConfiguration:&error]) {
+		self.videoDevice = [LoCaptureViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
+        [LoCaptureViewController setFocusMode:AVCaptureFocusModeContinuousAutoFocus forDevice:self.videoDevice];
+        if ([self.videoDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
+            if ([self.videoDevice lockForConfiguration:&error]) {
                 CGPoint exposurePoint = CGPointMake(0.5f, 0.5f);
-                [videoDevice setExposurePointOfInterest:exposurePoint];
-                [videoDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+                [self.videoDevice setExposurePointOfInterest:exposurePoint];
+                [self.videoDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
             } else {
                 NSLog(@"%@", error);
             }
         }
-        [LoCaptureViewController setFlashMode:AVCaptureFlashModeOff forDevice:videoDevice];
-		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
+        [LoCaptureViewController setFlashMode:AVCaptureFlashModeOn forDevice:self.videoDevice];
+		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:self.videoDevice error:&error];
 		if (error) {
 			NSLog(@"%@", error);
 		}
@@ -130,12 +136,12 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 			self.stillImageOutput = stillImageOutput;
 		}
         self.previewView.session = self.captureSession;
-        if ([videoDevice respondsToSelector:@selector(isLowLightBoostSupported)]) {
-            if ([videoDevice lockForConfiguration:nil]) {
-                if (videoDevice.isLowLightBoostSupported) {
-                    videoDevice.automaticallyEnablesLowLightBoostWhenAvailable = YES;
+        if ([self.videoDevice respondsToSelector:@selector(isLowLightBoostSupported)]) {
+            if ([self.videoDevice lockForConfiguration:nil]) {
+                if (self.videoDevice.isLowLightBoostSupported) {
+                    self.videoDevice.automaticallyEnablesLowLightBoostWhenAvailable = YES;
                 }
-                [videoDevice unlockForConfiguration];
+                [self.videoDevice unlockForConfiguration];
             }
         }
     });
@@ -154,6 +160,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 				[strongSelf.captureSession startRunning];
 			});
 		}];
+        [LoCaptureViewController setFocusMode: AVCaptureFocusModeContinuousAutoFocus forDevice:self.videoDevice];
 		[self.captureSession startRunning];
 	});
     self.shotCount = 0;
@@ -300,6 +307,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 
 - (IBAction)doShoot:(id)sender {
     if (![self isCurrentlyShooting]) {
+        [LoCaptureViewController setFocusMode:AVCaptureFocusModeLocked forDevice:self.videoDevice];
         self.currentShots = [[LoShotSet alloc] initForSize:4];
         self.shootButton.enabled = NO;
         self.currentShots.cameraType = self.cameraToggleButton.selected ? FRONT_FACING : BACK_FACING;
@@ -353,6 +361,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                 CFRelease(imageDataSampleBuffer);
             }
             if (final) {
+                [LoCaptureViewController setFocusMode: AVCaptureFocusModeContinuousAutoFocus forDevice:self.videoDevice];
                 [self processShotSet];
             }
         });
