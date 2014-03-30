@@ -79,6 +79,18 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     }
 }
 
++ (void)setTorchMode:(AVCaptureTorchMode)torchMode forDevice:(AVCaptureDevice *)device {
+	if ([device hasTorch] && [device isTorchModeSupported:torchMode]) {
+		NSError *error = nil;
+		if ([device lockForConfiguration:&error]) {
+			[device setTorchMode:torchMode];
+			[device unlockForConfiguration];
+		} else {
+			NSLog(@"%@", error);
+		}
+	}
+}
+
 + (NSSet *)keyPathsForValuesAffectingSessionRunningAndHasCameraPermission {
 	return [NSSet setWithObjects:@"captureSession.running", @"hasCameraPermission", nil];
 }
