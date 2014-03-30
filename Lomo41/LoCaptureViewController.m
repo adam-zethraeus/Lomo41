@@ -132,7 +132,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
                 NSLog(@"%@", error);
             }
         }
-        [LoCaptureViewController setFlashMode:AVCaptureFlashModeOn forDevice:self.videoDevice];
+        [LoCaptureViewController setFlashMode:AVCaptureFlashModeOff forDevice:self.videoDevice];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:self.videoDevice error:&error];
 		if (error) {
 			NSLog(@"%@", error);

@@ -22,7 +22,6 @@ typedef enum AlbumState {
 - (IBAction)doToggleSelect:(UIBarButtonItem *)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *selectButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (nonatomic) dispatch_queue_t sessionQueue;
 @property (strong, nonatomic) LoAppDelegate *appDelegate;
 @property (strong, nonatomic) NSMutableSet *selectedAssets;
 @property (strong, nonatomic) UIButton *deleteButton;
@@ -39,7 +38,6 @@ typedef enum AlbumState {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.sessionQueue = dispatch_queue_create("collection view proxy queue", DISPATCH_QUEUE_SERIAL);
     self.appDelegate = [[UIApplication sharedApplication] delegate];
     NSAssert(self.appDelegate.album != nil, @"album should have been set on AppDelegate");
 
@@ -70,21 +68,21 @@ typedef enum AlbumState {
 - (void)viewWillAppear: (BOOL)animated {
     [super viewWillAppear:animated];
     [self resetState];
-    dispatch_async(self.sessionQueue, ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self.appDelegate.album addObserver:self forKeyPath:@"assets" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:AlbumAssetsRefreshContext];
     });
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    dispatch_async(self.sessionQueue, ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self.appDelegate.album updateAssets];
     });
 }
 
 - (void)viewWillDisappear: (BOOL)animated {
     [super viewWillDisappear:animated];
-    dispatch_async(self.sessionQueue, ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self.appDelegate.album removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
     });
 }
@@ -125,7 +123,7 @@ typedef enum AlbumState {
     if (self.state == SELECTION_ENABLED) {
         NSAssert(self.selectedAssets != nil, @"selectedAssets list must be available when state is SELECTION_ENABLED");
         if ([self.selectedAssets containsObject:asset]){
-            cell.layer.borderColor = [self.navigationController.view.window.tintColor CGColor];
+            cell.layer.borderColor = [self.appDelegate.window.tintColor CGColor];
             cell.layer.borderWidth = 5.0;
         } else {
             cell.layer.borderWidth = 0;
@@ -220,7 +218,7 @@ typedef enum AlbumState {
                                                       cancelButtonTitle:nil
                                                       otherButtonTitles:nil];
                 [alert show];
-                dispatch_async(self.sessionQueue, ^(){
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(){
                     [self.appDelegate.album deleteAssetList: [NSMutableArray arrayWithArray:[self.selectedAssets allObjects]]
                                         withCompletionBlock:^(){
                                             dispatch_async(dispatch_get_main_queue(), ^{
