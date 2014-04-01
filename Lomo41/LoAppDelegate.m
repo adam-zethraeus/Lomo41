@@ -10,7 +10,6 @@
     self.album = [[LoAlbumProxy alloc] initForAlbum:@"Lomo41"];
     self.window.tintColor = [[UIColor alloc] initWithRed:0.894117647 green:0.0 blue:0.368627451 alpha:1.0];
     self.processor = [[LoPhotoProcessor alloc] init];
-    
     return YES;
 }
 							

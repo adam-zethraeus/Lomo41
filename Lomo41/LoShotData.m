@@ -24,14 +24,12 @@
 }
 
 - (void)addImage:(UIImage *)image toLocation:(PaneLocation)location {
-    
     int32_t newCount = OSAtomicIncrement32Barrier(&_count);
     if (newCount == 4) {
-//        NSLog(@"######called four times");
-//        NSAssert(_leftmost != nil, @"lacking image");
-//        NSAssert(_middle_left != nil, @"lacking image");
-//        NSAssert(_middle_right != nil, @"lacking image");
-//        NSAssert(_rightmost != nil, @"lacking image");
+        NSAssert(_leftmost != nil, @"lacking image");
+        NSAssert(_middle_left != nil, @"lacking image");
+        NSAssert(_middle_right != nil, @"lacking image");
+        NSAssert(_rightmost != nil, @"lacking image");
         [self.delegate dataComplete:self];
     }
 }
@@ -41,6 +39,10 @@
     _middle_left = nil;
     _middle_right = nil;
     _rightmost = nil;
+}
+
+- (NSInteger)getCount {
+    return (NSInteger)_count;
 }
 
 @end
