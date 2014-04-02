@@ -271,7 +271,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     } else {
         [self setToggleButtonSelected:YES];
     }
-	dispatch_async([self sessionQueue], ^{
+	dispatch_async(self.sessionQueue, ^{
 		AVCaptureDevice *currentVideoDevice = [self.videoDeviceInput device];
 		AVCaptureDevicePosition preferredPosition = AVCaptureDevicePositionUnspecified;
 		AVCaptureDevicePosition currentPosition = [currentVideoDevice position];
@@ -296,9 +296,6 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		[self.captureSession removeInput:[self videoDeviceInput]];
 		if ([self.captureSession canAddInput:videoDeviceInput]) {
 			[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:currentVideoDevice];
-			
-			[LoCaptureViewController setFlashMode:AVCaptureFlashModeAuto forDevice:videoDevice];
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(subjectAreaDidChange:) name:AVCaptureDeviceSubjectAreaDidChangeNotification object:videoDevice];
 			
 			[self.captureSession addInput:videoDeviceInput];
 			[self setVideoDeviceInput:videoDeviceInput];
