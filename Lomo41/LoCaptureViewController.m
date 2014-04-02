@@ -79,6 +79,20 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     }
 }
 
++ (void)setExposureMode:(AVCaptureExposureMode)exposureMode forDevice:(AVCaptureDevice *)device {
+    NSError *error = nil;
+    if ([device isExposureModeSupported:exposureMode]) {
+        if ([device lockForConfiguration:&error]) {
+            CGPoint exposurePoint = CGPointMake(0.5f, 0.5f);
+            [device setExposurePointOfInterest:exposurePoint];
+            [device setExposureMode:exposureMode];
+            [device unlockForConfiguration];
+        } else {
+            NSLog(@"%@", error);
+        }
+    }
+}
+
 + (void)setTorchMode:(AVCaptureTorchMode)torchMode forDevice:(AVCaptureDevice *)device {
 	if ([device hasTorch] && [device isTorchModeSupported:torchMode]) {
 		NSError *error = nil;
@@ -123,15 +137,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		NSError *error = nil;
 		self.videoDevice = [LoCaptureViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
         [LoCaptureViewController setFocusMode:AVCaptureFocusModeContinuousAutoFocus forDevice:self.videoDevice];
-        if ([self.videoDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
-            if ([self.videoDevice lockForConfiguration:&error]) {
-                CGPoint exposurePoint = CGPointMake(0.5f, 0.5f);
-                [self.videoDevice setExposurePointOfInterest:exposurePoint];
-                [self.videoDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
-            } else {
-                NSLog(@"%@", error);
-            }
-        }
+        [LoCaptureViewController setExposureMode:AVCaptureExposureModeContinuousAutoExposure forDevice:self.videoDevice];
         [LoCaptureViewController setFlashMode:AVCaptureFlashModeOff forDevice:self.videoDevice];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:self.videoDevice error:&error];
 		if (error) {
