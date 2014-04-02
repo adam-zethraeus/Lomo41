@@ -323,6 +323,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (IBAction)doShoot:(id)sender {
     if (![self isCurrentlyShooting]) {
         [LoCaptureViewController setFocusMode:AVCaptureFocusModeLocked forDevice:self.videoDevice];
+        [LoCaptureViewController setExposureMode:AVCaptureExposureModeLocked forDevice:self.videoDevice];
         self.currentShots = [[LoShotSet alloc] initForSize:4];
         self.shootButton.enabled = NO;
         self.currentShots.cameraType = self.cameraToggleButton.selected ? FRONT_FACING : BACK_FACING;
@@ -377,6 +378,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             }
             if (final) {
                 [LoCaptureViewController setFocusMode: AVCaptureFocusModeContinuousAutoFocus forDevice:self.videoDevice];
+                [LoCaptureViewController setExposureMode: AVCaptureExposureModeContinuousAutoExposure forDevice:self.videoDevice];
                 [self processShotSet];
             }
         });
