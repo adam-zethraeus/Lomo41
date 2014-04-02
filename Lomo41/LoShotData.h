@@ -44,7 +44,10 @@ typedef enum {
 @property (nonatomic) CGFloat clipPointIncrements;
 @property (nonatomic) CGFloat padding;
 @property (getter = getCount, readonly) NSInteger count;
-
+@property (nonatomic) UIImage* leftmost;
+@property (nonatomic) UIImage* middle_left;
+@property (nonatomic) UIImage* middle_right;
+@property (nonatomic) UIImage* rightmost;
 
 - (id)initWithDelegate:(id<LoShotDataDelegate>)delegate;
 - (void)addImage:(UIImage *)shot toLocation:(PaneLocation)location;

@@ -3,11 +3,11 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 #import "ALAssetsLibrary+PhotoAlbumFunctionality.h"
-#import "Lo41ShotProcessor.h"
 #import "LoAlbumProxy.h"
 #import "LoAppDelegate.h"
 #import "LoCameraPreviewView.h"
-#import "LoShotSet.h"
+#import "LoPhotoProcessor.h"
+#import "LoShotData.h"
 #import "LoUICollectionViewController.h"
 #import "MotionOrientation.h"
 
@@ -27,7 +27,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 @property (nonatomic) AVCaptureDevice *videoDevice;
 @property (nonatomic) AVCaptureDeviceInput *videoDeviceInput;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
-@property (nonatomic) LoShotSet *currentShots;
+@property (nonatomic) LoShotData *currentShotData;
 @property (nonatomic) id runtimeErrorHandlingObserver;
 @property (nonatomic, readonly, getter = isSessionRunningAndHasCameraPermission) BOOL sessionRunningAndHasCameraPermission;
 @property (nonatomic) BOOL hasCameraPermission;
@@ -115,7 +115,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     self.cameraToggleButton.layer.cornerRadius = 5;
     self.captureSession = [[AVCaptureSession alloc] init];
     self.captureSession.sessionPreset = AVCaptureSessionPresetHigh;
-    self.currentShots = nil;
+    self.currentShotData = nil;
 	[self checkCameraPermissions];
 	self.sessionQueue = dispatch_queue_create("capture session queue", DISPATCH_QUEUE_SERIAL);
 	dispatch_async(self.sessionQueue, ^{
@@ -189,7 +189,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         self.timer = nil;
     }
     dispatch_async(self.sessionQueue, ^{
-        self.currentShots = nil;
+        self.currentShotData = nil;
     });
 }
 
@@ -320,9 +320,9 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 - (IBAction)doShoot:(id)sender {
     if (![self isCurrentlyShooting]) {
         [LoCaptureViewController setFocusMode:AVCaptureFocusModeLocked forDevice:self.videoDevice];
-        self.currentShots = [[LoShotSet alloc] initForSize:4];
+        self.currentShotData = [self.appDelegate.processor newShotHandle];
         self.shootButton.enabled = NO;
-        self.currentShots.cameraType = self.cameraToggleButton.selected ? FRONT_FACING : BACK_FACING;
+        self.currentShotData.cameraType = self.cameraToggleButton.selected ? FRONT_FACING : BACK_FACING;
         [self shootOnce];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(shootOnce) userInfo:nil repeats:YES];
     }
@@ -340,7 +340,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
     [self runCaptureAnimation];
     switch (self.shotCount) {
         case 1:
-            self.currentShots.orientation = [MotionOrientation sharedInstance].deviceOrientation;
+            self.currentShotData.orientation = [MotionOrientation sharedInstance].deviceOrientation;
             [self.paneOne.layer setOpacity: 0.2];
             break;
         case 2:
@@ -369,42 +369,50 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
         dispatch_async(self.sessionQueue, ^{
             if (imageDataSampleBuffer) {
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                [self.currentShots addShot:[[UIImage alloc] initWithData:imageData]];
+                // TODO: process single image in current data
+                [self.appDelegate.processor processImage:[[UIImage alloc] initWithData:imageData] atLocation:(PaneLocation)(self.shotCount - 1) withData:self.currentShotData];
                 CFRelease(imageDataSampleBuffer);
             }
             if (final) {
                 [LoCaptureViewController setFocusMode: AVCaptureFocusModeContinuousAutoFocus forDevice:self.videoDevice];
-                [self processShotSet];
+                self.shotCount = 0;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.shootButton.enabled = YES;
+                    [self.paneOne.layer setOpacity: 1.0];
+                    [self.paneTwo.layer setOpacity: 1.0];
+                    [self.paneThree.layer setOpacity: 1.0];
+                    [self.paneFour.layer setOpacity: 1.0];
+                });
             }
         });
     }];
 }
 
-- (void)processShotSet {
-    if (self.currentShots.count != 4) {
-        self.currentShots = nil;
-        self.shotCount = 0;
-        return;
-    }
-    dispatch_async(self.sessionQueue, ^{
-        Lo41ShotProcessor* processor = [[Lo41ShotProcessor alloc] initWithShotSet:self.currentShots];
-        [processor processIndividualShots];
-        [processor groupShots];
-        UIImage *finalGroupedImage = [processor getProcessedGroupImage];
-        if (finalGroupedImage) {
-            [self.appDelegate.album addImage:finalGroupedImage];
-        }
-        self.currentShots = nil;
-        self.shotCount = 0;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.shootButton.enabled = YES;
-            [self.paneOne.layer setOpacity: 1.0];
-            [self.paneTwo.layer setOpacity: 1.0];
-            [self.paneThree.layer setOpacity: 1.0];
-            [self.paneFour.layer setOpacity: 1.0];
-        });
-    });
-}
+//- (void)processShotSet {
+//    if (self.currentShots.count != 4) {
+//        self.currentShots = nil;
+//        self.shotCount = 0;
+//        return;
+//    }
+//    dispatch_async(self.sessionQueue, ^{
+//        Lo41ShotProcessor* processor = [[Lo41ShotProcessor alloc] initWithShotSet:self.currentShots];
+//        [processor processIndividualShots];
+//        [processor groupShots];
+//        UIImage *finalGroupedImage = [processor getProcessedGroupImage];
+//        if (finalGroupedImage) {
+//            [self.appDelegate.album addImage:finalGroupedImage];
+//        }
+//        self.currentShots = nil;
+//        self.shotCount = 0;
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            self.shootButton.enabled = YES;
+//            [self.paneOne.layer setOpacity: 1.0];
+//            [self.paneTwo.layer setOpacity: 1.0];
+//            [self.paneThree.layer setOpacity: 1.0];
+//            [self.paneFour.layer setOpacity: 1.0];
+//        });
+//    });
+//}
 
 - (void)runCaptureAnimation {
 	dispatch_async(dispatch_get_main_queue(), ^{

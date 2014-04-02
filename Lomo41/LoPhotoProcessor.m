@@ -1,6 +1,8 @@
 #import "LoPhotoProcessor.h"
 
 #import "GPUImage.h"
+#import "LoAppDelegate.h"
+#import "LoAlbumProxy.h"
 #import "LoDefaultFilter.h"
 
 @implementation LoPhotoProcessor {
@@ -29,6 +31,7 @@
     data.blurExcludeRadius = 0.6f;
     data.blurSize = 0.3f;
     data.clipSpan = 0.4f;
+    [_shotDataArray addObject:data];
     return data;
 }
 
@@ -101,11 +104,64 @@
 }
 
 - (void)saveImageFromData:(LoShotData *)data {
-    NSLog(@"saveImageFromData");
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(data.outputSize.x, data.outputSize.y), YES, 1.0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextSetRGBFillColor(context, data.backgroundColor.one, data.backgroundColor.two, data.backgroundColor.three, 1.0);
+    for (int i = 0; i < 4; i++) {
+        CGContextSaveGState(context);
+        UIImage *image = nil;
+        switch (i) {
+            case LEFTMOST:
+                image = data.leftmost;
+                break;
+            case MIDDLE_LEFT:
+                image = data.middle_left;
+                break;
+            case MIDDLE_RIGHT:
+                image = data.middle_right;
+                break;
+            case RIGHTMOST:
+                image = data.rightmost;
+                break;
+        }
+        NSAssert(image.size.height > image.size.width, @"Assumption height > width failed.");
+        CGRect drawRect = CGRectMake((data.clipSize.x + data.padding) * i, 0, data.clipSize.x, data.clipSize.y);
+        CGContextTranslateCTM(context, 0, data.clipSize.y);
+        CGContextScaleCTM(context, 1.0, -1.0);
+        CGContextDrawImage(context, drawRect, image.CGImage);
+        CGContextRestoreGState(context);
+    }
+    
+    UIImageOrientation orientation = UIImageOrientationUp;
+    
+    switch (data.orientation) {
+        case UIDeviceOrientationPortrait:
+            orientation = UIImageOrientationRight;
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            orientation = UIImageOrientationLeft;
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            orientation = data.cameraType == BACK_FACING ? UIImageOrientationUp : UIImageOrientationDown;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            orientation = data.cameraType == FRONT_FACING ? UIImageOrientationUp : UIImageOrientationDown;
+            break;
+        default:
+            break;
+    }
+    UIImage *groupedImage = [[UIImage alloc] initWithCGImage:[UIGraphicsGetImageFromCurrentImageContext() CGImage] scale:1.0f orientation:orientation];
+    UIGraphicsEndImageContext();
+    LoAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate.album addImage:groupedImage];
+    [self invalidateData:data];
 }
 
 - (void)invalidateData:(LoShotData *)data {
-    [_shotDataArray removeObject:data];
+    [data invalidate];
+    if ([_shotDataArray containsObject:data]){
+        [_shotDataArray removeObject:data];
+    }
 }
 
 - (void)dataComplete: (LoShotData *) sender {
