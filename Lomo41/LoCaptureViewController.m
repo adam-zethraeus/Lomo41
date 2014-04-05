@@ -170,12 +170,10 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 	dispatch_async(self.sessionQueue, ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndHasCameraPermission" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningCameraPermissionContext];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(subjectAreaDidChange:) name:AVCaptureDeviceSubjectAreaDidChangeNotification object:[self.videoDeviceInput device]];
-		__weak LoCaptureViewController *weakSelf = self;
 		self.runtimeErrorHandlingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureSessionRuntimeErrorNotification object:[self captureSession] queue:nil usingBlock:^(NSNotification *note) {
-			LoCaptureViewController *strongSelf = weakSelf;
-			dispatch_async(strongSelf.sessionQueue, ^{
+			dispatch_async(self.sessionQueue, ^{
 				// Manually restarting the session since it must have been stopped due to an error.
-				[strongSelf.captureSession startRunning];
+				[self.captureSession startRunning];
 			});
 		}];
         [LoCaptureViewController setFocusMode: AVCaptureFocusModeContinuousAutoFocus forDevice:self.videoDevice];
