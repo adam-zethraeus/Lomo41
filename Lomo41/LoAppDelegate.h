@@ -6,5 +6,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) LoAlbumProxy *album;
+@property (nonatomic) dispatch_queue_t serialQueue;
 
 @end

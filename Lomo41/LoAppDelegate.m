@@ -7,6 +7,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.album = [[LoAlbumProxy alloc] initForAlbum:@"Lomo41"];
     self.window.tintColor = [[UIColor alloc] initWithRed:0.894117647 green:0.0 blue:0.368627451 alpha:1.0];
+    self.serialQueue = dispatch_queue_create("serial_queue", DISPATCH_QUEUE_SERIAL);
     return YES;
 }
 							

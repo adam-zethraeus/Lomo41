@@ -14,7 +14,6 @@
 @property (nonatomic) NSInteger deleteIndex;
 @property (strong, nonatomic) UIPageViewController *pagerController;
 @property (weak, nonatomic) LoAppDelegate *appDelegate;
-@property (nonatomic) dispatch_queue_t sessionQueue;
 @property (strong, nonatomic) UIButton *deleteButton;
 @property (strong, nonatomic) UIButton *shareButton;
 @end
@@ -25,7 +24,6 @@
     [super viewDidLoad];
     NSAssert(self.pagerController != nil, @"pagerController should have been set in prepareForSegue");
     self.appDelegate = [[UIApplication sharedApplication] delegate];
-    self.sessionQueue = dispatch_queue_create("collection view proxy queue", DISPATCH_QUEUE_SERIAL);
     self.deleteIndex = -1;
     self.currentIndex = self.initialIndex;
     self.potentialNextIndex = self.initialIndex;

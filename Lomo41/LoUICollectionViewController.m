@@ -68,21 +68,21 @@ typedef enum AlbumState {
 - (void)viewWillAppear: (BOOL)animated {
     [super viewWillAppear:animated];
     [self resetState];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(self.appDelegate.serialQueue, ^{
         [self.appDelegate.album addObserver:self forKeyPath:@"assets" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:AlbumAssetsRefreshContext];
     });
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(self.appDelegate.serialQueue, ^{
         [self.appDelegate.album updateAssets];
     });
 }
 
 - (void)viewWillDisappear: (BOOL)animated {
     [super viewWillDisappear:animated];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(self.appDelegate.serialQueue, ^{
         [self.appDelegate.album removeObserver:self forKeyPath:@"assets" context:AlbumAssetsRefreshContext];
     });
 }
