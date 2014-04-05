@@ -427,7 +427,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
 		if (!granted) {
             dispatch_async(dispatch_get_main_queue(), ^{
 				[[[UIAlertView alloc] initWithTitle:@"Permission Issue"
-											message:@"Lomo41 needs permission to access your camera. Please grant it in settings."
+											message:@"Lomo41 needs permission to access your camera. Please grant it in system settings."
 										   delegate:self
 								  cancelButtonTitle:@"OK"
 								  otherButtonTitles:nil] show];
