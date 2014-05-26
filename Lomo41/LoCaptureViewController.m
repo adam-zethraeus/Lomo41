@@ -366,7 +366,7 @@ static void * SessionRunningCameraPermissionContext = &SessionRunningCameraPermi
             failed = YES;
             return;
         }
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(self.appDelegate.serialQueue, ^{
             if (imageDataSampleBuffer) {
                 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                 [self.currentShots addShot:[[UIImage alloc] initWithData:imageData]];
